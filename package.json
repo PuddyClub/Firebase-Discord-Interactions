@@ -1,5 +1,5 @@
 {
-  "name": "firebase-discord-interactions-synchronizer-database",
+  "name": "@tinypudding/firebase-discord-interactions-database",
   "version": "1.0.0",
   "description": "Use Firebase Database Realtime to synchronize your Discord Bot's command list.",
   "main": "index.js",
