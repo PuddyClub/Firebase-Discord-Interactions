@@ -22,7 +22,7 @@ module.exports = function (data, app, isTest = false) {
             // Prepare Bot DB
             const db = app.db.ref(tinyCfg.botPath);
             const getDBData = require('@tinypudding/firebase-lib/getDBData');
-            const interactions = require("discord-slash-commands-client");
+            const interactions = require("./interactionsClient");
 
             // Read Apps
             await require('for-promise')({ data: apps }, function (app, fn) {
