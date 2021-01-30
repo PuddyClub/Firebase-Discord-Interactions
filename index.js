@@ -26,6 +26,8 @@ module.exports = function (data, app, isTest = false) {
 
             // Read Apps
             await require('for-promise')({ data: apps }, function (app, fn) {
+                
+                // Read Token
                 getDBData(db.child(app).child('token')).then(token => {
 
                     // Is a Token String
@@ -40,11 +42,22 @@ module.exports = function (data, app, isTest = false) {
                         // list all your existing commands.
                         client.getCommands().then(commands => {
 
-                            // Test
-                            console.log(commands);
+                            // Is Array
+                            if (Array.isArray(commands)) {
 
-                            // Complete
-                            fn(); return;
+                                // Test
+                                console.log(commands);
+
+                                // Complete
+                                fn(); return;
+
+                            }
+
+                            // Nope
+                            else {
+                                fn(); return;
+                            }
+
 
                         }).catch(err => {
                             logger.error(err); fn(); return;
@@ -58,6 +71,10 @@ module.exports = function (data, app, isTest = false) {
                 }).catch(err => {
                     logger.error(err); fn(); return;
                 });
+
+                // Complete
+                return;
+
             });
 
             // Console Test
