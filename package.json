@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/TinyPudding/Firebase-Discord-Interactions-Synchronizer-Database#readme",
   "dependencies": {
+    "@tinypudding/puddy-lib": "^1.1.6",
     "discord-slash-commands-client": "^1.1.1",
     "lodash": "^4.17.20"
   },

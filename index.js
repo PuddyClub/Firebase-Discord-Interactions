@@ -2,6 +2,7 @@ module.exports = function (data, app, isTest = false) {
 
     // Prepare Modules
     const _ = require('lodash');
+    const objType = require('@tinypudding/puddy-lib/get/objType');
 
     // Create Settings
     const tinyCfg = _.defaultsDeep({}, data, {
@@ -11,12 +12,31 @@ module.exports = function (data, app, isTest = false) {
 
     // Script Base
     const discordCommandChecker = (snapshot) => {
-        
+
         // Prepare Data
         const data = snapshot.val();
 
-        // Console Test
-        console.log(data);
+        // Exist Data
+        if (objType(data, 'object')) {
+
+            // Prepare Bot DB
+            const db = app.db.ref(tinyCfg.botPath);
+            const interactions = require("discord-slash-commands-client");
+
+            // Read Apps
+            
+
+            // Console Test
+            console.log(data);
+
+        }
+
+        // Nope
+        else {
+
+
+
+        }
 
         // Complete
         return;
@@ -46,7 +66,7 @@ module.exports = function (data, app, isTest = false) {
         if (functions) {
 
             // Prepare Base
-            return functions.database.instance(tinyCfg.database).ref(tinyCfg.path).onWrite(discordCommandChecker);
+            return functions.database.instance(tinyCfg.database).ref(tinyCfg.appPath).onWrite(discordCommandChecker);
 
         }
 
@@ -63,7 +83,7 @@ module.exports = function (data, app, isTest = false) {
         try {
 
             // Prepare Test DB
-            const db = app.db.ref(tinyCfg.path);
+            const db = app.db.ref(tinyCfg.appPath);
 
             // Insert Value
             db.on("value", discordCommandChecker);
