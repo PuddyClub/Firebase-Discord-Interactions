@@ -17,15 +17,6 @@ module.exports = function (data, isTest = false, app) {
 
     };
 
-    // Detect No Test Mode
-    if (!isTest) {
-        try {
-            isTest = require('@tinypudding/firebase-lib/isEmulator')();
-        } catch (err) {
-            isTest = false;
-        }
-    }
-
     // Logger
     let logger = null;
     try {
@@ -49,14 +40,7 @@ module.exports = function (data, isTest = false, app) {
         if (functions) {
 
             // Prepare Base
-            return {
-
-                onWrite: functions.database.instance(tinyCfg.database).ref(tinyCfg.path).onWrite(discordCommandChecker),
-                onCreate: functions.database.instance(tinyCfg.database).ref(tinyCfg.path).onCreate(discordCommandChecker),
-                onUpdate: functions.database.instance(tinyCfg.database).ref(tinyCfg.path).onUpdate(discordCommandChecker),
-                onDelete: functions.database.instance(tinyCfg.database).ref(tinyCfg.path).onDelete(discordCommandChecker),
-
-            };
+            return functions.database.instance(tinyCfg.database).ref(tinyCfg.path).onWrite(discordCommandChecker);
 
         }
 
@@ -74,6 +58,9 @@ module.exports = function (data, isTest = false, app) {
 
             // Prepare Test DB
             const db = app.db.ref(tinyCfg.path);
+
+            // Insert Value
+            db.on("value", discordCommandChecker);
 
         } catch (err) {
             logger.error(err);

@@ -1,5 +1,6 @@
 // Module
 const discord_interaction = require('../index');
+const firebase = require('@tinypudding/firebase-lib');
 
 // Prepare Firebase
 const tinyCfg = require('./config.json');
