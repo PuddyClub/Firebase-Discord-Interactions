@@ -12,6 +12,9 @@ module.exports = function (data, isTest = false, app) {
     // Script Base
     const discordCommandChecker = (snapshot) => {
 
+        // Console Test
+        console.log(snapshot.val());
+
         // Complete
         return;
 
@@ -26,7 +29,7 @@ module.exports = function (data, isTest = false, app) {
     }
 
     // Production
-    if (isTest) {
+    if (!isTest) {
 
         // Prepare Functions
         let functions = null;
