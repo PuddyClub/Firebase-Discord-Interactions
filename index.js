@@ -37,13 +37,23 @@ module.exports = function (data, app, isTest = false) {
                             apps[app].client_id
                         );
 
-                        // Test
-                        console.log(apps[app], token);
+                        // list all your existing commands.
+                        client.getCommands().then(commands => {
+
+                            // Test
+                            console.log(commands);
+
+                            // Complete
+                            fn(); return;
+
+                        }).catch(err => {
+                            logger.error(err); fn(); return;
+                        });
 
                     }
 
-                    // Complete
-                    fn(); return;
+                    // Nope
+                    else { fn(); return; }
 
                 }).catch(err => {
                     logger.error(err); fn(); return;
