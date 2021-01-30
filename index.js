@@ -22,7 +22,7 @@ module.exports = function (data, app, isTest = false) {
             // Prepare Bot DB
             const db = app.db.ref(tinyCfg.botPath);
             const getDBData = require('@tinypudding/firebase-lib/getDBData');
-            const interactions = require("./interactionsClient");
+            const interactionsClient = require("./interactions/client");
 
             // Read Apps
             await require('for-promise')({ data: apps }, function (app, fn) {
@@ -34,7 +34,7 @@ module.exports = function (data, app, isTest = false) {
                     if (typeof token === "string") {
 
                         // Prepare Client
-                        const client = new interactions.Client(
+                        const client = new interactions(
                             token,
                             apps[app].client_id
                         );
