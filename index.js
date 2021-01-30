@@ -36,7 +36,7 @@ module.exports = function (data, app, isTest = false) {
                         // Create Client
                         const client = new interactionsClient({
                             client_id: apps[app].client_id,
-                            token = token
+                            bot_token: token
                         });
 
                         // list all your existing commands.
