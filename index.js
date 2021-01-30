@@ -1,4 +1,4 @@
-module.exports = function (data, isTest = false, app) {
+module.exports = function (data, app, isTest = false) {
 
     // Prepare Modules
     const _ = require('lodash');
