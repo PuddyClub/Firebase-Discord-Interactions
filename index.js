@@ -26,47 +26,54 @@ module.exports = function (data, app, isTest = false) {
 
             // Read Apps
             await require('for-promise')({ data: apps }, function (app, fn) {
-                
+
                 // Read Token
                 getDBData(db.child(app).child('token')).then(token => {
 
+                    // Prepare Client
+                    const interactionsValues = {
+                        client_id: apps[app].client_id
+                    };
+
                     // Is a Token String
                     if (typeof token === "string") {
-
-                        // Prepare Client
-                        const client = new interactions(
-                            token,
-                            apps[app].client_id
-                        );
-
-                        // list all your existing commands.
-                        client.getCommands().then(commands => {
-
-                            // Is Array
-                            if (Array.isArray(commands)) {
-
-                                // Test
-                                console.log(commands);
-
-                                // Complete
-                                fn(); return;
-
-                            }
-
-                            // Nope
-                            else {
-                                fn(); return;
-                            }
-
-
-                        }).catch(err => {
-                            logger.error(err); fn(); return;
-                        });
-
+                        interactionsValues.token = token;
                     }
 
                     // Nope
-                    else { fn(); return; }
+                    else {
+                        interactionsValues.client_secret = apps[app].client_secret;
+                    }
+
+                    // Create Client
+                    const client = new interactionsClient(interactionsValues);
+
+                    // list all your existing commands.
+                    client.getCommands().then(commands => {
+
+                        // Is Array
+                        if (Array.isArray(commands)) {
+
+                            // Test
+                            console.log(commands);
+
+                            // Complete
+                            fn(); return;
+
+                        }
+
+                        // Nope
+                        else {
+                            fn(); return;
+                        }
+
+
+                    }).catch(err => {
+                        logger.error(err); fn(); return;
+                    });
+
+                    // Complete
+                    return;
 
                 }).catch(err => {
                     logger.error(err); fn(); return;
