@@ -53,8 +53,11 @@ class InteractionsClient {
     // Get Commands
     async getCommands(options = {}) {
 
+        // Prepare Module
+        const objType = require('@tinypudding/puddy-lib/get/objType');
+
         // Prepare Options
-        if (!getType(options, 'object')) {
+        if (!objType(options, 'object')) {
             throw "options must be of type object. Received: " + typeof options;
         }
 
@@ -95,8 +98,11 @@ class InteractionsClient {
     // Create Command
     async createCommand(options, guildID) {
 
+        // Prepare Module
+        const objType = require('@tinypudding/puddy-lib/get/objType');
+
         // No Options
-        if (typeof options !== "object") {
+        if (!objType(options, 'object')) {
             throw "options must be of type object. Received: " + typeof options;
         }
 
@@ -123,8 +129,11 @@ class InteractionsClient {
     // Edit Command
     async editCommand(options, commandID, guildID) {
 
+        // Prepare Module
+        const objType = require('@tinypudding/puddy-lib/get/objType');
+
         // No Options
-        if (typeof options !== "object") {
+        if (!objType(options, 'object')) {
             throw "options must be of type object. Received: " + typeof options;
         }
 
