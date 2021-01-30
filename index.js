@@ -1,48 +1,87 @@
-module.exports = function (data) {
+module.exports = function (data, isTest = false, app) {
 
-    // Prepare Functions
-    let functions = null;
+    // Prepare Modules
+    const _ = require('lodash');
+
+    // Create Settings
+    const tinyCfg = _.defaultsDeep({}, data, {
+        path: '/',
+        database: ''
+    });
+
+    // Script Base
+    const discordCommandChecker = (snapshot) => {
+
+        // Complete
+        return;
+
+    };
+
+    // Detect No Test Mode
+    if (!isTest) {
+        try {
+            isTest = require('@tinypudding/firebase-lib/isEmulator')();
+        } catch (err) {
+            isTest = false;
+        }
+    }
+
+    // Logger
+    let logger = null;
     try {
-        functions = require('firebase-functions');
+        logger = require('@tinypudding/firebase-lib/logger');
     } catch (err) {
-        functions = null;
+        logger = console;
     }
 
-    // Start Module
-    if (functions) {
+    // Production
+    if (isTest) {
 
-        // Prepare Modules
-        const _ = require('lodash');
+        // Prepare Functions
+        let functions = null;
+        try {
+            functions = require('firebase-functions');
+        } catch (err) {
+            functions = null;
+        }
 
-        // Create Settings
-        const tinyCfg = _.defaultsDeep({}, data, {
-            path: '/',
-            database: ''
-        });
+        // Start Module
+        if (functions) {
 
-        // Script Base
-        const discordCommandChecker = (snapshot, context) => {
+            // Prepare Base
+            return {
 
-            // Complete
-            return;
+                onWrite: functions.database.instance(tinyCfg.database).ref(tinyCfg.path).onWrite(discordCommandChecker),
+                onCreate: functions.database.instance(tinyCfg.database).ref(tinyCfg.path).onCreate(discordCommandChecker),
+                onUpdate: functions.database.instance(tinyCfg.database).ref(tinyCfg.path).onUpdate(discordCommandChecker),
+                onDelete: functions.database.instance(tinyCfg.database).ref(tinyCfg.path).onDelete(discordCommandChecker),
 
-        };
+            };
 
-        // Prepare Base
-        return {
+        }
 
-            onWrite: functions.database.instance(tinyCfg.database).ref(tinyCfg.path).onWrite(discordCommandChecker),
-            onCreate: functions.database.instance(tinyCfg.database).ref(tinyCfg.path).onCreate(discordCommandChecker),
-            onUpdate: functions.database.instance(tinyCfg.database).ref(tinyCfg.path).onUpdate(discordCommandChecker),
-            onDelete: functions.database.instance(tinyCfg.database).ref(tinyCfg.path).onDelete(discordCommandChecker),
-
-        };
+        // Nope
+        else {
+            return null;
+        }
 
     }
 
-    // Nope
+    // Test Mode
     else {
-        return null;
+
+        try {
+
+            // Prepare Test DB
+            const db = app.db.ref(tinyCfg.path);
+
+        } catch (err) {
+            logger.error(err);
+        }
+
     }
+
+    // Complete
+    return;
 
 };
