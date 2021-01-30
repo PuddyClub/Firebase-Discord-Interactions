@@ -11,23 +11,47 @@ module.exports = function (data, app, isTest = false) {
     });
 
     // Script Base
-    const discordCommandChecker = (snapshot) => {
+    const discordCommandChecker = async (snapshot) => {
 
         // Prepare Data
-        const data = snapshot.val();
+        const apps = snapshot.val();
 
         // Exist Data
-        if (objType(data, 'object')) {
+        if (objType(apps, 'object')) {
 
             // Prepare Bot DB
             const db = app.db.ref(tinyCfg.botPath);
+            const getDBData = require('@tinypudding/firebase-lib/getDBData');
             const interactions = require("discord-slash-commands-client");
 
             // Read Apps
-            
+            await require('for-promise')({ data: apps }, function (app, fn) {
+                getDBData(db.child(app).child('token')).then(token => {
+
+                    // Is a Token String
+                    if (typeof token === "string") {
+
+                        // Prepare Client
+                        const client = new interactions.Client(
+                            token,
+                            apps[app].client_id
+                        );
+
+                        // Test
+                        console.log(apps[app], token);
+
+                    }
+
+                    // Complete
+                    fn(); return;
+
+                }).catch(err => {
+                    logger.error(err); fn(); return;
+                });
+            });
 
             // Console Test
-            console.log(data);
+            console.log('Complete');
 
         }
 

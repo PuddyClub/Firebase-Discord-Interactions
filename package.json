@@ -22,6 +22,7 @@
   "dependencies": {
     "@tinypudding/puddy-lib": "^1.1.6",
     "discord-slash-commands-client": "^1.1.1",
+    "for-promise": "^1.3.2",
     "lodash": "^4.17.20"
   },
   "devDependencies": {
