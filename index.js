@@ -40,13 +40,22 @@ module.exports = function (data, app, isTest = false) {
                         });
 
                         // list all your existing commands.
-                        client.getCommands().then(commands => {
+                        client.getCommands().then(oldCommands => {
 
                             // Is Array
-                            if (Array.isArray(commands)) {
+                            if (Array.isArray(oldCommands)) {
+
+                                // Exist Global Command List
+                                if (objType(apps[app].commands, 'object') && Array.isArray(apps[app].commands.global)) {
+
+                                    // New Commands
+                                    const newCommands = apps[app].commands.global;
+                                    console.log(newCommands);
+
+                                }
 
                                 // Test
-                                console.log(commands);
+                                console.log(oldCommands);
 
                                 // Complete
                                 fn(); return;
@@ -82,13 +91,6 @@ module.exports = function (data, app, isTest = false) {
 
             // Console Test
             console.log('Complete');
-
-        }
-
-        // Nope
-        else {
-
-
 
         }
 
