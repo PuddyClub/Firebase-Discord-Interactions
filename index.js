@@ -28,6 +28,7 @@ module.exports = function (data, app, isTest = false) {
             // Key List
             const appKeys = { value: Object.keys(apps) };
             appKeys.length = appKeys.value.length;
+            appKeys.count = appKeys.value.length;
             const extraList = [];
 
             // Read Apps
@@ -36,8 +37,11 @@ module.exports = function (data, app, isTest = false) {
                 // Complete FN
                 const complete_fn = function () {
 
+                    // Remove Count
+                    appKeys.count--;
+
                     // Complete Cicle
-                    if (index >= appKeys.length) {
+                    if (appKeys.count <= 0) {
 
                         // FN
                         fn(true);
