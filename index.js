@@ -35,6 +35,7 @@ module.exports = function (data, app, isTest = false) {
             const deleteCommandsScript = function (commands, index, fn, fn_error) {
 
                 /* Criar uma função que limpe todos os comandos do bot aqui. */
+                console.log(commands[index]);
 
                 // Complete
                 fn();
