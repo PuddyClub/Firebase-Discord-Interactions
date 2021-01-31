@@ -62,6 +62,9 @@ module.exports = function (data, app, isTest = false) {
                         if (extraList.length > 0) {
                             for (const item in extraList) {
 
+                                // Test Root
+                                console.log(extraList[item].root);
+
                                 // Command Manager
                                 if (extraList[item].type !== "deleteAll") {
 
@@ -155,6 +158,7 @@ module.exports = function (data, app, isTest = false) {
                                         existCommands = true;
                                         extraList.push({
                                             type: 'guilds',
+                                            root: app,
                                             commands: app.commands.guilds,
                                             deleteCommands: deleteCommands,
                                             extra: extra({ data: app.commands.guilds })
@@ -165,6 +169,7 @@ module.exports = function (data, app, isTest = false) {
                                     if (!existCommands) {
                                         extraList.push({
                                             type: 'deleteAll',
+                                            root: app,
                                             deleteCommands: deleteCommands,
                                             extra: extra({ data: deleteCommands })
                                         });
