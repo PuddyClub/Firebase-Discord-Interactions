@@ -25,18 +25,83 @@ module.exports = function (data, app, isTest = false) {
             const getDBData = require('@tinypudding/firebase-lib/getDBData');
             const interactionsClient = require("@tinypudding/discord-slash-commands/client");
 
+            // Key List
+            const appKeys = { value: Object.keys(apps) };
+            appKeys.length = appKeys.value.length;
+            const extraList = [];
+
             // Read Apps
-            await require('for-promise')({ data: apps }, function (app, fn) {
+            await require('for-promise')({ data: appKeys.length }, function (index, fn, fn_error, extra) {
+
+                // Complete FN
+                const complete_fn = function () {
+
+                    // Complete Cicle
+                    if (index >= appKeys.length) {
+
+                        // FN
+                        fn(true);
+
+                        // Run Extra List
+                        if (extraList.length > 0) {
+                            for (const item in extraList) {
+
+                                // Prepare Values
+                                const newCommands = extraList[item].commands;
+                                const deleteCommands = extraList[item].deleteCommands;
+
+                                // Prepare Extra Clear
+                                const extraClear = extra({ data: deleteCommands });
+
+                                // Execute the extra for
+                                extraList[item].extra.run(function (index, fn, fn_error) {
+
+                                    console.log(newCommands[index]);
+
+                                    /* Criar uma função que leia todos os comandos dentro do newCommands e faça uma comparação se ele existe no oldCommands. 
+                                    Se a resposta for negativa, ele vai usar create, se for positiva, ele vai usar update. 
+                                    Ambos os resultados vai remover ele da lista do removeCommands que vai ser efetuado no final do script. */
+
+                                    // Run the Delete
+                                    if (index >= newCommands.length) {
+                                        extraClear.run(function (index, fn, fn_error) {
+
+                                            /* Criar uma função que limpe todos os comandos do bot aqui. */
+
+                                            // Complete
+                                            fn();
+                                            return;
+
+                                        });
+                                    }
+
+                                    // Complete
+                                    fn();
+                                    return;
+
+                                });
+
+                            }
+                        }
+
+                    }
+
+                    return;
+
+                };
 
                 // Read Token
-                getDBData(db.child(app).child('token')).then(token => {
+                getDBData(db.child(appKeys.value[index]).child('token')).then(token => {
 
                     // Is a Token String
                     if (typeof token === "string") {
 
+                        // App
+                        const app = apps[appKeys.value[index]];
+
                         // Create Client
                         const client = new interactionsClient({
-                            client_id: apps[app].client_id,
+                            client_id: app.client_id,
                             bot_token: token
                         });
 
@@ -49,49 +114,54 @@ module.exports = function (data, app, isTest = false) {
                                 // Delete List
                                 const deleteCommands = clone(oldCommands);
 
-                                // Exist Global Command List
-                                if (objType(apps[app].commands, 'object') && Array.isArray(apps[app].commands.global)) {
+                                // Exist Command List
+                                if (objType(app.commands, 'object')) {
 
-                                    // New Commands
-                                    const newCommands = apps[app].commands.global;
-                                    console.log(newCommands);
+                                    // Exist Global Commands
+                                    if (Array.isArray(app.commands.global)) {
+                                        extraList.push({
+                                            commands: app.commands.global,
+                                            deleteCommands: deleteCommands,
+                                            extra: extra({ data: app.commands.global })
+                                        });
+                                    }
 
-                                    // Test
-                                    console.log(oldCommands);
-
-                                    /* Criar uma função que leia todos os comandos dentro do newCommands e faça uma comparação se ele existe no oldCommands. 
-                                    Se a resposta for negativa, ele vai usar create, se for positiva, ele vai usar update. 
-                                    Ambos os resultados vai remover ele da lista do removeCommands que vai ser efetuado no final do script. */
+                                    // Exist Private Guild Commands
+                                    if (Array.isArray(app.commands.guilds)) {
+                                        extraList.push({
+                                            commands: app.commands.guilds,
+                                            deleteCommands: deleteCommands,
+                                            extra: extra({ data: app.commands.guilds })
+                                        });
+                                    }
 
                                 }
 
-                                /* Criar uma função que limpe todos os comandos do bot aqui. */
-
                                 // Complete
-                                fn(); return;
+                                complete_fn(); return;
 
                             }
 
                             // Nope
                             else {
-                                fn(); return;
+                                complete_fn(); return;
                             }
 
 
                         }).catch(err => {
-                            logger.error(err); fn(); return;
+                            logger.error(err); complete_fn(); return;
                         });
 
                     }
 
                     // Nope
-                    else { fn(); }
+                    else { complete_fn(); }
 
                     // Complete
                     return;
 
                 }).catch(err => {
-                    logger.error(err); fn(); return;
+                    logger.error(err); complete_fn(); return;
                 });
 
                 // Complete
