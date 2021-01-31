@@ -31,6 +31,17 @@ module.exports = function (data, app, isTest = false) {
             appKeys.count = appKeys.value.length;
             const extraList = [];
 
+            // Delte Commands Script
+            const deleteCommandsScript = function (commands, index, fn, fn_error) {
+
+                /* Criar uma função que limpe todos os comandos do bot aqui. */
+
+                // Complete
+                fn();
+                return;
+
+            };
+
             // Read Apps
             await require('for-promise')({ data: appKeys.length }, function (index, fn, fn_error, extra) {
 
@@ -50,40 +61,43 @@ module.exports = function (data, app, isTest = false) {
                         if (extraList.length > 0) {
                             for (const item in extraList) {
 
-                                // Prepare Values
-                                const newCommands = extraList[item].commands;
-                                const deleteCommands = extraList[item].deleteCommands;
+                                // Command Manager
+                                if (extraList[item].type !== "deleteAll") {
 
-                                // Prepare Extra Clear
-                                const extraClear = extra({ data: deleteCommands });
+                                    // Prepare Values
+                                    const newCommands = extraList[item].commands;
+                                    const deleteCommands = extraList[item].deleteCommands;
 
-                                // Execute the extra for
-                                extraList[item].extra.run(function (index, fn, fn_error) {
+                                    // Prepare Extra Clear
+                                    const extraClear = extra({ data: deleteCommands });
 
-                                    console.log(newCommands[index]);
+                                    // Execute the extra for
+                                    extraList[item].extra.run(function (index, fn, fn_error) {
 
-                                    /* Criar uma função que leia todos os comandos dentro do newCommands e faça uma comparação se ele existe no oldCommands. 
-                                    Se a resposta for negativa, ele vai usar create, se for positiva, ele vai usar update. 
-                                    Ambos os resultados vai remover ele da lista do removeCommands que vai ser efetuado no final do script. */
+                                        console.log(newCommands[index]);
 
-                                    // Run the Delete
-                                    if (index >= newCommands.length) {
-                                        extraClear.run(function (index, fn, fn_error) {
+                                        /* Criar uma função que leia todos os comandos dentro do newCommands e faça uma comparação se ele existe no oldCommands. 
+                                        Se a resposta for negativa, ele vai usar create, se for positiva, ele vai usar update. 
+                                        Ambos os resultados vai remover ele da lista do removeCommands que vai ser efetuado no final do script. */
 
-                                            /* Criar uma função que limpe todos os comandos do bot aqui. */
+                                        // Run the Delete
+                                        if (index >= newCommands.length) {
+                                            extraClear.run(function (index, fn, fn_error) { return deleteCommandsScript(deleteCommands, index, fn, fn_error); });
+                                        }
 
-                                            // Complete
-                                            fn();
-                                            return;
+                                        // Complete
+                                        fn();
+                                        return;
 
-                                        });
-                                    }
+                                    });
 
-                                    // Complete
-                                    fn();
-                                    return;
+                                }
 
-                                });
+                                // Delete All
+                                else {
+                                    const deleteCommands = extraList[item].deleteCommands;
+                                    extraList[item].extra.run(function (index, fn, fn_error) { return deleteCommandsScript(deleteCommands, index, fn, fn_error); });
+                                }
 
                             }
                         }
@@ -121,9 +135,14 @@ module.exports = function (data, app, isTest = false) {
                                 // Exist Command List
                                 if (objType(app.commands, 'object')) {
 
+                                    // Exist Commands
+                                    let existCommands = false;
+
                                     // Exist Global Commands
                                     if (Array.isArray(app.commands.global)) {
+                                        existCommands = true;
                                         extraList.push({
+                                            type: 'global',
                                             commands: app.commands.global,
                                             deleteCommands: deleteCommands,
                                             extra: extra({ data: app.commands.global })
@@ -132,10 +151,21 @@ module.exports = function (data, app, isTest = false) {
 
                                     // Exist Private Guild Commands
                                     if (Array.isArray(app.commands.guilds)) {
+                                        existCommands = true;
                                         extraList.push({
+                                            type: 'guilds',
                                             commands: app.commands.guilds,
                                             deleteCommands: deleteCommands,
                                             extra: extra({ data: app.commands.guilds })
+                                        });
+                                    }
+
+                                    // No Commands
+                                    if (!existCommands) {
+                                        extraList.push({
+                                            type: 'deleteAll',
+                                            deleteCommands: deleteCommands,
+                                            extra: extra({ data: deleteCommands })
                                         });
                                     }
 
