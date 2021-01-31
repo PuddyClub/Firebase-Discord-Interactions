@@ -1,0 +1,2 @@
+Quando um comando não tem nada, ele retorna mensagem de erro e é deletado do sistema.
+A cada novo valor adicionado, o servidor verifica e atualiza a lista de comandos globais
