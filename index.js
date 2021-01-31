@@ -3,6 +3,7 @@ module.exports = function (data, app, isTest = false) {
     // Prepare Modules
     const _ = require('lodash');
     const objType = require('@tinypudding/puddy-lib/get/objType');
+    const clone = require('clone');
 
     // Create Settings
     const tinyCfg = _.defaultsDeep({}, data, {
@@ -45,6 +46,9 @@ module.exports = function (data, app, isTest = false) {
                             // Is Array
                             if (Array.isArray(oldCommands)) {
 
+                                // Delete List
+                                const deleteCommands = clone(oldCommands);
+
                                 // Exist Global Command List
                                 if (objType(apps[app].commands, 'object') && Array.isArray(apps[app].commands.global)) {
 
@@ -52,10 +56,16 @@ module.exports = function (data, app, isTest = false) {
                                     const newCommands = apps[app].commands.global;
                                     console.log(newCommands);
 
+                                    // Test
+                                    console.log(oldCommands);
+
+                                    /* Criar uma função que leia todos os comandos dentro do newCommands e faça uma comparação se ele existe no oldCommands. 
+                                    Se a resposta for negativa, ele vai usar create, se for positiva, ele vai usar update. 
+                                    Ambos os resultados vai remover ele da lista do removeCommands que vai ser efetuado no final do script. */
+
                                 }
 
-                                // Test
-                                console.log(oldCommands);
+                                /* Criar uma função que limpe todos os comandos do bot aqui. */
 
                                 // Complete
                                 fn(); return;
