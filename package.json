@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TinyPudding/Firebase-Discord-Interactions-Synchronizer-Database.git"
+    "url": "git+https://github.com/TinyPudding/Firebase-Discord-Interactions.git"
   },
   "keywords": [
     "discord-interactions"
@@ -16,9 +16,9 @@
   "author": "Yasmin Seidel (JasminDreasond)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/TinyPudding/Firebase-Discord-Interactions-Synchronizer-Database/issues"
+    "url": "https://github.com/TinyPudding/Firebase-Discord-Interactions/issues"
   },
-  "homepage": "https://github.com/TinyPudding/Firebase-Discord-Interactions-Synchronizer-Database#readme",
+  "homepage": "https://github.com/TinyPudding/Firebase-Discord-Interactions#readme",
   "dependencies": {
     "@tinypudding/discord-slash-commands": "^1.0.0",
     "@tinypudding/puddy-lib": "^1.1.6",
