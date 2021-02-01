@@ -350,146 +350,151 @@ module.exports = function (data, app, isTest = false) {
                 };
 
                 // Read Token
-                getDBData(db.child(appKeys.value[index]).child('token')).then(token => {
+                if (appKeys.value[index] !== "timeout") {
+                    getDBData(db.child(appKeys.value[index]).child('token')).then(token => {
 
-                    // Is a Token String
-                    if (typeof token === "string") {
+                        // Is a Token String
+                        if (typeof token === "string") {
 
-                        // App
-                        const app = apps[appKeys.value[index]];
+                            // App
+                            const app = apps[appKeys.value[index]];
 
-                        // Create Client
-                        const client = new interactionsClient({
-                            client_id: app.client_id,
-                            bot_token: token
-                        });
+                            // Create Client
+                            const client = new interactionsClient({
+                                client_id: app.client_id,
+                                bot_token: token
+                            });
 
-                        // Get Commands
-                        const getCommands = function (oldCommands, guildID) {
+                            // Get Commands
+                            const getCommands = function (oldCommands, guildID) {
 
-                            // Is Array
-                            if (Array.isArray(oldCommands)) {
+                                // Is Array
+                                if (Array.isArray(oldCommands)) {
 
-                                // Delete List
-                                const deleteCommands = clone(oldCommands);
+                                    // Delete List
+                                    const deleteCommands = clone(oldCommands);
 
-                                // Exist Commands
-                                let existCommands = false;
+                                    // Exist Commands
+                                    let existCommands = false;
 
-                                // Exist Global Commands
-                                if (typeof guildID !== "string") {
-                                    existCommands = true;
-                                    extraList.push({
-                                        type: 'global',
-                                        appName: appKeys.value[index],
-                                        client_id: app.client_id,
-                                        commands: app.commands.global,
-                                        deleteCommands: deleteCommands,
-                                        oldCommands: oldCommands,
-                                        extra: extra({ data: app.commands.global })
-                                    });
-                                }
-
-                                // Exist Private Guild Commands
-                                else {
-                                    existCommands = true;
-                                    extraList.push({
-                                        type: 'guild',
-                                        appName: appKeys.value[index],
-                                        client_id: app.client_id,
-                                        guild_id: guildID,
-                                        root: app,
-                                        commands: app.commands.guilds[guildID],
-                                        oldCommands: oldCommands,
-                                        deleteCommands: deleteCommands,
-                                        extra: extra({ data: app.commands.guilds[guildID] })
-                                    });
-                                }
-
-                                // No Commands
-                                if (!existCommands) {
-                                    extraList.push({
-                                        type: 'deleteAll',
-                                        appName: appKeys.value[index],
-                                        client_id: app.client_id,
-                                        root: app,
-                                        deleteCommands: deleteCommands,
-                                        oldCommands: oldCommands,
-                                        extra: extra({ data: deleteCommands })
-                                    });
-                                }
-
-                            }
-
-                            // Remove Count
-                            complete_count--;
-
-                            // Complete
-                            complete_fn(client); return;
-
-                        };
-
-                        // Exist Command List
-                        if (objType(app.commands, 'object')) {
-
-                            // Commands Loaded
-                            let commandsLoaded = false;
-
-                            // Guilds
-                            if (objType(app.commands.guilds, 'object')) {
-                                for (const item in app.commands.guilds) {
-                                    if (Array.isArray(app.commands.guilds[item])) {
-
-                                        // Complete Count
-                                        complete_count++;
-
-                                        // list all your existing commands.
-                                        commandsLoaded = true;
-                                        client.getCommands({ guildID: item }).then(oldCommands => {
-                                            return getCommands(oldCommands, item);
-                                        }).catch(err => {
-                                            complete_count--;
-                                            logger.error(err); complete_fn(client); return;
+                                    // Exist Global Commands
+                                    if (typeof guildID !== "string") {
+                                        existCommands = true;
+                                        extraList.push({
+                                            type: 'global',
+                                            appName: appKeys.value[index],
+                                            client_id: app.client_id,
+                                            commands: app.commands.global,
+                                            deleteCommands: deleteCommands,
+                                            oldCommands: oldCommands,
+                                            extra: extra({ data: app.commands.global })
                                         });
+                                    }
 
+                                    // Exist Private Guild Commands
+                                    else {
+                                        existCommands = true;
+                                        extraList.push({
+                                            type: 'guild',
+                                            appName: appKeys.value[index],
+                                            client_id: app.client_id,
+                                            guild_id: guildID,
+                                            root: app,
+                                            commands: app.commands.guilds[guildID],
+                                            oldCommands: oldCommands,
+                                            deleteCommands: deleteCommands,
+                                            extra: extra({ data: app.commands.guilds[guildID] })
+                                        });
+                                    }
+
+                                    // No Commands
+                                    if (!existCommands) {
+                                        extraList.push({
+                                            type: 'deleteAll',
+                                            appName: appKeys.value[index],
+                                            client_id: app.client_id,
+                                            root: app,
+                                            deleteCommands: deleteCommands,
+                                            oldCommands: oldCommands,
+                                            extra: extra({ data: deleteCommands })
+                                        });
+                                    }
+
+                                }
+
+                                // Remove Count
+                                complete_count--;
+
+                                // Complete
+                                complete_fn(client); return;
+
+                            };
+
+                            // Exist Command List
+                            if (objType(app.commands, 'object')) {
+
+                                // Commands Loaded
+                                let commandsLoaded = false;
+
+                                // Guilds
+                                if (objType(app.commands.guilds, 'object')) {
+                                    for (const item in app.commands.guilds) {
+                                        if (Array.isArray(app.commands.guilds[item])) {
+
+                                            // Complete Count
+                                            complete_count++;
+
+                                            // list all your existing commands.
+                                            commandsLoaded = true;
+                                            client.getCommands({ guildID: item }).then(oldCommands => {
+                                                return getCommands(oldCommands, item);
+                                            }).catch(err => {
+                                                complete_count--;
+                                                logger.error(err); complete_fn(client); return;
+                                            });
+
+                                        }
                                     }
                                 }
+
+                                // Global
+                                if (Array.isArray(app.commands.global)) {
+
+                                    // list all your existing commands.
+                                    complete_count++;
+                                    commandsLoaded = true;
+                                    client.getCommands().then(oldCommands => {
+                                        return getCommands(oldCommands);
+                                    }).catch(err => {
+                                        complete_count--;
+                                        logger.error(err); complete_fn(client); return;
+                                    });
+
+                                }
+
+                                // Commands not loaded
+                                if (!commandsLoaded) { complete_fn(null, true); }
+
                             }
 
-                            // Global
-                            if (Array.isArray(app.commands.global)) {
-
-                                // list all your existing commands.
-                                complete_count++;
-                                commandsLoaded = true;
-                                client.getCommands().then(oldCommands => {
-                                    return getCommands(oldCommands);
-                                }).catch(err => {
-                                    complete_count--;
-                                    logger.error(err); complete_fn(client); return;
-                                });
-
-                            }
-
-                            // Commands not loaded
-                            if (!commandsLoaded) { complete_fn(null, true); }
+                            // Nope
+                            else { complete_fn(null, true); }
 
                         }
 
                         // Nope
                         else { complete_fn(null, true); }
 
-                    }
+                        // Complete
+                        return;
 
-                    // Nope
-                    else { complete_fn(null, true); }
+                    }).catch(err => {
+                        logger.error(err); complete_fn(null, true); return;
+                    });
+                }
 
-                    // Complete
-                    return;
-
-                }).catch(err => {
-                    logger.error(err); complete_fn(null, true); return;
-                });
+                // Nope
+                else { complete_fn(null, true); }
 
                 // Complete
                 return;
