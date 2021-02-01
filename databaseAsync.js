@@ -295,7 +295,7 @@ module.exports = function (data, app, isTest = false) {
                                                     else if (editorType === 2) {
 
                                                         // Logger Info
-                                                        logger.log(`New command edited to the app ${app.client_id}!`, newCommand);
+                                                        logger.log(`New command edited to the app ${client_id}!`, newCommand);
 
                                                         // Global
                                                         if (typeof guild_id !== "string" && typeof guild_id !== "number") {
