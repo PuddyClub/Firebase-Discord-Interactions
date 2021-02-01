@@ -191,7 +191,7 @@ module.exports = function (data, app, isTest = false) {
                                                     const getCommandDatabase = function () {
 
                                                         // App DB
-                                                        const appDB = app.db.ref(snapshot.ref.path.pieces_.join('/')).child(appName);
+                                                        const appDB = app.db.ref(snapshot.ref.path.pieces_.join('/')).child(appName).child('commands');
 
                                                         // Global
                                                         if (typeof guild_id !== "string") { return appDB.child('global').child(item); }
