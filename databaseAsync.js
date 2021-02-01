@@ -82,6 +82,7 @@ module.exports = function (data, app, isTest = false) {
 
                                         // Prepare Values
                                         const newCommands = extraList[item].commands;
+                                        const newCommandsCount = newCommands.length - 1;
                                         const guild_id = extraList[item].guild_id;
                                         const oldCommands = extraList[item].oldCommands;
 
@@ -90,7 +91,7 @@ module.exports = function (data, app, isTest = false) {
 
                                             // Prepare Extra Clear
                                             const commandsFor = extra({ data: newCommands });
-                                            commandsFor.run(function (index3, fn, fn_error) {
+                                            commandsFor.run(function (index3, fn) {
 
                                                 // Execute Clear
                                                 const executeClear = function () {
@@ -102,7 +103,7 @@ module.exports = function (data, app, isTest = false) {
                                                     }
 
                                                     // Script
-                                                    if (existClear && index3 >= newCommands.length) {
+                                                    if (existClear && index3 >= newCommandsCount) {
                                                         extraClear.run(function (index4, fn, fn_error) { return deleteCommandsScript(deleteCommands, index4, fn, fn_error); });
                                                     }
 
