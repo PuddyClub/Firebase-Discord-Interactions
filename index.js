@@ -72,7 +72,6 @@ module.exports = function (data, app, isTest = false) {
                                     }
 
                                     // Prepare Values
-                                    const type = extraList[item].type;
                                     const newCommands = extraList[item].commands;
                                     const guild_id = extraList[item].guild_id;
                                     const oldCommands = extraList[item].oldCommands;
@@ -83,6 +82,26 @@ module.exports = function (data, app, isTest = false) {
                                         // Prepare Extra Clear
                                         const commandsFor = extra({ data: newCommands });
                                         commandsFor.run(function (index3, fn, fn_error) {
+
+                                            // Execute Clear
+                                            const executeClear = function () {
+
+                                                // Delete Item
+                                                const deleteItem = deleteCommands.findIndex(command => command.name === newCommand.name);
+                                                if (deleteItem > -1) {
+                                                    deleteCommands.splice(deleteItem, 1);
+                                                }
+
+                                                // Script
+                                                if (existClear && index3 >= newCommands.length) {
+                                                    extraClear.run(function (index4, fn, fn_error) { return deleteCommandsScript(deleteCommands, index4, fn, fn_error); });
+                                                }
+
+                                                // Complete
+                                                fn();
+                                                return;
+
+                                            };
 
                                             // New Command
                                             const newCommand = newCommands[index3];
@@ -106,24 +125,73 @@ module.exports = function (data, app, isTest = false) {
 
                                             }
 
-                                            console.log(type);
-                                            console.log(editorType);
-                                            console.log(oldCommands);
-                                            console.log(newCommand);
-                                            console.log(deleteCommands);
-                                            console.log(guild_id);
+                                            // To do something
+                                            if (editorType > 0) {
 
-                                            /* Criar uma função que leia todos os comandos dentro do newCommands e faça uma comparação se ele existe no oldCommands. 
-                                            Se a resposta for negativa, ele vai usar create, se for positiva, ele vai usar update. 
-                                            Ambos os resultados vai remover ele da lista do removeCommands que vai ser efetuado no final do script. */
+                                                // Create
+                                                if (editorType === 1) {
 
-                                            // Run the Delete (COLOCAR ISSO AQUI APENAS QUANDO TERMINAR DE INSERIR O COMANDO NOVO)
-                                            if (existClear && index3 >= newCommands.length) {
-                                                extraClear.run(function (index4, fn, fn_error) { return deleteCommandsScript(deleteCommands, index4, fn, fn_error); });
+                                                    // Global
+                                                    if (typeof guild_id !== "string") {
+                                                        client.createCommand(newCommand).then(result => {
+
+                                                        }).catch(err => {
+                                                            logger.error(err);
+                                                            executeClear();
+                                                            return;
+                                                        });
+                                                    }
+
+                                                    // Guild
+                                                    else {
+                                                        client.editCommand(newCommand, guild_id).then(result => {
+
+                                                        }).catch(err => {
+                                                            logger.error(err);
+                                                            executeClear();
+                                                            return;
+                                                        });
+                                                    }
+
+                                                }
+
+                                                // Edit
+                                                else if (editorType === 2) {
+
+                                                    // Get Command ID
+                                                    const commandID = newCommand.commandID;
+                                                    delete newCommand.commandID;
+
+                                                    // Global
+                                                    if (typeof guild_id !== "string") {
+                                                        client.editCommand(newCommand, commandID).then(result => {
+
+                                                        }).catch(err => {
+                                                            logger.error(err);
+                                                            executeClear();
+                                                            return;
+                                                        });
+                                                    }
+
+                                                    // Guild
+                                                    else {
+                                                        client.editCommand(newCommand, commandID, guild_id).then(result => {
+
+                                                        }).catch(err => {
+                                                            logger.error(err);
+                                                            executeClear();
+                                                            return;
+                                                        });
+                                                    }
+
+                                                }
+
                                             }
 
+                                            // Nope
+                                            else { executeClear(); }
+                                            
                                             // Complete
-                                            fn();
                                             return;
 
                                         });
