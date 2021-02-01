@@ -30,6 +30,9 @@ module.exports = function (data, app, isTest = false) {
         // Exist Data
         if (objType(apps, 'object')) {
 
+            // App DB
+            const appDB = app.db.ref(snapshot.ref.path.pieces_.join('/'));
+
             // Prepare Bot DB
             const db = app.db.ref(tinyCfg.botPath);
             const getDBData = require('@tinypudding/firebase-lib/getDBData');
@@ -190,14 +193,11 @@ module.exports = function (data, app, isTest = false) {
                                                     // Get Database Command
                                                     const getCommandDatabase = function () {
 
-                                                        // App DB
-                                                        const appDB = app.db.ref(snapshot.ref.path.pieces_.join('/')).child(appName).child('commands');
-
                                                         // Global
-                                                        if (typeof guild_id !== "string") { return appDB.child('global').child(item); }
+                                                        if (typeof guild_id !== "string") { return appDB.child(appName).child('commands').child('global').child(item); }
 
                                                         // Guild
-                                                        else { return appDB.child('guilds').child(guild_id).child(item); }
+                                                        else { return appDB.child(appName).child('commands').child('guilds').child(guild_id).child(item); }
 
                                                     };
 
