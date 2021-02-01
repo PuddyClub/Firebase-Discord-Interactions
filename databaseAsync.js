@@ -212,10 +212,10 @@ module.exports = function (data, app, isTest = false) {
                                                             const getCommandDatabase = function () {
 
                                                                 // Global
-                                                                if (typeof guild_id !== "string") { return appDB.child(appName).child('commands').child('global').child(item); }
+                                                                if (typeof guild_id !== "string") { return appDB.child(appName).child('commands').child('global').child(index3); }
 
                                                                 // Guild
-                                                                else { return appDB.child(appName).child('commands').child('guilds').child(guild_id).child(item); }
+                                                                else { return appDB.child(appName).child('commands').child('guilds').child(guild_id).child(index3); }
 
                                                             };
 
