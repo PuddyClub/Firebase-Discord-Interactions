@@ -1,4 +1,4 @@
-module.exports = async function (req, res, error_page, logger, tinyCfg) {
+module.exports = async function (req, res, logger, tinyCfg) {
 
     // Start Firebase
     const firebase = require('@tinypudding/firebase-lib');
@@ -38,10 +38,10 @@ module.exports = async function (req, res, error_page, logger, tinyCfg) {
                 }
 
                 try {
-                    return require('./version/' + req.body.version)(req, res, error_page, logger, di);
+                    return require('./version/' + req.body.version)(req, res, logger, di);
                 } catch (err) {
                     logger.error(err);
-                    error_page(res, 404, 'Version not found!');
+                    tinyCfg.errorCallback(res, 404, 'Version not found!');
                     return;
                 }
 
@@ -49,12 +49,12 @@ module.exports = async function (req, res, error_page, logger, tinyCfg) {
 
             // Nope
             else {
-                return error_page(res, 401, 'Bad request signature!');
+                return tinyCfg.errorCallback(res, 401, 'Bad request signature!');
             }
 
         } catch (err) {
             logger.error(err);
-            error_page(res, 500, err.message);
+            tinyCfg.errorCallback(res, 500, err.message);
             return;
         }
 
@@ -62,7 +62,7 @@ module.exports = async function (req, res, error_page, logger, tinyCfg) {
 
     // Nope
     else {
-        error_page(res, 401, 'Invalid Public Key!');
+        tinyCfg.errorCallback(res, 401, 'Invalid Public Key!');
     }
 
     // Complete

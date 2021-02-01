@@ -1,4 +1,4 @@
-module.exports = async function (req, res, error_page, logger, di) {
+module.exports = async function (req, res, logger, di) {
     try {
 
         // Test
@@ -72,7 +72,7 @@ module.exports = async function (req, res, error_page, logger, di) {
 
         // Nope
         else {
-            return error_page(res, 404, 'Type not found!');
+            return tinyCfg.errorCallback(res, 404, 'Type not found!');
         }
 
         // Complete
@@ -80,7 +80,7 @@ module.exports = async function (req, res, error_page, logger, di) {
 
     } catch (err) {
         logger.error(err);
-        error_page(res, 404, 'Version not found!');
+        tinyCfg.errorCallback(res, 404, 'Version not found!');
         return;
     }
 };
