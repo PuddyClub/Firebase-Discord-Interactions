@@ -64,7 +64,7 @@ module.exports = function (req, res, logger, tinyCfg) {
                                 return require('./version/' + req.body.version)(req, res, logger, di);
                             } catch (err) {
                                 logger.error(err);
-                                tinyCfg.errorCallback(res, 404, 'Version not found!');
+                                tinyCfg.errorCallback(req, res, 404, 'Version not found!');
                                 return;
                             }
 
@@ -72,12 +72,12 @@ module.exports = function (req, res, logger, tinyCfg) {
 
                         // Nope
                         else {
-                            return tinyCfg.errorCallback(res, 401, 'Bad request signature!');
+                            return tinyCfg.errorCallback(req, res, 401, 'Bad request signature!');
                         }
 
                     } catch (err) {
                         logger.error(err);
-                        tinyCfg.errorCallback(res, 500, err.message);
+                        tinyCfg.errorCallback(req, res, 500, err.message);
                         return;
                     }
 
@@ -85,14 +85,14 @@ module.exports = function (req, res, logger, tinyCfg) {
 
                 // Nope
                 else {
-                    tinyCfg.errorCallback(res, 401, 'Invalid Public Key!');
+                    tinyCfg.errorCallback(req, res, 401, 'Invalid Public Key!');
                 }
 
                 // Complete
                 return;
 
             }).catch(err => {
-                tinyCfg.errorCallback(res, 404, 'Bot Public Key not found!');
+                tinyCfg.errorCallback(req, res, 404, 'Bot Public Key not found!');
                 return;
             });
 
@@ -100,14 +100,14 @@ module.exports = function (req, res, logger, tinyCfg) {
 
         // Nope
         else {
-            tinyCfg.errorCallback(res, 401, 'Invalid Bot Data!');
+            tinyCfg.errorCallback(req, res, 401, 'Invalid Bot Data!');
         }
 
     }
 
     // Nope
     else {
-        tinyCfg.errorCallback(res, 500, 'Main Server not found!');
+        tinyCfg.errorCallback(req, res, 500, 'Main Server not found!');
     }
 
     // Complete
