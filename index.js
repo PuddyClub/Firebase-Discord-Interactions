@@ -62,31 +62,63 @@ module.exports = function (data, app, isTest = false) {
                                 // Command Manager
                                 if (extraList[item].type !== "deleteAll") {
 
+                                    // Extra Clear
+                                    const deleteCommands = extraList[item].deleteCommands;
+                                    let extraClear = null;
+                                    let existClear = (Array.isArray(deleteCommands) && deleteCommands.length > 0);
+                                    if (existClear) {
+                                        extraClear = extra({ data: deleteCommands });
+                                    }
+
                                     // Prepare Values
                                     const type = extraList[item].type;
                                     const newCommands = extraList[item].commands;
-                                    const deleteCommands = extraList[item].deleteCommands;
                                     const guild_id = extraList[item].guild_id;
-
-                                    // Prepare Extra Clear
-                                    const extraClear = extra({ data: deleteCommands });
+                                    const oldCommands = extraList[item].oldCommands;
 
                                     // Execute the extra for
-                                    extraList[item].extra.run(function (index2, fn, fn_error) {
+                                    extraList[item].extra.run(function (index2, fn) {
 
-                                        console.log(type);
-                                        console.log(newCommands);
-                                        console.log(deleteCommands);
-                                        console.log(guild_id);
+                                        // Prepare Extra Clear
+                                        const commandsFor = extra({ data: newCommands });
+                                        commandsFor.run(function (index3, fn, fn_error) {
 
-                                        /* Criar uma função que leia todos os comandos dentro do newCommands e faça uma comparação se ele existe no oldCommands. 
-                                        Se a resposta for negativa, ele vai usar create, se for positiva, ele vai usar update. 
-                                        Ambos os resultados vai remover ele da lista do removeCommands que vai ser efetuado no final do script. */
+                                            // New Command
+                                            const newCommand = newCommands[index3];
 
-                                        // Run the Delete
-                                        if (index >= newCommands.length) {
-                                            extraClear.run(function (index3, fn, fn_error) { return deleteCommandsScript(deleteCommands, index3, fn, fn_error); });
-                                        }
+                                            // Set Editor Type to Create
+                                            let editorType = 1;
+
+                                            // Exist OLD Command
+                                            if (oldCommands.find(command => command.name === newCommand.name)) {
+
+                                                // Set Editor Type to Edit
+                                                editorType = 2;
+
+                                                /* Montar um sistema de verificador de hash para definir se é o mesmo valor ou se é um novo valor. */
+
+                                            }
+
+                                            console.log(type);
+                                            console.log(oldCommands);
+                                            console.log(newCommand);
+                                            console.log(deleteCommands);
+                                            console.log(guild_id);
+
+                                            /* Criar uma função que leia todos os comandos dentro do newCommands e faça uma comparação se ele existe no oldCommands. 
+                                            Se a resposta for negativa, ele vai usar create, se for positiva, ele vai usar update. 
+                                            Ambos os resultados vai remover ele da lista do removeCommands que vai ser efetuado no final do script. */
+
+                                            // Run the Delete (COLOCAR ISSO AQUI APENAS QUANDO TERMINAR DE INSERIR O COMANDO NOVO)
+                                            if (existClear && index3 >= newCommands.length) {
+                                                extraClear.run(function (index4, fn, fn_error) { return deleteCommandsScript(deleteCommands, index4, fn, fn_error); });
+                                            }
+
+                                            // Complete
+                                            fn();
+                                            return;
+
+                                        });
 
                                         // Complete
                                         fn();
@@ -151,22 +183,26 @@ module.exports = function (data, app, isTest = false) {
                                             type: 'global',
                                             commands: app.commands.global,
                                             deleteCommands: deleteCommands,
+                                            oldCommands: oldCommands,
                                             extra: extra({ data: app.commands.global })
                                         });
                                     }
 
                                     // Exist Private Guild Commands
                                     if (objType(app.commands.guilds, 'object')) {
-                                        existCommands = true;
                                         for (const item in app.commands.guilds) {
-                                            extraList.push({
-                                                type: 'guild',
-                                                guild_id: item,
-                                                root: app,
-                                                commands: app.commands.guilds[item],
-                                                deleteCommands: deleteCommands,
-                                                extra: extra({ data: app.commands.guilds[item] })
-                                            });
+                                            if (Array.isArray(app.commands.guilds[item])) {
+                                                existCommands = true;
+                                                extraList.push({
+                                                    type: 'guild',
+                                                    guild_id: item,
+                                                    root: app,
+                                                    commands: app.commands.guilds[item],
+                                                    oldCommands: oldCommands,
+                                                    deleteCommands: deleteCommands,
+                                                    extra: extra({ data: app.commands.guilds[item] })
+                                                });
+                                            }
                                         }
                                     }
 
@@ -176,6 +212,7 @@ module.exports = function (data, app, isTest = false) {
                                             type: 'deleteAll',
                                             root: app,
                                             deleteCommands: deleteCommands,
+                                            oldCommands: oldCommands,
                                             extra: extra({ data: deleteCommands })
                                         });
                                     }
