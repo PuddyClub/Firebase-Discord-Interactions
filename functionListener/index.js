@@ -15,7 +15,12 @@ module.exports = function (req, res, cfg) {
     });
 
     // Logger
-    const logger = require('@tinypudding/firebase-lib/logger');
+    let logger = null;
+    try {
+        logger = require('@tinypudding/firebase-lib/logger');
+    } catch (err) {
+        logger = console;
+    }
 
     // End Point
     if (typeof req.query.type === "string" && req.query.type === "endpoint") {
