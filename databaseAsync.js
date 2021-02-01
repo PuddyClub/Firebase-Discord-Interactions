@@ -34,10 +34,10 @@ module.exports = function (data, app, isTest = false) {
             const extraList = [];
 
             // Delte Commands Script
-            const deleteCommandsScript = function (commands, index, fn, fn_error) {
+            const deleteCommandsScript = function (commands, fn, fn_error, extra) {
 
                 /* Criar uma função que limpe todos os comandos do bot aqui. */
-                console.log(commands[index]);
+                console.log(commands);
 
                 // Complete
                 fn();
@@ -104,7 +104,7 @@ module.exports = function (data, app, isTest = false) {
 
                                                     // Script
                                                     if (existClear && index3 >= newCommandsCount) {
-                                                        extraClear.run(function (index4, fn, fn_error) { return deleteCommandsScript(deleteCommands, index4, fn, fn_error); });
+                                                        extraClear.run(function (index4, fn, fn_error) { return deleteCommandsScript(deleteCommands, fn, fn_error, extra); });
                                                     }
 
                                                     // Complete
@@ -273,7 +273,7 @@ module.exports = function (data, app, isTest = false) {
 
                                     // Delete All
                                     else {
-                                        extraList[item].extra.run(function (index2, fn, fn_error) { return deleteCommandsScript(deleteCommands, index2, fn, fn_error); });
+                                        extraList[item].extra.run(function (index2, fn, fn_error) { return deleteCommandsScript(deleteCommands, fn, fn_error, extra); });
                                     }
 
                                 }
