@@ -69,6 +69,7 @@ module.exports = function (req, res, logger, tinyCfg) {
 
         }).catch(err => {
             tinyCfg.errorCallback(res, 404, 'Bot Public Key not found!');
+            return;
         });
 
     }
