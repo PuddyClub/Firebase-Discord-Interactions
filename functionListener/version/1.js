@@ -4,8 +4,36 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
         // Is Command
         if (req.body.type === di.InteractionType.COMMAND) {
 
-            if() {
+            // Obj Type
+            const objType = require('@tinypudding/puddy-lib/get/objType');
 
+            // Exist Commands
+            if (
+                objType(tinyCfg.commands) && objType(req.body.data) && 
+                (typeof req.body.data.name === "string" || typeof req.body.data.name === "number") &&
+                (typeof req.body.id === "string" || typeof req.body.id === "number") &&
+            ) {
+
+                // Get by name
+                if (typeof tinyCfg.commands[req.body.data.name] === "function") {
+                    tinyCfg.commands[req.body.data.name](req, res, di);
+                }
+
+                // Get by name
+                else if (typeof tinyCfg.commands[req.body.id] === "function") {
+                    tinyCfg.commands[req.body.id](req, res, di);
+                }
+
+                // Nothing
+                else {
+                    tinyCfg.invalidCommandCallback(req, res, di);
+                }
+
+            }
+
+            // Nope
+            else {
+                tinyCfg.errorCallback(req, res, 500, 'The commands could not be loaded!');
             }
 
         }
@@ -17,7 +45,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
 
         // Nope
         else {
-            return tinyCfg.errorCallback(req, res, 404, 'Type not found!');
+            tinyCfg.errorCallback(req, res, 404, 'Type not found!');
         }
 
         // Complete
