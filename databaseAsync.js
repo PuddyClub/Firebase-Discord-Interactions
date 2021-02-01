@@ -251,7 +251,7 @@ module.exports = function (data, app, isTest = false) {
                                                     if (editorType === 1) {
 
                                                         // Logger Info
-                                                        logger.log(`New command added to the app ${app.client_id}!`, newCommand);
+                                                        logger.log(`New command added to the app ${client_id}!`, newCommand);
 
                                                         const final_result = {
                                                             then: result => {
