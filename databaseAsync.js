@@ -384,6 +384,7 @@ module.exports = function (data, app, isTest = false) {
                                         client.getCommands({ guildID: item }).then(oldCommands => {
                                             return getCommands(oldCommands, item);
                                         }).catch(err => {
+                                            complete_count--;
                                             logger.error(err); complete_fn(client); return;
                                         });
 
@@ -400,6 +401,7 @@ module.exports = function (data, app, isTest = false) {
                                 client.getCommands().then(oldCommands => {
                                     return getCommands(oldCommands);
                                 }).catch(err => {
+                                    complete_count--;
                                     logger.error(err); complete_fn(client); return;
                                 });
 
