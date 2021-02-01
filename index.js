@@ -113,7 +113,6 @@ module.exports = function (data, app, isTest = false) {
                                             // Get Command ID
                                             const commandID = newCommand.commandID;
                                             delete newCommand.commandID;
-                                            newCommand.id = commandID;
 
                                             // Set Editor Type to Create
                                             let editorType = 1;
@@ -126,7 +125,7 @@ module.exports = function (data, app, isTest = false) {
                                                 delete oldCommand.application_id;
 
                                                 // Set Editor Type to Edit
-                                                if (hash(oldCommand) !== hash(newCommand)) {
+                                                if (hash(newCommand) !== hash(oldCommand)) {
                                                     editorType = 2;
                                                 }
 
@@ -134,13 +133,6 @@ module.exports = function (data, app, isTest = false) {
                                                 else { editorType = 0; }
 
                                             }
-
-                                            // Remove ID Again
-                                            delete newCommand.id;
-
-                                            console.log(editorType);
-                                            console.log(oldCommand);
-                                            console.log(newCommand);
 
                                             // To do something
                                             if (editorType > 0) {
