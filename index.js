@@ -4,6 +4,7 @@ module.exports = function (data, app, isTest = false) {
     const _ = require('lodash');
     const objType = require('@tinypudding/puddy-lib/get/objType');
     const clone = require('clone');
+    const hash = require('object-hash');
 
     // Create Settings
     const tinyCfg = _.defaultsDeep({}, data, {
@@ -86,20 +87,27 @@ module.exports = function (data, app, isTest = false) {
                                             // New Command
                                             const newCommand = newCommands[index3];
 
+                                            // OLD Command
+                                            const oldCommand = oldCommands.find(command => command.name === newCommand.name);
+
                                             // Set Editor Type to Create
                                             let editorType = 1;
 
                                             // Exist OLD Command
-                                            if (oldCommands.find(command => command.name === newCommand.name)) {
+                                            if (oldCommand) {
 
                                                 // Set Editor Type to Edit
-                                                editorType = 2;
+                                                if (hash(oldCommand) !== hash(newCommand)) {
+                                                    editorType = 2;
+                                                }
 
-                                                /* Montar um sistema de verificador de hash para definir se é o mesmo valor ou se é um novo valor. */
+                                                // Set Editor Type to Nothing
+                                                else { editorType = 0; }
 
                                             }
 
                                             console.log(type);
+                                            console.log(editorType);
                                             console.log(oldCommands);
                                             console.log(newCommand);
                                             console.log(deleteCommands);
