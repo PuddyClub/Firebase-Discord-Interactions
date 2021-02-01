@@ -48,233 +48,244 @@ module.exports = function (data, app, isTest = false) {
             // Read Apps
             await forPromise({ data: appKeys.length }, function (index, fn, fn_error, extra) {
 
+                // Complete Count
+                let complete_count = 2;
+
                 // Complete FN
-                const complete_fn = function (client) {
+                const complete_fn = function (client, forceComplete = false) {
 
-                    // Remove Count
-                    appKeys.count--;
+                    // Verify Complete
+                    if (complete_count <= 0 && forceComplete) {
 
-                    // Complete Cicle
-                    if (appKeys.count <= 0) {
+                        // Remove Count
+                        appKeys.count--;
 
-                        // Run Extra List
-                        if (extraList.length > 0) {
-                            for (const item in extraList) {
+                        // Complete Cicle
+                        if (appKeys.count <= 0) {
 
-                                // Command Manager
-                                if (extraList[item].type !== "deleteAll") {
+                            // Run Extra List
+                            if (extraList.length > 0) {
+                                for (const item in extraList) {
 
-                                    // Extra Clear
-                                    const deleteCommands = extraList[item].deleteCommands;
-                                    let extraClear = null;
-                                    let existClear = (Array.isArray(deleteCommands) && deleteCommands.length > 0);
-                                    if (existClear) {
-                                        extraClear = extra({ data: deleteCommands });
-                                    }
+                                    // Command Manager
+                                    if (extraList[item].type !== "deleteAll") {
 
-                                    // Prepare Values
-                                    const newCommands = extraList[item].commands;
-                                    const guild_id = extraList[item].guild_id;
-                                    const oldCommands = extraList[item].oldCommands;
+                                        // Extra Clear
+                                        const deleteCommands = extraList[item].deleteCommands;
+                                        let extraClear = null;
+                                        let existClear = (Array.isArray(deleteCommands) && deleteCommands.length > 0);
+                                        if (existClear) {
+                                            extraClear = extra({ data: deleteCommands });
+                                        }
 
-                                    // Execute the extra for
-                                    extraList[item].extra.run(function (index2, fn) {
+                                        // Prepare Values
+                                        const newCommands = extraList[item].commands;
+                                        const guild_id = extraList[item].guild_id;
+                                        const oldCommands = extraList[item].oldCommands;
 
-                                        // Prepare Extra Clear
-                                        const commandsFor = extra({ data: newCommands });
-                                        commandsFor.run(function (index3, fn, fn_error) {
+                                        // Execute the extra for
+                                        extraList[item].extra.run(function (index2, fn) {
 
-                                            // Execute Clear
-                                            const executeClear = function () {
+                                            // Prepare Extra Clear
+                                            const commandsFor = extra({ data: newCommands });
+                                            commandsFor.run(function (index3, fn, fn_error) {
 
-                                                // Delete Item
-                                                const deleteItem = deleteCommands.findIndex(command => command.name === newCommand.name);
-                                                if (deleteItem > -1) {
-                                                    deleteCommands.splice(deleteItem, 1);
-                                                }
+                                                // Execute Clear
+                                                const executeClear = function () {
 
-                                                // Script
-                                                if (existClear && index3 >= newCommands.length) {
-                                                    extraClear.run(function (index4, fn, fn_error) { return deleteCommandsScript(deleteCommands, index4, fn, fn_error); });
-                                                }
+                                                    // Delete Item
+                                                    const deleteItem = deleteCommands.findIndex(command => command.name === newCommand.name);
+                                                    if (deleteItem > -1) {
+                                                        deleteCommands.splice(deleteItem, 1);
+                                                    }
 
-                                                // Complete
-                                                fn();
-                                                return;
+                                                    // Script
+                                                    if (existClear && index3 >= newCommands.length) {
+                                                        extraClear.run(function (index4, fn, fn_error) { return deleteCommandsScript(deleteCommands, index4, fn, fn_error); });
+                                                    }
 
-                                            };
+                                                    // Complete
+                                                    fn();
+                                                    return;
 
-                                            // New Command
-                                            const newCommand = clone(newCommands[index3]);
-
-                                            // OLD Command
-                                            const oldCommand = clone(oldCommands.find(command => command.name === newCommand.name));
-
-                                            // Get Command ID
-                                            const commandID = newCommand.commandID;
-                                            delete newCommand.commandID;
-
-                                            // Set Editor Type to Create
-                                            let editorType = 1;
-
-                                            // Exist OLD Command
-                                            if (oldCommand) {
-
-                                                // Remove OLD Data
-                                                delete oldCommand.id;
-                                                delete oldCommand.application_id;
-
-                                                // Set Editor Type to Edit
-                                                if (hash(newCommand) !== hash(oldCommand)) {
-                                                    editorType = 2;
-                                                }
-
-                                                // Set Editor Type to Nothing
-                                                else { editorType = 0; }
-
-                                            }
-
-                                            // To do something
-                                            if (editorType > 0) {
-
-                                                const updateCommandDatabase = function (result) {
-                                                    return new Promise(function (resolve, reject) {
-
-                                                        // Set Command ID
-                                                        app.db.ref(snapshot.ref.path.pieces_).child('commandID').set(result.id).then(() => {
-                                                            resolve();
-                                                            return;
-                                                        }).catch(err => {
-                                                            reject(err);
-                                                            return;
-                                                        });
-
-                                                        // Complete
-                                                        return;
-
-                                                    });
                                                 };
 
-                                                // Create
-                                                if (editorType === 1) {
+                                                // New Command
+                                                const newCommand = clone(newCommands[index3]);
 
-                                                    // Logger Info
-                                                    logger.info(`New command added to the app ${app.client_id}!`, newCommand);
+                                                // OLD Command
+                                                const oldCommand = clone(oldCommands.find(command => command.name === newCommand.name));
 
-                                                    // Global
-                                                    if (typeof guild_id !== "string" && typeof guild_id !== "number") {
-                                                        client.createCommand(newCommand).then(result => {
-                                                            updateCommandDatabase(result).then(() => {
-                                                                executeClear();
-                                                                return;
-                                                            }).catch(err => {
-                                                                logger.error(err);
-                                                                executeClear();
-                                                                return;
-                                                            });
-                                                            return;
-                                                        }).catch(err => {
-                                                            logger.error(err);
-                                                            executeClear();
-                                                            return;
-                                                        });
+                                                // Get Command ID
+                                                const commandID = newCommand.commandID;
+                                                delete newCommand.commandID;
+
+                                                // Set Editor Type to Create
+                                                let editorType = 1;
+
+                                                // Exist OLD Command
+                                                if (oldCommand) {
+
+                                                    // Remove OLD Data
+                                                    delete oldCommand.id;
+                                                    delete oldCommand.application_id;
+
+                                                    // Set Editor Type to Edit
+                                                    if (hash(newCommand) !== hash(oldCommand)) {
+                                                        editorType = 2;
                                                     }
 
-                                                    // Guild
-                                                    else {
-                                                        client.createCommand(newCommand, guild_id).then(result => {
-                                                            updateCommandDatabase(result).then(() => {
-                                                                executeClear();
+                                                    // Set Editor Type to Nothing
+                                                    else { editorType = 0; }
+
+                                                }
+
+                                                // To do something
+                                                if (editorType > 0) {
+
+                                                    const updateCommandDatabase = function (result) {
+                                                        return new Promise(function (resolve, reject) {
+
+                                                            // Set Command ID
+                                                            app.db.ref(snapshot.ref.path.pieces_).child('commandID').set(result.id).then(() => {
+                                                                resolve();
+                                                                return;
+                                                            }).catch(err => {
+                                                                reject(err);
+                                                                return;
+                                                            });
+
+                                                            // Complete
+                                                            return;
+
+                                                        });
+                                                    };
+
+                                                    // Create
+                                                    if (editorType === 1) {
+
+                                                        // Logger Info
+                                                        logger.info(`New command added to the app ${app.client_id}!`, newCommand);
+
+                                                        // Global
+                                                        if (typeof guild_id !== "string" && typeof guild_id !== "number") {
+                                                            client.createCommand(newCommand).then(result => {
+                                                                updateCommandDatabase(result).then(() => {
+                                                                    executeClear();
+                                                                    return;
+                                                                }).catch(err => {
+                                                                    logger.error(err);
+                                                                    executeClear();
+                                                                    return;
+                                                                });
                                                                 return;
                                                             }).catch(err => {
                                                                 logger.error(err);
                                                                 executeClear();
                                                                 return;
                                                             });
-                                                        }).catch(err => {
-                                                            logger.error(err);
-                                                            executeClear();
-                                                            return;
-                                                        });
+                                                        }
+
+                                                        // Guild
+                                                        else {
+                                                            client.createCommand(newCommand, guild_id).then(result => {
+                                                                updateCommandDatabase(result).then(() => {
+                                                                    executeClear();
+                                                                    return;
+                                                                }).catch(err => {
+                                                                    logger.error(err);
+                                                                    executeClear();
+                                                                    return;
+                                                                });
+                                                            }).catch(err => {
+                                                                logger.error(err);
+                                                                executeClear();
+                                                                return;
+                                                            });
+                                                        }
+
+                                                    }
+
+                                                    // Edit
+                                                    else if (editorType === 2) {
+
+                                                        // Logger Info
+                                                        logger.info(`New command edited to the app ${app.client_id}!`, newCommand);
+
+                                                        // Global
+                                                        if (typeof guild_id !== "string" && typeof guild_id !== "number") {
+                                                            client.editCommand(newCommand, commandID).then(result => {
+                                                                updateCommandDatabase(result).then(() => {
+                                                                    executeClear();
+                                                                    return;
+                                                                }).catch(err => {
+                                                                    logger.error(err);
+                                                                    executeClear();
+                                                                    return;
+                                                                });
+                                                            }).catch(err => {
+                                                                logger.error(err);
+                                                                executeClear();
+                                                                return;
+                                                            });
+                                                        }
+
+                                                        // Guild
+                                                        else {
+                                                            client.editCommand(newCommand, commandID, guild_id).then(result => {
+                                                                updateCommandDatabase(result).then(() => {
+                                                                    executeClear();
+                                                                    return;
+                                                                }).catch(err => {
+                                                                    logger.error(err);
+                                                                    executeClear();
+                                                                    return;
+                                                                });
+                                                            }).catch(err => {
+                                                                logger.error(err);
+                                                                executeClear();
+                                                                return;
+                                                            });
+                                                        }
+
                                                     }
 
                                                 }
 
-                                                // Edit
-                                                else if (editorType === 2) {
+                                                // Nope
+                                                else { executeClear(); }
 
-                                                    // Logger Info
-                                                    logger.info(`New command edited to the app ${app.client_id}!`, newCommand);
+                                                // Complete
+                                                return;
 
-                                                    // Global
-                                                    if (typeof guild_id !== "string" && typeof guild_id !== "number") {
-                                                        client.editCommand(newCommand, commandID).then(result => {
-                                                            updateCommandDatabase(result).then(() => {
-                                                                executeClear();
-                                                                return;
-                                                            }).catch(err => {
-                                                                logger.error(err);
-                                                                executeClear();
-                                                                return;
-                                                            });
-                                                        }).catch(err => {
-                                                            logger.error(err);
-                                                            executeClear();
-                                                            return;
-                                                        });
-                                                    }
-
-                                                    // Guild
-                                                    else {
-                                                        client.editCommand(newCommand, commandID, guild_id).then(result => {
-                                                            updateCommandDatabase(result).then(() => {
-                                                                executeClear();
-                                                                return;
-                                                            }).catch(err => {
-                                                                logger.error(err);
-                                                                executeClear();
-                                                                return;
-                                                            });
-                                                        }).catch(err => {
-                                                            logger.error(err);
-                                                            executeClear();
-                                                            return;
-                                                        });
-                                                    }
-
-                                                }
-
-                                            }
-
-                                            // Nope
-                                            else { executeClear(); }
+                                            });
 
                                             // Complete
+                                            fn();
                                             return;
 
                                         });
 
-                                        // Complete
-                                        fn();
-                                        return;
+                                    }
 
-                                    });
+                                    // Delete All
+                                    else {
+                                        const deleteCommands = extraList[item].deleteCommands;
+                                        extraList[item].extra.run(function (index2, fn, fn_error) { return deleteCommandsScript(deleteCommands, index2, fn, fn_error); });
+                                    }
 
                                 }
-
-                                // Delete All
-                                else {
-                                    const deleteCommands = extraList[item].deleteCommands;
-                                    extraList[item].extra.run(function (index2, fn, fn_error) { return deleteCommandsScript(deleteCommands, index2, fn, fn_error); });
-                                }
-
                             }
+
+                            // Nope
+                            else { fn(true); }
+
                         }
 
-                        // Nope
-                        else { fn(true); }
-
                     }
+
+                    // Nope
+                    else { complete_count--; }
 
                     return;
 
@@ -354,10 +365,14 @@ module.exports = function (data, app, isTest = false) {
                         // Exist Command List
                         if (objType(app.commands, 'object')) {
 
+                            // Commands Loaded
+                            let commandsLoaded = false;
+
                             // Global
                             if (Array.isArray(app.commands.global)) {
 
                                 // list all your existing commands.
+                                commandsLoaded = true;
                                 client.getCommands().then(oldCommands => {
                                     return getCommands(oldCommands);
                                 }).catch(err => {
@@ -372,6 +387,7 @@ module.exports = function (data, app, isTest = false) {
                                     if (Array.isArray(app.commands.guilds[item])) {
 
                                         // list all your existing commands.
+                                        commandsLoaded = true;
                                         client.getCommands({ guildID: item }).then(oldCommands => {
                                             return getCommands(oldCommands, item);
                                         }).catch(err => {
@@ -382,21 +398,24 @@ module.exports = function (data, app, isTest = false) {
                                 }
                             }
 
+                            // Commands not loaded
+                            if (!commandsLoaded) { complete_fn(client, true); }
+
                         }
 
                         // Nope
-                        else { complete_fn(client); }
+                        else { complete_fn(client, true); }
 
                     }
 
                     // Nope
-                    else { complete_fn(); }
+                    else { complete_fn(null, true); }
 
                     // Complete
                     return;
 
                 }).catch(err => {
-                    logger.error(err); complete_fn(); return;
+                    logger.error(err); complete_fn(null, true); return;
                 });
 
                 // Complete
