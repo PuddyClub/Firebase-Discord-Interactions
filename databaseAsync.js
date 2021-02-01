@@ -34,14 +34,22 @@ module.exports = function (data, app, isTest = false) {
             const extraList = [];
 
             // Delte Commands Script
-            const deleteCommandsScript = function (commands, fn, fn_error, extra) {
+            const deleteCommandsScript = function (client, commands, fn, fn_error, extra) {
 
                 // Run Delete Commands
                 const deleteCommands = extra({ data: commands });
                 deleteCommands.run(function (index, fn, fn_error) {
 
+                    client.deleteCommand(commands[index].id).then(() => {
+                        fn();
+                        return;
+                    }).catch(err => {
+                        logger.error(err);
+                        fn();
+                        return;
+                    });
+
                     // Complete
-                    fn();
                     return;
 
                 });
@@ -111,7 +119,7 @@ module.exports = function (data, app, isTest = false) {
 
                                                     // Script
                                                     if (existClear && index3 >= newCommandsCount) {
-                                                        extraClear.run(function (index4, fn, fn_error) { return deleteCommandsScript(deleteCommands, fn, fn_error, extra); });
+                                                        extraClear.run(function (index4, fn, fn_error) { return deleteCommandsScript(client, deleteCommands, fn, fn_error, extra); });
                                                     }
 
                                                     // Complete
@@ -278,7 +286,7 @@ module.exports = function (data, app, isTest = false) {
 
                                     // Delete All
                                     else {
-                                        extraList[item].extra.run(function (index2, fn, fn_error) { return deleteCommandsScript(deleteCommands, fn, fn_error, extra); });
+                                        extraList[item].extra.run(function (index2, fn, fn_error) { return deleteCommandsScript(client, deleteCommands, fn, fn_error, extra); });
                                     }
 
                                 }
