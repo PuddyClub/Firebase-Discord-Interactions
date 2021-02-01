@@ -153,11 +153,36 @@ module.exports = function (data, app, isTest = false) {
                                                 // To do something
                                                 if (editorType > 0) {
 
+                                                    // Update Command Database
                                                     const updateCommandDatabase = function (result) {
                                                         return new Promise(function (resolve, reject) {
 
                                                             // Set Command ID
-                                                            app.db.ref(snapshot.ref.path.pieces_).child('commandID').set(result.id).then(() => {
+                                                            if (typeof result.id === "string" || typeof result.id === "number") {
+                                                                app.db.ref(snapshot.ref.path.pieces_).child('commandID').set(result.id).then(() => {
+                                                                    resolve();
+                                                                    return;
+                                                                }).catch(err => {
+                                                                    reject(err);
+                                                                    return;
+                                                                });
+                                                            }
+
+                                                            // Nope
+                                                            else { resolve(); }
+
+                                                            // Complete
+                                                            return;
+
+                                                        });
+                                                    };
+
+                                                    // Remove Command Database
+                                                    const removeCommandDatabase = function () {
+                                                        return new Promise(function (resolve, reject) {
+
+                                                            // Set Command ID
+                                                            app.db.ref(snapshot.ref.path.pieces_).remove().then(() => {
                                                                 resolve();
                                                                 return;
                                                             }).catch(err => {
@@ -177,9 +202,8 @@ module.exports = function (data, app, isTest = false) {
                                                         // Logger Info
                                                         logger.info(`New command added to the app ${app.client_id}!`, newCommand);
 
-                                                        // Global
-                                                        if (typeof guild_id !== "string" && typeof guild_id !== "number") {
-                                                            client.createCommand(newCommand).then(result => {
+                                                        const final_result = {
+                                                            then: result => {
                                                                 updateCommandDatabase(result).then(() => {
                                                                     executeClear();
                                                                     return;
@@ -189,29 +213,29 @@ module.exports = function (data, app, isTest = false) {
                                                                     return;
                                                                 });
                                                                 return;
-                                                            }).catch(err => {
+                                                            },
+                                                            catch: err => {
                                                                 logger.error(err);
-                                                                executeClear();
+                                                                removeCommandDatabase().then(() => {
+                                                                    executeClear();
+                                                                    return;
+                                                                }).catch(err => {
+                                                                    logger.error(err);
+                                                                    executeClear();
+                                                                    return;
+                                                                });
                                                                 return;
-                                                            });
+                                                            }
+                                                        };
+
+                                                        // Global
+                                                        if (typeof guild_id !== "string" && typeof guild_id !== "number") {
+                                                            client.createCommand(newCommand).then(final_result.then).catch(final_result.catch);
                                                         }
 
                                                         // Guild
                                                         else {
-                                                            client.createCommand(newCommand, guild_id).then(result => {
-                                                                updateCommandDatabase(result).then(() => {
-                                                                    executeClear();
-                                                                    return;
-                                                                }).catch(err => {
-                                                                    logger.error(err);
-                                                                    executeClear();
-                                                                    return;
-                                                                });
-                                                            }).catch(err => {
-                                                                logger.error(err);
-                                                                executeClear();
-                                                                return;
-                                                            });
+                                                            client.createCommand(newCommand, guild_id).then(final_result.then).catch(final_result.catch);
                                                         }
 
                                                     }
@@ -224,38 +248,12 @@ module.exports = function (data, app, isTest = false) {
 
                                                         // Global
                                                         if (typeof guild_id !== "string" && typeof guild_id !== "number") {
-                                                            client.editCommand(newCommand, commandID).then(result => {
-                                                                updateCommandDatabase(result).then(() => {
-                                                                    executeClear();
-                                                                    return;
-                                                                }).catch(err => {
-                                                                    logger.error(err);
-                                                                    executeClear();
-                                                                    return;
-                                                                });
-                                                            }).catch(err => {
-                                                                logger.error(err);
-                                                                executeClear();
-                                                                return;
-                                                            });
+                                                            client.editCommand(newCommand, commandID).then(final_result.then).catch(final_result.catch);;
                                                         }
 
                                                         // Guild
                                                         else {
-                                                            client.editCommand(newCommand, commandID, guild_id).then(result => {
-                                                                updateCommandDatabase(result).then(() => {
-                                                                    executeClear();
-                                                                    return;
-                                                                }).catch(err => {
-                                                                    logger.error(err);
-                                                                    executeClear();
-                                                                    return;
-                                                                });
-                                                            }).catch(err => {
-                                                                logger.error(err);
-                                                                executeClear();
-                                                                return;
-                                                            });
+                                                            client.editCommand(newCommand, commandID, guild_id).then(final_result.then).catch(final_result.catch);;
                                                         }
 
                                                     }
