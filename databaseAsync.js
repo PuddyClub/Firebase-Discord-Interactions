@@ -193,17 +193,11 @@ module.exports = function (data, app, isTest = false) {
                                                         // App DB
                                                         const appDB = app.db.ref(snapshot.ref.path.pieces_.join('/')).child(appName);
 
-                                                        // Prepare Final Path
-                                                        let finalAppDB = null;
-
                                                         // Global
-                                                        if (typeof guild_id !== "string") { finalAppDB = appDB.child('global'); }
+                                                        if (typeof guild_id !== "string") { return appDB.child('global').child(item); }
 
                                                         // Guild
-                                                        else { finalAppDB = appDB.child('guilds').child(guild_id); }
-
-                                                        // Complete
-                                                        return finalAppDB;
+                                                        else { return appDB.child('guilds').child(guild_id).child(item); }
 
                                                     };
 
