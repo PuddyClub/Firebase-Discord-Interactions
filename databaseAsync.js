@@ -67,11 +67,13 @@ module.exports = function (data, app, isTest = false) {
                             if (extraList.length > 0) {
                                 for (const item in extraList) {
 
+                                    // Prepare Clear
+                                    const deleteCommands = extraList[item].deleteCommands;
+
                                     // Command Manager
                                     if (extraList[item].type !== "deleteAll") {
 
                                         // Extra Clear
-                                        const deleteCommands = extraList[item].deleteCommands;
                                         let extraClear = null;
                                         let existClear = (Array.isArray(deleteCommands) && deleteCommands.length > 0);
                                         if (existClear) {
@@ -270,7 +272,6 @@ module.exports = function (data, app, isTest = false) {
 
                                     // Delete All
                                     else {
-                                        const deleteCommands = extraList[item].deleteCommands;
                                         extraList[item].extra.run(function (index2, fn, fn_error) { return deleteCommandsScript(deleteCommands, index2, fn, fn_error); });
                                     }
 
