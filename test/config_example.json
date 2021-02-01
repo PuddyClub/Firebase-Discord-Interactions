@@ -1,0 +1,17 @@
+{
+    "options": {
+        "id": "main",
+        "autoStart": {
+            "database": true
+        }
+    },
+    "firebase": {
+        "databaseURL": ""
+    },
+    "test_app": {
+        "database": "",
+        "appPath": "apps",
+        "botPath": "bots",
+        "timeout": 5
+    }
+}

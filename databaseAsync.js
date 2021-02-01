@@ -17,7 +17,8 @@ module.exports = function (data, app, isTest = false) {
 
     // Create Settings
     const tinyCfg = _.defaultsDeep({}, data, {
-        path: '/',
+        appPath: '/',
+        botPath: '/',
         database: '',
         timeout: 5
     });
