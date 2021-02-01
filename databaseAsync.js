@@ -57,7 +57,6 @@ module.exports = function (data, app, isTest = false) {
                             fn();
                             return;
                         }).catch(err => {
-                            logger.error(err);
                             fn();
                             return;
                         });
@@ -69,7 +68,6 @@ module.exports = function (data, app, isTest = false) {
                             fn();
                             return;
                         }).catch(err => {
-                            logger.error(err);
                             fn();
                             return;
                         });
@@ -476,9 +474,6 @@ module.exports = function (data, app, isTest = false) {
                 return;
 
             });
-
-            // Console Test
-            console.log('Complete');
 
         }
 
