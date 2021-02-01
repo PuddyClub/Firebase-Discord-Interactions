@@ -187,6 +187,26 @@ module.exports = function (data, app, isTest = false) {
                                                 // To do something
                                                 if (editorType > 0) {
 
+                                                    // Get Database Command
+                                                    const getCommandDatabase = function () {
+
+                                                        // App DB
+                                                        const appDB = app.db.ref(snapshot.ref.path.pieces_.join('/')).child(appName);
+
+                                                        // Prepare Final Path
+                                                        let finalAppDB = null;
+
+                                                        // Global
+                                                        if (typeof guild_id !== "string") { finalAppDB = appDB.child('global'); }
+
+                                                        // Guild
+                                                        else { finalAppDB = appDB.child('guilds').child(guild_id); }
+
+                                                        // Complete
+                                                        return finalAppDB;
+
+                                                    };
+
                                                     // Update Command Database
                                                     const updateCommandDatabase = function (result) {
                                                         return new Promise(function (resolve, reject) {
@@ -194,26 +214,15 @@ module.exports = function (data, app, isTest = false) {
                                                             // Set Command ID
                                                             if (typeof result.id === "string" || typeof result.id === "number") {
 
-                                                                // App DB
-                                                                const appDB = app.db.ref(snapshot.ref.path.pieces_.join('/')).child(appName);
-
-                                                                // Prepare Final Path
-                                                                let finalAppDB = null;
-
-                                                                // Global
-                                                                if (typeof guild_id !== "string") { finalAppDB = appDB.child('global'); }
-
-                                                                // Guild
-                                                                else { finalAppDB = appDB.child('guilds').child(guild_id); }
-
-                                                                finalAppDB.child('commandID').set(result.id).then(() => {
+                                                                // Set Command ID
+                                                                getCommandDatabase().child('commandID').set(result.id).then(() => {
                                                                     resolve();
                                                                     return;
                                                                 }).catch(err => {
                                                                     reject(err);
                                                                     return;
                                                                 });
-                                                                
+
                                                             }
 
                                                             // Nope
@@ -229,8 +238,8 @@ module.exports = function (data, app, isTest = false) {
                                                     const removeCommandDatabase = function () {
                                                         return new Promise(function (resolve, reject) {
 
-                                                            // Set Command ID
-                                                            app.db.ref(snapshot.ref.path.pieces_).remove().then(() => {
+                                                            // Remove Command
+                                                            getCommandDatabase().remove().then(() => {
                                                                 resolve();
                                                                 return;
                                                             }).catch(err => {
