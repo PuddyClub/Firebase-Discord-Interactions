@@ -109,6 +109,10 @@ module.exports = function (data, app, isTest = false) {
                                             // OLD Command
                                             const oldCommand = oldCommands.find(command => command.name === newCommand.name);
 
+                                            // Get Command ID
+                                            const commandID = newCommand.commandID;
+                                            delete newCommand.commandID;
+
                                             // Set Editor Type to Create
                                             let editorType = 1;
 
@@ -124,6 +128,11 @@ module.exports = function (data, app, isTest = false) {
                                                 else { editorType = 0; }
 
                                             }
+
+                                            console.log(oldCommands);
+                                            console.log(editorType);
+                                            console.log(oldCommand);
+                                            console.log(newCommand);
 
                                             // To do something
                                             if (editorType > 0) {
@@ -190,10 +199,6 @@ module.exports = function (data, app, isTest = false) {
 
                                                 // Edit
                                                 else if (editorType === 2) {
-
-                                                    // Get Command ID
-                                                    const commandID = newCommand.commandID;
-                                                    delete newCommand.commandID;
 
                                                     // Global
                                                     if (typeof guild_id !== "string" && typeof guild_id !== "number") {
