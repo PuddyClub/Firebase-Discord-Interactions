@@ -48,7 +48,7 @@ module.exports = function (data, app, isTest = false) {
             await require('for-promise')({ data: appKeys.length }, function (index, fn, fn_error, extra) {
 
                 // Complete FN
-                const complete_fn = function () {
+                const complete_fn = function (client) {
 
                     // Remove Count
                     appKeys.count--;
@@ -134,7 +134,9 @@ module.exports = function (data, app, isTest = false) {
                                                     // Global
                                                     if (typeof guild_id !== "string") {
                                                         client.createCommand(newCommand).then(result => {
-
+                                                            logger.log(result);
+                                                            executeClear();
+                                                            return;
                                                         }).catch(err => {
                                                             logger.error(err);
                                                             executeClear();
@@ -145,7 +147,9 @@ module.exports = function (data, app, isTest = false) {
                                                     // Guild
                                                     else {
                                                         client.editCommand(newCommand, guild_id).then(result => {
-
+                                                            logger.log(result);
+                                                            executeClear();
+                                                            return;
                                                         }).catch(err => {
                                                             logger.error(err);
                                                             executeClear();
@@ -165,7 +169,9 @@ module.exports = function (data, app, isTest = false) {
                                                     // Global
                                                     if (typeof guild_id !== "string") {
                                                         client.editCommand(newCommand, commandID).then(result => {
-
+                                                            logger.log(result);
+                                                            executeClear();
+                                                            return;
                                                         }).catch(err => {
                                                             logger.error(err);
                                                             executeClear();
@@ -176,7 +182,9 @@ module.exports = function (data, app, isTest = false) {
                                                     // Guild
                                                     else {
                                                         client.editCommand(newCommand, commandID, guild_id).then(result => {
-
+                                                            logger.log(result);
+                                                            executeClear();
+                                                            return;
                                                         }).catch(err => {
                                                             logger.error(err);
                                                             executeClear();
@@ -190,7 +198,7 @@ module.exports = function (data, app, isTest = false) {
 
                                             // Nope
                                             else { executeClear(); }
-                                            
+
                                             // Complete
                                             return;
 
@@ -296,18 +304,18 @@ module.exports = function (data, app, isTest = false) {
                                 }
 
                                 // Complete
-                                complete_fn(); return;
+                                complete_fn(client); return;
 
                             }
 
                             // Nope
                             else {
-                                complete_fn(); return;
+                                complete_fn(client); return;
                             }
 
 
                         }).catch(err => {
-                            logger.error(err); complete_fn(); return;
+                            logger.error(err); complete_fn(client); return;
                         });
 
                     }
