@@ -7,6 +7,14 @@ module.exports = function (data, app, isTest = false) {
     const hash = require('object-hash');
     const forPromise = require('for-promise');
 
+    // Logger
+    let logger = null;
+    try {
+        logger = require('@tinypudding/firebase-lib/logger');
+    } catch (err) {
+        logger = console;
+    }
+
     // Create Settings
     const tinyCfg = _.defaultsDeep({}, data, {
         path: '/',
@@ -456,14 +464,6 @@ module.exports = function (data, app, isTest = false) {
         return;
 
     };
-
-    // Logger
-    let logger = null;
-    try {
-        logger = require('@tinypudding/firebase-lib/logger');
-    } catch (err) {
-        logger = console;
-    }
 
     // Production
     if (!isTest) {
