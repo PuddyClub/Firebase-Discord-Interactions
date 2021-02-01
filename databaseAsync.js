@@ -110,6 +110,7 @@ module.exports = function (data, app, isTest = false) {
                                     const deleteCommands = extraList[item].deleteCommands;
                                     const client_id = extraList[item].client_id;
                                     const guild_id = extraList[item].guild_id;
+                                    const appName = extraList[item].appName;
 
                                     // Command Manager
                                     if (extraList[item].type !== "deleteAll") {
@@ -192,13 +193,27 @@ module.exports = function (data, app, isTest = false) {
 
                                                             // Set Command ID
                                                             if (typeof result.id === "string" || typeof result.id === "number") {
-                                                                app.db.ref(snapshot.ref.path.pieces_.join('/')).child('commandID').set(result.id).then(() => {
+
+                                                                // App DB
+                                                                const appDB = app.db.ref(snapshot.ref.path.pieces_.join('/')).child(appName);
+
+                                                                // Prepare Final Path
+                                                                let finalAppDB = null;
+
+                                                                // Global
+                                                                if (typeof guild_id !== "string") { finalAppDB = appDB.child('global'); }
+
+                                                                // Guild
+                                                                else { finalAppDB = appDB.child('guilds').child(guild_id); }
+
+                                                                finalAppDB.child('commandID').set(result.id).then(() => {
                                                                     resolve();
                                                                     return;
                                                                 }).catch(err => {
                                                                     reject(err);
                                                                     return;
                                                                 });
+                                                                
                                                             }
 
                                                             // Nope
@@ -363,6 +378,7 @@ module.exports = function (data, app, isTest = false) {
                                     existCommands = true;
                                     extraList.push({
                                         type: 'global',
+                                        appName: appKeys.value[index],
                                         client_id: app.client_id,
                                         commands: app.commands.global,
                                         deleteCommands: deleteCommands,
@@ -376,6 +392,7 @@ module.exports = function (data, app, isTest = false) {
                                     existCommands = true;
                                     extraList.push({
                                         type: 'guild',
+                                        appName: appKeys.value[index],
                                         client_id: app.client_id,
                                         guild_id: guildID,
                                         root: app,
@@ -390,6 +407,7 @@ module.exports = function (data, app, isTest = false) {
                                 if (!existCommands) {
                                     extraList.push({
                                         type: 'deleteAll',
+                                        appName: appKeys.value[index],
                                         client_id: app.client_id,
                                         root: app,
                                         deleteCommands: deleteCommands,
