@@ -11,7 +11,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
             if (
                 objType(tinyCfg.commands) && objType(req.body.data) && 
                 (typeof req.body.data.name === "string" || typeof req.body.data.name === "number") &&
-                (typeof req.body.id === "string" || typeof req.body.id === "number") &&
+                (typeof req.body.id === "string" || typeof req.body.id === "number")
             ) {
 
                 // Get by name
