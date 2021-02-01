@@ -5,6 +5,7 @@ module.exports = function (data, app, isTest = false) {
     const objType = require('@tinypudding/puddy-lib/get/objType');
     const clone = require('clone');
     const hash = require('object-hash');
+    const forPromise = require('for-promise');
 
     // Create Settings
     const tinyCfg = _.defaultsDeep({}, data, {
@@ -45,7 +46,7 @@ module.exports = function (data, app, isTest = false) {
             };
 
             // Read Apps
-            await require('for-promise')({ data: appKeys.length }, function (index, fn, fn_error, extra) {
+            await forPromise({ data: appKeys.length }, function (index, fn, fn_error, extra) {
 
                 // Complete FN
                 const complete_fn = function (client) {
@@ -289,8 +290,8 @@ module.exports = function (data, app, isTest = false) {
                             bot_token: token
                         });
 
-                        // list all your existing commands.
-                        client.getCommands().then(oldCommands => {
+                        // Get Commands
+                        const getCommands = function (oldCommands, guildID) {
 
                             // Is Array
                             if (Array.isArray(oldCommands)) {
@@ -298,69 +299,88 @@ module.exports = function (data, app, isTest = false) {
                                 // Delete List
                                 const deleteCommands = clone(oldCommands);
 
-                                // Exist Command List
-                                if (objType(app.commands, 'object')) {
+                                // Exist Commands
+                                let existCommands = false;
 
-                                    // Exist Commands
-                                    let existCommands = false;
-
-                                    // Exist Global Commands
-                                    if (Array.isArray(app.commands.global)) {
-                                        existCommands = true;
-                                        extraList.push({
-                                            type: 'global',
-                                            commands: app.commands.global,
-                                            deleteCommands: deleteCommands,
-                                            oldCommands: oldCommands,
-                                            extra: extra({ data: app.commands.global })
-                                        });
-                                    }
-
-                                    // Exist Private Guild Commands
-                                    if (objType(app.commands.guilds, 'object')) {
-                                        for (const item in app.commands.guilds) {
-                                            if (Array.isArray(app.commands.guilds[item])) {
-                                                existCommands = true;
-                                                extraList.push({
-                                                    type: 'guild',
-                                                    guild_id: item,
-                                                    root: app,
-                                                    commands: app.commands.guilds[item],
-                                                    oldCommands: oldCommands,
-                                                    deleteCommands: deleteCommands,
-                                                    extra: extra({ data: app.commands.guilds[item] })
-                                                });
-                                            }
-                                        }
-                                    }
-
-                                    // No Commands
-                                    if (!existCommands) {
-                                        extraList.push({
-                                            type: 'deleteAll',
-                                            root: app,
-                                            deleteCommands: deleteCommands,
-                                            oldCommands: oldCommands,
-                                            extra: extra({ data: deleteCommands })
-                                        });
-                                    }
-
+                                // Exist Global Commands
+                                if (typeof guildID !== "string") {
+                                    existCommands = true;
+                                    extraList.push({
+                                        type: 'global',
+                                        commands: app.commands.global,
+                                        deleteCommands: deleteCommands,
+                                        oldCommands: oldCommands,
+                                        extra: extra({ data: app.commands.global })
+                                    });
                                 }
 
-                                // Complete
-                                complete_fn(client); return;
+                                // Exist Private Guild Commands
+                                else {
+                                    existCommands = true;
+                                    extraList.push({
+                                        type: 'guild',
+                                        guild_id: guildID,
+                                        root: app,
+                                        commands: app.commands.guilds[guildID],
+                                        oldCommands: oldCommands,
+                                        deleteCommands: deleteCommands,
+                                        extra: extra({ data: app.commands.guilds[guildID] })
+                                    });
+                                }
+
+                                // No Commands
+                                if (!existCommands) {
+                                    extraList.push({
+                                        type: 'deleteAll',
+                                        root: app,
+                                        deleteCommands: deleteCommands,
+                                        oldCommands: oldCommands,
+                                        extra: extra({ data: deleteCommands })
+                                    });
+                                }
 
                             }
 
-                            // Nope
-                            else {
-                                complete_fn(client); return;
+                            // Complete
+                            complete_fn(client); return;
+
+                        };
+
+                        // Exist Command List
+                        if (objType(app.commands, 'object')) {
+
+                            // Global
+                            if (Array.isArray(app.commands.global)) {
+
+                                // list all your existing commands.
+                                client.getCommands().then(oldCommands => {
+                                    return getCommands(oldCommands);
+                                }).catch(err => {
+                                    logger.error(err); complete_fn(client); return;
+                                });
+
                             }
 
+                            // Guilds
+                            if (objType(app.commands.guilds, 'object')) {
+                                for (const item in app.commands.guilds) {
+                                    if (Array.isArray(app.commands.guilds[item])) {
 
-                        }).catch(err => {
-                            logger.error(err); complete_fn(client); return;
-                        });
+                                        // list all your existing commands.
+                                        client.getCommands({ guildID: item }).then(oldCommands => {
+                                            return getCommands(oldCommands, item);
+                                        }).catch(err => {
+                                            logger.error(err); complete_fn(client); return;
+                                        });
+
+                                    }
+                                }
+                            }
+
+                        }
+
+                        // Nope
+                        else { complete_fn(client); }
 
                     }
 
