@@ -55,30 +55,29 @@ module.exports = function (data, app, isTest = false) {
                     // Complete Cicle
                     if (appKeys.count <= 0) {
 
-                        // FN
-                        fn(true);
-
                         // Run Extra List
                         if (extraList.length > 0) {
                             for (const item in extraList) {
-
-                                // Test Root
-                                console.log(extraList[item].root);
 
                                 // Command Manager
                                 if (extraList[item].type !== "deleteAll") {
 
                                     // Prepare Values
+                                    const type = extraList[item].type;
                                     const newCommands = extraList[item].commands;
                                     const deleteCommands = extraList[item].deleteCommands;
+                                    const guild_id = extraList[item].guild_id;
 
                                     // Prepare Extra Clear
                                     const extraClear = extra({ data: deleteCommands });
 
                                     // Execute the extra for
-                                    extraList[item].extra.run(function (index, fn, fn_error) {
+                                    extraList[item].extra.run(function (index2, fn, fn_error) {
 
-                                        console.log(newCommands[index]);
+                                        console.log(type);
+                                        console.log(newCommands);
+                                        console.log(deleteCommands);
+                                        console.log(guild_id);
 
                                         /* Criar uma função que leia todos os comandos dentro do newCommands e faça uma comparação se ele existe no oldCommands. 
                                         Se a resposta for negativa, ele vai usar create, se for positiva, ele vai usar update. 
@@ -86,7 +85,7 @@ module.exports = function (data, app, isTest = false) {
 
                                         // Run the Delete
                                         if (index >= newCommands.length) {
-                                            extraClear.run(function (index, fn, fn_error) { return deleteCommandsScript(deleteCommands, index, fn, fn_error); });
+                                            extraClear.run(function (index3, fn, fn_error) { return deleteCommandsScript(deleteCommands, index3, fn, fn_error); });
                                         }
 
                                         // Complete
@@ -100,11 +99,14 @@ module.exports = function (data, app, isTest = false) {
                                 // Delete All
                                 else {
                                     const deleteCommands = extraList[item].deleteCommands;
-                                    extraList[item].extra.run(function (index, fn, fn_error) { return deleteCommandsScript(deleteCommands, index, fn, fn_error); });
+                                    extraList[item].extra.run(function (index2, fn, fn_error) { return deleteCommandsScript(deleteCommands, index2, fn, fn_error); });
                                 }
 
                             }
                         }
+
+                        // Nope
+                        else { fn(true); }
 
                     }
 
@@ -154,15 +156,18 @@ module.exports = function (data, app, isTest = false) {
                                     }
 
                                     // Exist Private Guild Commands
-                                    if (Array.isArray(app.commands.guilds)) {
+                                    if (objType(app.commands.guilds, 'object')) {
                                         existCommands = true;
-                                        extraList.push({
-                                            type: 'guilds',
-                                            root: app,
-                                            commands: app.commands.guilds,
-                                            deleteCommands: deleteCommands,
-                                            extra: extra({ data: app.commands.guilds })
-                                        });
+                                        for (const item in app.commands.guilds) {
+                                            extraList.push({
+                                                type: 'guild',
+                                                guild_id: item,
+                                                root: app,
+                                                commands: app.commands.guilds[item],
+                                                deleteCommands: deleteCommands,
+                                                extra: extra({ data: app.commands.guilds[item] })
+                                            });
+                                        }
                                     }
 
                                     // No Commands
