@@ -18,7 +18,8 @@ module.exports = function (data, app, isTest = false) {
     // Create Settings
     const tinyCfg = _.defaultsDeep({}, data, {
         path: '/',
-        database: ''
+        database: '',
+        timeout: 5
     });
 
     // Script Base
@@ -49,7 +50,7 @@ module.exports = function (data, app, isTest = false) {
             }
 
             if (timeoutData.left < 1) {
-                appDB.child('timeout').set(timeoutData.now.add(5, 'seconds').format()).then(async () => {
+                appDB.child('timeout').set(timeoutData.now.add(tinyCfg.timeout, 'seconds').format()).then(async () => {
 
                     // Prepare Bot DB
                     const db = app.db.ref(tinyCfg.botPath);
