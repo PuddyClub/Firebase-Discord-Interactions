@@ -1,19 +1,12 @@
-module.exports = async function (req, res, logger, di) {
+module.exports = async function (req, res, logger, di, tinyCfg) {
     try {
 
         // Is Command
         if (req.body.type === di.InteractionType.COMMAND) {
 
-            // Test
-            res.json({
-                type: di.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-                data: {
-                    tts: false,
-                    content: 'Hello world',
-                    embeds: [],
-                    allowed_mentions: []
-                },
-            });
+            if() {
+
+            }
 
         }
 

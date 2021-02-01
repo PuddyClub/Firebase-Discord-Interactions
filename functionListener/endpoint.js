@@ -61,7 +61,7 @@ module.exports = function (req, res, logger, tinyCfg) {
                             }
 
                             try {
-                                return require('./version/' + req.body.version)(req, res, logger, di);
+                                return require('./version/' + req.body.version)(req, res, logger, di, tinyCfg);
                             } catch (err) {
                                 logger.error(err);
                                 tinyCfg.errorCallback(req, res, 404, 'Version not found!');

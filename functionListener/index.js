@@ -6,6 +6,9 @@ module.exports = function (req, res, cfg) {
     // Tiny Config
     const tinyCfg = _.defaultsDeep({}, cfg, {
 
+        // Commands
+        commands: {},
+
         // Var Names
         varNames: {
 
