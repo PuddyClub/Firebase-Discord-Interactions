@@ -1,5 +1,5 @@
 // Module
-const discord_interaction = require('../index');
+const discord_interaction = require('../databaseAsync');
 const firebase = require('@tinypudding/firebase-lib');
 
 // Prepare Firebase

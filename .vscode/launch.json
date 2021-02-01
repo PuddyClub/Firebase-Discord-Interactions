@@ -7,11 +7,11 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Launch Database Async",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\test\\index.js"
+            "program": "${workspaceFolder}\\test\\databaseAsync.js"
         },
         {
             "command": "git push -u origin --all",
