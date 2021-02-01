@@ -158,6 +158,9 @@ module.exports = function (data, app, isTest = false) {
                                                 // Create
                                                 if (editorType === 1) {
 
+                                                    // Logger Info
+                                                    logger.info(`New command added to the app ${app.client_id}!`, newCommand);
+
                                                     // Global
                                                     if (typeof guild_id !== "string" && typeof guild_id !== "number") {
                                                         client.createCommand(newCommand).then(result => {
@@ -199,6 +202,9 @@ module.exports = function (data, app, isTest = false) {
 
                                                 // Edit
                                                 else if (editorType === 2) {
+
+                                                    // Logger Info
+                                                    logger.info(`New command edited to the app ${app.client_id}!`, newCommand);
 
                                                     // Global
                                                     if (typeof guild_id !== "string" && typeof guild_id !== "number") {
