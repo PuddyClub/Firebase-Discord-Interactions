@@ -54,10 +54,8 @@ module.exports = function (data, app, isTest = false) {
                 // Complete FN
                 const complete_fn = function (client, forceComplete = false) {
 
-                    console.log(appKeys);
-
                     // Verify Complete
-                    if (complete_count <= 0 && forceComplete) {
+                    if (complete_count <= 0 || forceComplete) {
 
                         // Remove Count
                         appKeys.count--;
@@ -359,6 +357,9 @@ module.exports = function (data, app, isTest = false) {
 
                             }
 
+                            // Remove Count
+                            complete_count--;
+
                             // Complete
                             complete_fn(client); return;
 
@@ -373,8 +374,10 @@ module.exports = function (data, app, isTest = false) {
                             // Guilds
                             if (objType(app.commands.guilds, 'object')) {
                                 for (const item in app.commands.guilds) {
-                                    complete_count++;
                                     if (Array.isArray(app.commands.guilds[item])) {
+
+                                        // Complete Count
+                                        complete_count++;
 
                                         // list all your existing commands.
                                         commandsLoaded = true;
