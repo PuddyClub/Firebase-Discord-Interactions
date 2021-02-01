@@ -105,20 +105,25 @@ module.exports = function (data, app, isTest = false) {
                                             };
 
                                             // New Command
-                                            const newCommand = newCommands[index3];
+                                            const newCommand = clone(newCommands[index3]);
 
                                             // OLD Command
-                                            const oldCommand = oldCommands.find(command => command.name === newCommand.name);
+                                            const oldCommand = clone(oldCommands.find(command => command.name === newCommand.name));
 
                                             // Get Command ID
                                             const commandID = newCommand.commandID;
                                             delete newCommand.commandID;
+                                            newCommand.id = commandID;
 
                                             // Set Editor Type to Create
                                             let editorType = 1;
 
                                             // Exist OLD Command
                                             if (oldCommand) {
+
+                                                // Remove OLD Data
+                                                delete oldCommand.id;
+                                                delete oldCommand.application_id;
 
                                                 // Set Editor Type to Edit
                                                 if (hash(oldCommand) !== hash(newCommand)) {
@@ -130,7 +135,9 @@ module.exports = function (data, app, isTest = false) {
 
                                             }
 
-                                            console.log(oldCommands);
+                                            // Remove ID Again
+                                            delete newCommand.id;
+
                                             console.log(editorType);
                                             console.log(oldCommand);
                                             console.log(newCommand);
