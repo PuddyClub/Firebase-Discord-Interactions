@@ -5,7 +5,15 @@ module.exports = function (req, res, cfg) {
 
     // Tiny Config
     const tinyCfg = _.defaultsDeep({}, cfg, {
-        
+
+        // Var Names
+        varNames: {
+
+            // Type
+            type: 'type'
+
+        },
+
         // Error Callback
         errorCallback: function (req, res, code, message) {
             res.status(code);
@@ -23,7 +31,7 @@ module.exports = function (req, res, cfg) {
     }
 
     // End Point
-    if (typeof req.query.type === "string" && req.query.type === "endpoint") {
+    if (typeof req.query[tinyCfg.varNames.type] === "string" && req.query[tinyCfg.varNames.type] === "endpoint") {
         return require('./endpoint')(req, res, logger, tinyCfg);
     }
 
