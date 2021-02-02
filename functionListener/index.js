@@ -24,7 +24,7 @@ module.exports = function (req, res, cfg) {
         },
 
         // Invalid Command
-        invalidCommandCallback: function (req, res, di) {
+        invalidCommandCallback: function (data, res, di) {
             return res.json({
                 type: di.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 data: {

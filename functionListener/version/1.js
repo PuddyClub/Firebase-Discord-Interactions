@@ -16,17 +16,17 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
 
                 // Get by name
                 if (typeof tinyCfg.commands[req.body.data.name] === "function") {
-                    tinyCfg.commands[req.body.data.name](req, res, di);
+                    tinyCfg.commands[req.body.data.name](req.body, res, di);
                 }
 
                 // Get by name
                 else if (typeof tinyCfg.commands[req.body.id] === "function") {
-                    tinyCfg.commands[req.body.id](req, res, di);
+                    tinyCfg.commands[req.body.id](req.body, res, di);
                 }
 
                 // Nothing
                 else {
-                    tinyCfg.invalidCommandCallback(req, res, di);
+                    tinyCfg.invalidCommandCallback(req.body, res, di);
                 }
 
             }
