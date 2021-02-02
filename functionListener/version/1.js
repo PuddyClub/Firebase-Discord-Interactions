@@ -9,24 +9,27 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
 
             // Exist Commands
             if (
-                objType(tinyCfg.commands) && objType(req.body.data) && 
+                objType(tinyCfg.commands) && objType(req.body.data) &&
                 (typeof req.body.data.name === "string" || typeof req.body.data.name === "number") &&
                 (typeof req.body.id === "string" || typeof req.body.id === "number")
             ) {
 
+                // Final Result
+                const final_result = { data: req.body, di: di, res: res };
+
                 // Get by name
                 if (typeof tinyCfg.commands[req.body.data.name] === "function") {
-                    tinyCfg.commands[req.body.data.name](req.body, res, di);
+                    tinyCfg.commands[req.body.data.name](final_result);
                 }
 
                 // Get by name
                 else if (typeof tinyCfg.commands[req.body.id] === "function") {
-                    tinyCfg.commands[req.body.id](req.body, res, di);
+                    tinyCfg.commands[req.body.id](final_result);
                 }
 
                 // Nothing
                 else {
-                    tinyCfg.invalidCommandCallback(req.body, res, di);
+                    tinyCfg.invalidCommandCallback(final_result);
                 }
 
             }

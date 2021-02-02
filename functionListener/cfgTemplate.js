@@ -19,9 +19,9 @@ module.exports = function (cfg) {
         },
 
         // Invalid Command
-        invalidCommandCallback: function (data, res, di) {
-            return res.json({
-                type: di.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        invalidCommandCallback: function (result) {
+            return result.res.json({
+                type: result.di.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 data: {
                     tts: false,
                     content: 'This command has no functionality!'
