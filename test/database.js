@@ -16,4 +16,7 @@ firebase.start(admin, tinyCfg.options, tinyCfg.firebase);
 app = firebase.get(tinyCfg.options.id);
 
 // Start Test App
-discord_interaction(tinyCfg.test_app, app, true);
+discord_interaction(tinyCfg.test_app, app, () => {
+    console.log('Complete');
+    return;
+});
