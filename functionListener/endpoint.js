@@ -7,10 +7,10 @@ module.exports = function (req, res, logger, tinyCfg) {
     let app = null;
 
     // Exist Firebase
-    if (objType(tinyCfg.firebase)) {
+    if (objType(tinyCfg.firebase, 'object')) {
 
         // New Firebase
-        if (objType(tinyCfg.firebase.options)) {
+        if (objType(tinyCfg.firebase.options, 'object')) {
 
             // Start Firebase
             const firebase = require('@tinypudding/firebase-lib');
