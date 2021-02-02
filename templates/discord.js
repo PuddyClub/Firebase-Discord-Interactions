@@ -22,7 +22,7 @@ module.exports = function (bot, callback) {
     };
 
     // Start Module
-    const bot = require('../functionListener/gateway')(tinyCfg, bot);
+    require('../functionListener/gateway')(tinyCfg, bot);
 
     // Complete
     return;
