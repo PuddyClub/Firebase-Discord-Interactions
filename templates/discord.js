@@ -28,6 +28,11 @@ module.exports = function (bot, callback) {
             // User
             result.data.member = await result.data.guild.members.fetch(result.data.member.user.id);
 
+            // Reply Callback
+            result.data.reply = function (content, options) {
+                return result.data.channel.send(`<@${result.data.member.id}>, ${content}`, options);
+            };
+
             // Remove Type
             delete result.data.type;
 

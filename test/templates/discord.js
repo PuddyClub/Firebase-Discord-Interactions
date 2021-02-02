@@ -11,6 +11,9 @@ require('../../templates/discord')(bot, (msg) => {
     // Debug Message
     console.log(msg);
 
+    // Reply
+    msg.reply('message received');
+
     // Complete
     return;
 
