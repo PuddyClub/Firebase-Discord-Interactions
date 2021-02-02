@@ -3,8 +3,7 @@ module.exports = function (cfg, botToken) {
     // Config Template
     const tinyCfg = require('./cfgTemplate')(cfg);
 
-    // Import the discord module
-    const Discord = require('discord.js');
+    // Import the discord interacctions module
     const di = require('discord-interactions');
 
     // Logger
@@ -16,7 +15,15 @@ module.exports = function (cfg, botToken) {
     }
 
     // Create an instance of a Discord client
-    const bot = new Discord.Client({ autoReconnect: true });
+    let bot = null;
+
+    // Create Discord Bot
+    if (typeof botToken === "string") {
+        const Discord = require('discord.js');
+        bot = new Discord.Client({ autoReconnect: true });
+    } else {
+        bot = botToken;
+    }
 
     // Get Interaction Creation
     bot.ws.on("INTERACTION_CREATE", async interaction => {
@@ -59,7 +66,7 @@ module.exports = function (cfg, botToken) {
     });
 
     // Log our bot in using the token
-    bot.login(botToken);
+    if (typeof botToken === "string") { bot.login(botToken); }
 
     // Complete
     return;
