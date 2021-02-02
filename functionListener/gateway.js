@@ -79,6 +79,6 @@ module.exports = function (cfg, botToken) {
     if (typeof botToken === "string") { bot.login(botToken).catch(err => { logger.error(err); return; }); }
 
     // Complete
-    return;
+    return bot;
 
 };

@@ -10,7 +10,14 @@ tinyCfg.errorCallback = function () {
 tinyCfg.invalidCommandCallback = function (result) {
 
     // Debug
+    console.log('Command Received!');
     console.log(result.data);
+    
+    // Reply
+    bot.channels.fetch(result.data.channel_id).then(function(channel) {
+        channel.send('Command Received!');
+        return;
+    });
 
     // Complete
     return;
@@ -18,4 +25,4 @@ tinyCfg.invalidCommandCallback = function (result) {
 };
 
 // Start Module
-require('../../../functionListener/gateway')(tinyCfg, tinyCfg.gateway_test_token);
+const bot = require('../../../functionListener/gateway')(tinyCfg, tinyCfg.gateway_test_token);
