@@ -23,6 +23,15 @@
             "program": "${workspaceFolder}\\test\\functionListener\\endpoint\\gateway.js"
         },
         {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Discord.JS Template",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\test\\templates\\discord.js.js"
+        },
+        {
             "command": "git push -u origin --all",
             "name": "Github Push",
             "request": "launch",
