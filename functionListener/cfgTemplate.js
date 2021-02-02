@@ -27,7 +27,10 @@ module.exports = function (cfg) {
                     content: 'This command has no functionality!'
                 },
             });
-        }
+        },
+
+        // Force Invalid Command
+        forceInvalidCommandCallback: false
 
     });
 };

@@ -17,17 +17,27 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                 // Final Result
                 const final_result = { data: req.body, di: di, res: res };
 
-                // Get by name
-                if (typeof tinyCfg.commands[req.body.data.name] === "function") {
-                    tinyCfg.commands[req.body.data.name](final_result);
+                // Normal Callback
+                if (!tinyCfg.forceInvalidCommandCallback) {
+
+                    // Get by name
+                    if (typeof tinyCfg.commands[req.body.data.name] === "function") {
+                        tinyCfg.commands[req.body.data.name](final_result);
+                    }
+
+                    // Get by name
+                    else if (typeof tinyCfg.commands[req.body.id] === "function") {
+                        tinyCfg.commands[req.body.id](final_result);
+                    }
+
+                    // Nothing
+                    else {
+                        tinyCfg.invalidCommandCallback(final_result);
+                    }
+
                 }
 
-                // Get by name
-                else if (typeof tinyCfg.commands[req.body.id] === "function") {
-                    tinyCfg.commands[req.body.id](final_result);
-                }
-
-                // Nothing
+                // Nope
                 else {
                     tinyCfg.invalidCommandCallback(final_result);
                 }

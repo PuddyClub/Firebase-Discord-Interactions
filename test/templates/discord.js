@@ -8,7 +8,8 @@ bot = new Discord.Client({ autoReconnect: true });
 // Run Module
 require('../../templates/discord')(bot, (msg) => {
 
-
+    // Debug Message
+    console.log(msg);
 
     // Complete
     return;
