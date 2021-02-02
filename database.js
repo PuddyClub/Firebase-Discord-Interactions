@@ -539,28 +539,7 @@ module.exports = function (data, app, isTest = false) {
 
     // Production
     if (!isTest) {
-
-        // Prepare Functions
-        let functions = null;
-        try {
-            functions = require('firebase-functions');
-        } catch (err) {
-            functions = null;
-        }
-
-        // Start Module
-        if (functions) {
-
-            // Prepare Base
-            return functions.database.instance(tinyCfg.database).ref(tinyCfg.appPath).onWrite(discordCommandChecker);
-
-        }
-
-        // Nope
-        else {
-            return null;
-        }
-
+        return discordCommandChecker;
     }
 
     // Test Mode
@@ -578,9 +557,9 @@ module.exports = function (data, app, isTest = false) {
             logger.error(err);
         }
 
-    }
+        // Complete
+        return;
 
-    // Complete
-    return;
+    }
 
 };
