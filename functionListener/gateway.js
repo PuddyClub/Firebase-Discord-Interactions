@@ -35,6 +35,7 @@ module.exports = function (cfg, botToken) {
 
                 // Res
                 {
+                    status: function () { return; },
                     json: function () { return; },
                     send: function () { return; },
                     render: function () { return; }
