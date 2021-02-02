@@ -1,7 +1,7 @@
 module.exports = {
 
     // Database
-    databaseAsync: require('./databaseAsync'),
+    databaseAsync: require('./database'),
 
     // Function Listener
     functionListener: require('./functionListener')

@@ -11,7 +11,16 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\test\\databaseAsync.js"
+            "program": "${workspaceFolder}\\test\\database.js"
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Interaction Endpoint Listener",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\test\\functionListener\\endpoint\\version\\1.js"
         },
         {
             "command": "git push -u origin --all",
