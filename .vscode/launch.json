@@ -29,7 +29,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\test\\templates\\discord.js.js"
+            "program": "${workspaceFolder}\\test\\templates\\discord.js"
         },
         {
             "command": "git push -u origin --all",
