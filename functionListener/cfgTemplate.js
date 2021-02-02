@@ -33,7 +33,10 @@ module.exports = function (cfg) {
         },
 
         // Force Invalid Command
-        forceInvalidCommandCallback: false
+        forceInvalidCommandCallback: false,
+
+        // App Path
+        appPath: '/',
 
     });
 };
