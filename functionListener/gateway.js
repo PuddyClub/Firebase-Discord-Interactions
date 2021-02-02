@@ -19,8 +19,18 @@ module.exports = function (cfg, botToken) {
 
     // Create Discord Bot
     if (typeof botToken === "string") {
+
+        // Create Bot
         const Discord = require('discord.js');
         bot = new Discord.Client({ autoReconnect: true });
+
+        // Logs
+        bot.on('rateLimit', (data) => { logger.warn(data); return; });
+        bot.on('warn', (data) => { logger.warn(data); return; });
+        bot.on('error', (data) => { logger.error(data); return; });
+
+        bot.on('ready', () => { logger.log(`Bot Ready! ${bot.user.tag} (${bot.user.id})`); return; });
+
     } else {
         bot = botToken;
     }
