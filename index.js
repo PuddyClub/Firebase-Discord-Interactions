@@ -4,12 +4,7 @@ module.exports = {
     database: require('./database'),
 
     // Gateway Simulator
-    gatewaySimulator: {
-
-        // V1
-        v1: require('./functionListener/version/gateway_v1')
-
-    },
+    gatewaySimulator: require('./functionListener/gateway'),
 
     // Function Listener
     functionListener: require('./functionListener')
