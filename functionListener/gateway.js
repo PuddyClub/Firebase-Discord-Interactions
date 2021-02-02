@@ -35,7 +35,7 @@ module.exports = function (cfg, botToken) {
 
         // Return
         try {
-            return require('./' + interaction.version)(
+            return require('./version/' + interaction.version)(
 
                 // Body
                 { body: interaction },
