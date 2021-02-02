@@ -8,7 +8,10 @@ module.exports = function (cfg) {
         varNames: {
 
             // Type
-            type: 'type'
+            type: 'type',
+
+            // Bot
+            bot: 'bot'
 
         },
 

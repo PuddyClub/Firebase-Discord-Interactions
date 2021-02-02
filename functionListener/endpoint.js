@@ -28,14 +28,14 @@ module.exports = function (req, res, logger, tinyCfg) {
     if (app) {
 
         // Get DB
-        if (typeof req.query.bot === "string") {
+        if (typeof req.query[tinyCfg.varNames.bot] === "string") {
 
             // Firebase Lib
             const databaseEscape = require('@tinypudding/firebase-lib/databaseEscape');
             const getDBData = require('@tinypudding/firebase-lib/getDBData');
 
             // Bot Var
-            const db = app.db.ref(tinyCfg.appPath).child(databaseEscape(req.query.bot));
+            const db = app.db.ref(tinyCfg.appPath).child(databaseEscape(req.query[tinyCfg.varNames.bot]));
 
             // Get Public Key
             getDBData(db.child('public_key')).then(async public_key => {
