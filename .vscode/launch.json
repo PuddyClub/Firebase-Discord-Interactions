@@ -20,7 +20,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\test\\functionListener\\endpoint\\version\\1.js"
+            "program": "${workspaceFolder}\\test\\functionListener\\endpoint\\gateway.js"
         },
         {
             "command": "git push -u origin --all",
