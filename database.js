@@ -66,35 +66,52 @@ module.exports = function (data, app, isTest = false) {
                         const extraList = [];
 
                         // Delte Commands Script
-                        const deleteCommandsScript = function (client_id, guild_id, client, commands, fn, fn_error, extra) {
+                        const deleteCommandsScript = function (client_id, guild_id, client, commands, dontDelete, fn, fn_error, extra) {
 
                             // Run Delete Commands
+                            console.log(commands);
                             const deleteCommands = extra({ data: commands });
                             deleteCommands.run(function (index, fn) {
 
-                                // Logger Info
-                                logger.log(`OLD command deleted from the app ${client_id}!`, commands[index]);
-
-                                // Global
-                                if (typeof guild_id !== "string") {
-                                    client.deleteCommand(commands[index].id).then(() => {
-                                        fn();
-                                        return;
-                                    }).catch(err => {
-                                        fn();
-                                        return;
-                                    });
+                                // Check If can delete
+                                let canDelete = true;
+                                if (Array.isArray(dontDelete) && dontDelete.length > 0) {
+                                    for (const item in dontDelete) {
+                                        if (commands.find(command => command.name === dontDelete[item].name)) {
+                                            canDelete = false;
+                                            break;
+                                        }
+                                    }
                                 }
 
-                                // Guild
-                                else {
-                                    client.deleteCommand(commands[index].id, guild_id).then(() => {
-                                        fn();
-                                        return;
-                                    }).catch(err => {
-                                        fn();
-                                        return;
-                                    });
+                                // Delte
+                                if (canDelete) {
+
+                                    // Logger Info
+                                    logger.log(`OLD command deleted from the app ${client_id}!`, commands[index]);
+
+                                    // Global
+                                    if (typeof guild_id !== "string") {
+                                        client.deleteCommand(commands[index].id).then(() => {
+                                            fn();
+                                            return;
+                                        }).catch(err => {
+                                            fn();
+                                            return;
+                                        });
+                                    }
+
+                                    // Guild
+                                    else {
+                                        client.deleteCommand(commands[index].id, guild_id).then(() => {
+                                            fn();
+                                            return;
+                                        }).catch(err => {
+                                            fn();
+                                            return;
+                                        });
+                                    }
+
                                 }
 
                                 // Complete
@@ -139,7 +156,8 @@ module.exports = function (data, app, isTest = false) {
                                                 // Command Manager
                                                 if (extraList[item].type !== "deleteAll") {
 
-                                                    // Extra Clear
+                                                    // Extra Clear                        
+                                                    const dontDelete = [];
                                                     let extraClear = null;
                                                     let existClear = (Array.isArray(deleteCommands) && deleteCommands.length > 0);
                                                     if (existClear) {
@@ -162,14 +180,11 @@ module.exports = function (data, app, isTest = false) {
                                                             const executeClear = function () {
 
                                                                 // Delete Item
-                                                                const deleteItem = deleteCommands.findIndex(command => command.name === newCommand.name);
-                                                                if (deleteItem > -1) {
-                                                                    deleteCommands.splice(deleteItem, 1);
-                                                                }
+                                                                dontDelete.push(newCommand);
 
                                                                 // Script
                                                                 if (existClear && index3 >= newCommandsCount) {
-                                                                    extraClear.run(function (index4, fn, fn_error) { return deleteCommandsScript(client_id, guild_id, client, deleteCommands, fn, fn_error, extra); });
+                                                                    extraClear.run(function (index4, fn, fn_error) { return deleteCommandsScript(client_id, guild_id, client, deleteCommands, dontDelete, fn, fn_error, extra); });
                                                                 }
 
                                                                 // Complete
@@ -195,8 +210,13 @@ module.exports = function (data, app, isTest = false) {
                                                             if (oldCommand) {
 
                                                                 // Remove OLD Data
-                                                                delete oldCommand.id;
-                                                                delete oldCommand.application_id;
+
+                                                                // Prepare Clear
+                                                                for (const option in oldCommand) {
+                                                                    if (option !== "id" && option !== "name" && option !== "description") {
+                                                                        delete oldCommand[option];
+                                                                    }
+                                                                }
 
                                                                 // Set Editor Type to Edit
                                                                 if (hash(newCommand) !== hash(oldCommand)) {
@@ -359,7 +379,7 @@ module.exports = function (data, app, isTest = false) {
 
                                                 // Delete All
                                                 else {
-                                                    extraList[item].extra.run(function (index2, fn, fn_error) { return deleteCommandsScript(client_id, guild_id, client, deleteCommands, fn, fn_error, extra); });
+                                                    extraList[item].extra.run(function (index2, fn, fn_error) { return deleteCommandsScript(client_id, guild_id, client, deleteCommands, null, fn, fn_error, extra); });
                                                 }
 
                                             }
