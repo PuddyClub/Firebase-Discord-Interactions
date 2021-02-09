@@ -7,15 +7,6 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "Launch Database Async",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\test\\database.js"
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
             "name": "Launch Interaction Endpoint Listener",
             "skipFiles": [
                 "<node_internals>/**"

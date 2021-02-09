@@ -3,11 +3,11 @@ const discord_interaction = require('../database');
 const firebase = require('@tinypudding/firebase-lib');
 
 // Prepare Firebase
-const tinyCfg = require('./config.json');
+const tinyCfg = require('../../test/config.json');
 
 // Get Credentials
 const admin = require('firebase-admin');
-tinyCfg.firebase.credential = admin.credential.cert(require('./firebase.json'));
+tinyCfg.firebase.credential = admin.credential.cert(require('../../test/firebase.json'));
 
 // Start Firebase
 firebase.start(admin, tinyCfg.options, tinyCfg.firebase);

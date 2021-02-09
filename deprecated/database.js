@@ -69,7 +69,9 @@ module.exports = function (data, app, isTest = false) {
                         const deleteCommandsScript = function (client_id, guild_id, client, commands, dontDelete, fn, fn_error, extra) {
 
                             // Run Delete Commands
+                            console.log('delete command');
                             console.log(commands);
+                            console.log(dontDelete);
                             const deleteCommands = extra({ data: commands });
                             deleteCommands.run(function (index, fn) {
 
@@ -213,7 +215,7 @@ module.exports = function (data, app, isTest = false) {
 
                                                                 // Prepare Clear
                                                                 for (const option in oldCommand) {
-                                                                    if (option !== "id" && option !== "name" && option !== "description") {
+                                                                    if (option !== "id" && option !== "name" && option !== "description" && option !== "options") {
                                                                         delete oldCommand[option];
                                                                     }
                                                                 }
@@ -419,6 +421,8 @@ module.exports = function (data, app, isTest = false) {
                                         const getCommands = function (oldCommands, guildID) {
 
                                             // Is Array
+                                            console.log('OLD COmmands');
+                                            console.log(oldCommands);
                                             if (Array.isArray(oldCommands)) {
 
                                                 // Delete List
