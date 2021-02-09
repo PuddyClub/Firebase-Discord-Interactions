@@ -321,12 +321,20 @@ module.exports = function (data, app, isTest = false) {
 
                                                                     // Global
                                                                     if (typeof guild_id !== "string" && typeof guild_id !== "number") {
-                                                                        client.editCommand(newCommand, commandID).then(final_result.then).catch(final_result.catch);;
+                                                                        if (typeof commandID === "string") {
+                                                                            client.editCommand(newCommand, commandID).then(final_result.then).catch(final_result.catch);
+                                                                        } else {
+                                                                            client.createCommand(newCommand).then(final_result.then).catch(final_result.catch);
+                                                                        }
                                                                     }
 
                                                                     // Guild
                                                                     else {
-                                                                        client.editCommand(newCommand, commandID, guild_id).then(final_result.then).catch(final_result.catch);;
+                                                                        if (typeof commandID === "string") {
+                                                                            client.editCommand(newCommand, commandID, guild_id).then(final_result.then).catch(final_result.catch);
+                                                                        } else {
+                                                                            client.createCommand(newCommand, guild_id).then(final_result.then).catch(final_result.catch);
+                                                                        }
                                                                     }
 
                                                                 }
