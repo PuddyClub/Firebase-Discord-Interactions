@@ -211,6 +211,33 @@ module.exports = function (data, app, isTest = false) {
                                                             // To do something
                                                             if (editorType > 0) {
 
+                                                                // Final Result
+                                                                const final_result = {
+                                                                    then: result => {
+                                                                        updateCommandDatabase(result).then(() => {
+                                                                            executeClear();
+                                                                            return;
+                                                                        }).catch(err => {
+                                                                            logger.error(err);
+                                                                            executeClear();
+                                                                            return;
+                                                                        });
+                                                                        return;
+                                                                    },
+                                                                    catch: err => {
+                                                                        logger.error(err);
+                                                                        removeCommandDatabase().then(() => {
+                                                                            executeClear();
+                                                                            return;
+                                                                        }).catch(err => {
+                                                                            logger.error(err);
+                                                                            executeClear();
+                                                                            return;
+                                                                        });
+                                                                        return;
+                                                                    }
+                                                                };
+
                                                                 // Get Database Command
                                                                 const getCommandDatabase = function () {
 
@@ -273,32 +300,6 @@ module.exports = function (data, app, isTest = false) {
 
                                                                     // Logger Info
                                                                     logger.log(`New command added to the app ${client_id}!`, newCommand);
-
-                                                                    const final_result = {
-                                                                        then: result => {
-                                                                            updateCommandDatabase(result).then(() => {
-                                                                                executeClear();
-                                                                                return;
-                                                                            }).catch(err => {
-                                                                                logger.error(err);
-                                                                                executeClear();
-                                                                                return;
-                                                                            });
-                                                                            return;
-                                                                        },
-                                                                        catch: err => {
-                                                                            logger.error(err);
-                                                                            removeCommandDatabase().then(() => {
-                                                                                executeClear();
-                                                                                return;
-                                                                            }).catch(err => {
-                                                                                logger.error(err);
-                                                                                executeClear();
-                                                                                return;
-                                                                            });
-                                                                            return;
-                                                                        }
-                                                                    };
 
                                                                     // Global
                                                                     if (typeof guild_id !== "string" && typeof guild_id !== "number") {
