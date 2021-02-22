@@ -3,13 +3,42 @@ module.exports = function (cfg, botToken) {
     // JSON Simulator
     const jsonSimulator = function (interaction) {
         return function (data) {
-            const JSONfetch = require('@tinypudding/puddy-lib/http/fetch/json');
-            return JSONfetch(`https://discord.com/api/v8/interactions/${interaction.id}/${interaction.token}/callback`, {
-                method: 'POST',
-                body: new URLSearchParams(data),
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
+            return new Promise(function (resolve, reject) {
+
+                // JSON Fetch
+                const JSONfetch = require('@tinypudding/puddy-lib/http/fetch/json');
+                JSONfetch(`https://discord.com/api/v8/interactions/${interaction.id}/${interaction.token}/callback`, {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                
+                // Something
+                .then(data => {
+                    resolve(data);
+                    return;
+                })
+                
+                // Error
+                .catch(err => {
+                    
+                    // Fail JSON Skip
+                    if (!err.message.startsWith('invalid json response body')) {
+                        reject(err);
+                    } else {
+                        resolve({});
+                    }
+
+                    // Complete
+                    return;
+
+                });
+
+                // Complete
+                return;
+
             });
         }
     };

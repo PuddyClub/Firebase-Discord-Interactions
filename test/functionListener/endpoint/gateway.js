@@ -22,6 +22,7 @@ tinyCfg.invalidCommandCallback = function (result) {
         },
     }).then(data => {
         console.log(result.data.id + ' was replied!');
+        console.log(data);
     }).catch(err => {
         console.log(result.data.id + ' returned a error!');
         console.error(err);
