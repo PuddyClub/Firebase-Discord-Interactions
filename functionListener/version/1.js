@@ -1,3 +1,128 @@
+// Get Values
+const getValues = {
+
+    // Author
+    author: function (interaction) {
+
+        // Result
+        const result = {};
+        if (interaction.member && interaction.member.user) {
+
+            // ID
+            result.id = interaction.member.user.id;
+
+            // Username
+            result.username = interaction.member.user.username;
+            result.discriminator = interaction.member.user.discriminator;
+            result.tag = result.username + '#' + result.discriminator;
+
+            // Name
+            if (typeof interaction.member.nick === "string") {
+                result.nick = interaction.member.nick;
+                result.name = interaction.member.nick;
+            } else if (typeof interaction.member.user.username === "string") {
+                result.name = interaction.member.user.username;
+            }
+
+            // Complete
+            return result;
+
+        }
+
+        // Nope
+        else { return null; }
+
+    },
+
+    // User
+    user: function (interaction, where) {
+
+        // Result
+        const result = {};
+
+        // Prepare ID
+        if (interaction.data.options) {
+            result.id = interaction.data.options.find(option => option.name === where && option.type === 6);
+            if (result.id) {
+
+                // Get ID
+                result.id = result.id.value;
+
+                // Username
+                if (interaction.data.resolved && interaction.data.resolved.users[result.id]) {
+
+                    result.username = interaction.data.resolved.users[result.id].username;
+                    result.discriminator = interaction.data.resolved.users[result.id].discriminator;
+                    result.tag = result.username + '#' + result.discriminator;
+
+                    // Name
+                    if (interaction.data.resolved.members[result.id] && typeof interaction.data.resolved.members[result.id].nick === "string") {
+                        result.nick = interaction.data.resolved.members[result.id].nick;
+                        result.name = interaction.data.resolved.members[result.id].nick;
+                    } else {
+                        result.name = interaction.data.resolved.users[result.id].username;
+                    }
+
+                    // Complete
+                    return result;
+
+                }
+
+                // Nope
+                else { return null; }
+
+            }
+
+            // Nope
+            else { return null; }
+
+        }
+
+        // Nope
+        else { return null; }
+
+    },
+
+    boolean: function (interaction, where) {
+
+        // Prepare Options
+        if (interaction.data.options) {
+            const result = interaction.data.options.find(option => option.name === where && option.type === 5);
+            if (result) {
+                if (result.value) { return true; } else { return false; }
+            }
+
+            // Nope
+            else { return null; }
+
+        }
+
+        // Nope
+        else { return null; }
+
+    },
+
+    string: function (interaction, where) {
+
+        // Prepare Options
+        if (interaction.data.options) {
+            const result = interaction.data.options.find(option => option.name === where && option.type === 3);
+            if (result) {
+                if (typeof result.value === "string") { return result.value; } else { return null; }
+            }
+
+            // Nope
+            else { return null; }
+
+        }
+
+        // Nope
+        else { return null; }
+
+    }
+
+};
+
 module.exports = async function (req, res, logger, di, tinyCfg) {
     try {
 
@@ -15,131 +140,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
             ) {
 
                 // Final Result
-                const final_result = {
-                    data: req.body, di: di, res: res, get: {
-
-                        // Author
-                        author: function (interaction) {
-
-                            // Result
-                            const result = {};
-                            if (interaction.member && interaction.member.user) {
-
-                                // ID
-                                result.id = interaction.member.user.id;
-
-                                // Username
-                                result.username = interaction.member.user.username;
-                                result.discriminator = interaction.member.user.discriminator;
-                                result.tag = result.username + '#' + result.discriminator;
-
-                                // Name
-                                if (typeof interaction.member.nick === "string") {
-                                    result.nick = interaction.member.nick;
-                                    result.name = interaction.member.nick;
-                                } else if (typeof interaction.member.user.username === "string") {
-                                    result.name = interaction.member.user.username;
-                                }
-
-                                // Complete
-                                return result;
-
-                            }
-
-                            // Nope
-                            else { return null; }
-
-                        },
-
-                        // User
-                        user: function (interaction, where) {
-
-                            // Result
-                            const result = {};
-
-                            // Prepare ID
-                            if (interaction.data.options) {
-                                result.id = interaction.data.options.find(option => option.name === where && option.type === 6);
-                                if (result.id) {
-
-                                    // Get ID
-                                    result.id = result.id.value;
-
-                                    // Username
-                                    if (interaction.data.resolved && interaction.data.resolved.users[result.id]) {
-
-                                        result.username = interaction.data.resolved.users[result.id].username;
-                                        result.discriminator = interaction.data.resolved.users[result.id].discriminator;
-                                        result.tag = result.username + '#' + result.discriminator;
-
-                                        // Name
-                                        if (interaction.data.resolved.members[result.id] && typeof interaction.data.resolved.members[result.id].nick === "string") {
-                                            result.nick = interaction.data.resolved.members[result.id].nick;
-                                            result.name = interaction.data.resolved.members[result.id].nick;
-                                        } else {
-                                            result.name = interaction.data.resolved.users[result.id].username;
-                                        }
-
-                                        // Complete
-                                        return result;
-
-                                    }
-
-                                    // Nope
-                                    else { return null; }
-
-                                }
-
-                                // Nope
-                                else { return null; }
-
-                            }
-
-                            // Nope
-                            else { return null; }
-
-                        },
-
-                        boolean: function (interaction, where) {
-
-                            // Prepare Options
-                            if (interaction.data.options) {
-                                const result = interaction.data.options.find(option => option.name === where && option.type === 5);
-                                if (result) {
-                                    if (result.value) { return true; } else { return false; }
-                                }
-
-                                // Nope
-                                else { return null; }
-
-                            }
-
-                            // Nope
-                            else { return null; }
-
-                        },
-
-                        string: function (interaction, where) {
-
-                            // Prepare Options
-                            if (interaction.data.options) {
-                                const result = interaction.data.options.find(option => option.name === where && option.type === 3);
-                                if (result) {
-                                    if (typeof result.value === "string") { return result.value; } else { return null; }
-                                }
-
-                                // Nope
-                                else { return null; }
-
-                            }
-
-                            // Nope
-                            else { return null; }
-
-                        }
-
-                    }
-                };
+                const final_result = { data: req.body, di: di, res: res, get: getValues };
 
                 // Normal Callback
                 if (!tinyCfg.forceInvalidCommandCallback) {
