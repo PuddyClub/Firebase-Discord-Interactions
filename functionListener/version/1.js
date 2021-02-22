@@ -52,29 +52,35 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                             const result = {};
 
                             // Prepare ID
-                            result.id = interaction.data.options.find(option => option.name === where && option.type === 6);
-                            if (result.id) {
+                            if (interaction.data.options) {
+                                result.id = interaction.data.options.find(option => option.name === where && option.type === 6);
+                                if (result.id) {
 
-                                // Get ID
-                                result.id = result.id.value;
+                                    // Get ID
+                                    result.id = result.id.value;
 
-                                // Username
-                                if (interaction.data.resolved.users[result.id]) {
+                                    // Username
+                                    if (interaction.data.resolved && interaction.data.resolved.users[result.id]) {
 
-                                    result.username = interaction.data.resolved.users[result.id].username;
-                                    result.discriminator = interaction.data.resolved.users[result.id].discriminator;
-                                    result.tag = result.username + '#' + result.discriminator;
+                                        result.username = interaction.data.resolved.users[result.id].username;
+                                        result.discriminator = interaction.data.resolved.users[result.id].discriminator;
+                                        result.tag = result.username + '#' + result.discriminator;
 
-                                    // Name
-                                    if (interaction.data.resolved.members[result.id] && typeof interaction.data.resolved.members[result.id].nick === "string") {
-                                        result.nick = interaction.data.resolved.members[result.id].nick;
-                                        result.name = interaction.data.resolved.members[result.id].nick;
-                                    } else {
-                                        result.name = interaction.data.resolved.users[result.id].username;
+                                        // Name
+                                        if (interaction.data.resolved.members[result.id] && typeof interaction.data.resolved.members[result.id].nick === "string") {
+                                            result.nick = interaction.data.resolved.members[result.id].nick;
+                                            result.name = interaction.data.resolved.members[result.id].nick;
+                                        } else {
+                                            result.name = interaction.data.resolved.users[result.id].username;
+                                        }
+
+                                        // Complete
+                                        return result;
+
                                     }
 
-                                    // Complete
-                                    return result;
+                                    // Nope
+                                    else { return null; }
 
                                 }
 
