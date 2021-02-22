@@ -14,15 +14,20 @@ tinyCfg.invalidCommandCallback = function (result) {
     console.log(result.data);
     
     // Reply
-    bot.channels.fetch(result.data.channel_id).then(function(channel) {
-        channel.send('Command Received!');
-        return;
+    return result.res.json({
+        type: result.di.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+            tts: false,
+            content: 'This command has no functionality!'
+        },
+    }).then(data => {
+        console.log(result.data.id + ' was replied!');
+    }).catch(err => {
+        console.log(result.data.id + ' returned a error!');
+        console.error(err);
     });
-
-    // Complete
-    return;
 
 };
 
 // Start Module
-const bot = require('../../../functionListener/gateway')(tinyCfg, tinyCfg.gateway_test_token);
+require('../../../functionListener/gateway')(tinyCfg, tinyCfg.gateway_test_token);
