@@ -162,7 +162,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
             ) {
 
                 // Final Result
-                const final_result = { data: req.body, di: di, res: res, get: getValues };
+                const final_result = { data: req.body, di: di, res: res, get: getValues, cfg: tinyCfg };
 
                 // Normal Callback
                 if (!tinyCfg.forceInvalidCommandCallback) {

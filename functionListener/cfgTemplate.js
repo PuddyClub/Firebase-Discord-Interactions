@@ -15,6 +15,9 @@ module.exports = function (cfg) {
 
         },
 
+        // Get Client ID
+        getClientID: true,
+
         // Error Callback
         errorCallback: function (req, res, code, message) {
             res.status(code);

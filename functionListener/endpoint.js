@@ -40,53 +40,78 @@ module.exports = function (req, res, logger, tinyCfg) {
             // Get Public Key
             getDBData(db.child('public_key')).then(async public_key => {
 
-                if (typeof public_key === "string") {
+                // Complete Action
+                const completeAction = function (client_id) {
 
-                    // Prepare Validation
-                    const di = require('discord-interactions');
-                    const signature = req.get('X-Signature-Ed25519');
-                    const timestamp = req.get('X-Signature-Timestamp');
+                    if (typeof public_key === "string") {
 
-                    try {
+                        // Prepare Validation
+                        const di = require('discord-interactions');
+                        const signature = req.get('X-Signature-Ed25519');
+                        const timestamp = req.get('X-Signature-Timestamp');
 
-                        // Get Valid Request
-                        const isValidRequest = await di.verifyKey(req.rawBody, signature, timestamp, public_key);
+                        try {
 
-                        // Is Valid
-                        if (isValidRequest) {
+                            // Get Valid Request
+                            const isValidRequest = await di.verifyKey(req.rawBody, signature, timestamp, public_key);
 
-                            // Version Validator
-                            if (typeof req.body.version !== "number" || isNaN(req.body.version) || !isFinite(req.body.version) || req.body.version < 1) {
-                                req.body.version = 1;
+                            // Is Valid
+                            if (isValidRequest) {
+
+                                // Version Validator
+                                if (typeof req.body.version !== "number" || isNaN(req.body.version) || !isFinite(req.body.version) || req.body.version < 1) {
+                                    req.body.version = 1;
+                                }
+
+                                // Insert Client ID
+                                req.body.client_id = client_id;
+
+                                try {
+                                    return require('./version/' + req.body.version)(req, res, logger, di, tinyCfg);
+                                } catch (err) {
+                                    logger.error(err);
+                                    tinyCfg.errorCallback(req, res, 404, 'Version not found!');
+                                    return;
+                                }
+
                             }
 
-                            try {
-                                return require('./version/' + req.body.version)(req, res, logger, di, tinyCfg);
-                            } catch (err) {
-                                logger.error(err);
-                                tinyCfg.errorCallback(req, res, 404, 'Version not found!');
-                                return;
+                            // Nope
+                            else {
+                                return tinyCfg.errorCallback(req, res, 401, 'Bad request signature!');
                             }
 
+                        } catch (err) {
+                            logger.error(err);
+                            tinyCfg.errorCallback(req, res, 500, err.message);
+                            return;
                         }
 
-                        // Nope
-                        else {
-                            return tinyCfg.errorCallback(req, res, 401, 'Bad request signature!');
-                        }
-
-                    } catch (err) {
-                        logger.error(err);
-                        tinyCfg.errorCallback(req, res, 500, err.message);
-                        return;
                     }
 
+                    // Nope
+                    else {
+                        tinyCfg.errorCallback(req, res, 401, 'Invalid Public Key!');
+                    }
+
+                    // Complete
+                    return;
+
+                };
+
+                // Get Client ID
+                if (tinyCfg.getClientID) {
+                    getDBData(db.child('client_id')).then(async client_id => {
+                        completeAction(client_id);
+                        return;
+                    }).catch(err => {
+                        tinyCfg.errorCallback(req, res, 404, 'Bot ID not found!');
+                        return;
+                    });
                 }
 
                 // Nope
-                else {
-                    tinyCfg.errorCallback(req, res, 401, 'Invalid Public Key!');
-                }
+                else { completeAction(null); }
 
                 // Complete
                 return;
