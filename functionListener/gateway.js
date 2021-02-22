@@ -1,5 +1,13 @@
 module.exports = function (cfg, botToken) {
 
+    // JSON Simulator
+    const jsonSimulator = function () { 
+        
+        // Complete
+        return; 
+
+    };
+
     // Config Template
     const tinyCfg = require('./cfgTemplate')(cfg);
 
@@ -53,9 +61,9 @@ module.exports = function (cfg, botToken) {
                 // Res
                 {
                     status: function () { return; },
-                    json: function () { return; },
                     send: function () { return; },
-                    render: function () { return; }
+                    render: function () { return; },
+                    json: jsonSimulator
                 },
 
                 // Logger
