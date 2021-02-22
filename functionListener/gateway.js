@@ -45,6 +45,7 @@ module.exports = function (cfg, botToken) {
 
     // Config Template
     const tinyCfg = require('./cfgTemplate')(cfg);
+    tinyCfg.getClientID = false;
 
     // Import the discord interacctions module
     const di = require('discord-interactions');
@@ -85,6 +86,9 @@ module.exports = function (cfg, botToken) {
         if (typeof interaction.version !== "number" || isNaN(interaction.version) || !isFinite(interaction.version) || interaction.version < 1) {
             interaction.version = 1;
         }
+
+        // Get Client ID
+        interaction.client_id = bot.user.id;
 
         // Return
         try {
