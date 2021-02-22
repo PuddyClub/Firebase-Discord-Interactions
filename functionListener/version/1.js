@@ -121,6 +121,26 @@ const getValues = {
         // Nope
         else { return null; }
 
+    },
+
+    // String
+    integer: function (interaction, where) {
+
+        // Prepare Options
+        if (interaction.data.options) {
+            const result = interaction.data.options.find(option => option.name === where && option.type === 4);
+            if (result) {
+                if (typeof result.value === "number") { return result.value; } else { return null; }
+            }
+
+            // Nope
+            else { return null; }
+
+        }
+
+        // Nope
+        else { return null; }
+
     }
 
 };
