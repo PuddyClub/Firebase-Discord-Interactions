@@ -15,7 +15,38 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
             ) {
 
                 // Final Result
-                const final_result = { data: req.body, di: di, res: res };
+                const final_result = {
+                    data: req.body, di: di, res: res, get: {
+
+                        // Author
+                        author: function (member) {
+
+                            // Result
+                            const result = {};
+
+                            // ID
+                            result.id = member.user.id;
+
+                            // Username
+                            result.nick = member.nick;
+                            result.username = member.user.username;
+                            result.discriminator = member.user.discriminator;
+                            result.tag = result.username + '#' + result.discriminator;
+
+                            // Name
+                            if (typeof member.nick === "string") {
+                                result.name = member.nick;
+                            } else if (typeof member.user.username === "string") {
+                                result.name = member.user.username;
+                            }
+
+                            // Complete
+                            return result;
+
+                        }
+
+                    }
+                };
 
                 // Normal Callback
                 if (!tinyCfg.forceInvalidCommandCallback) {
