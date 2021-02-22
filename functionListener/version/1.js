@@ -83,13 +83,14 @@ const getValues = {
 
     },
 
+    // Boolean
     boolean: function (interaction, where) {
 
         // Prepare Options
         if (interaction.data.options) {
             const result = interaction.data.options.find(option => option.name === where && option.type === 5);
             if (result) {
-                if (result.value) { return true; } else { return false; }
+                if (typeof result.value === "boolean" && result.value) { return true; } else { return false; }
             }
 
             // Nope
@@ -102,6 +103,7 @@ const getValues = {
 
     },
 
+    // String
     string: function (interaction, where) {
 
         // Prepare Options
