@@ -28,13 +28,13 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                             result.id = interaction.member.user.id;
 
                             // Username
-                            result.nick = interaction.member.nick;
                             result.username = interaction.member.user.username;
                             result.discriminator = interaction.member.user.discriminator;
                             result.tag = result.username + '#' + result.discriminator;
 
                             // Name
                             if (typeof interaction.member.nick === "string") {
+                                result.nick = interaction.member.nick;
                                 result.name = interaction.member.nick;
                             } else if (typeof interaction.member.user.username === "string") {
                                 result.name = interaction.member.user.username;
@@ -46,8 +46,46 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                         },
 
                         // User
-                        user: function() {
-                            
+                        user: function (interaction, where) {
+
+                            // Result
+                            const result = {};
+
+                            // Prepare ID
+                            result.id = interaction.data.options.find(option => option.name === where && option.type === 6);
+                            if (result.id) {
+
+                                // Get ID
+                                result.id = result.id.value;
+
+                                // Username
+                                if (interaction.data.resolved.users[result.id]) {
+
+                                    result.username = interaction.data.resolved.users[result.id].username;
+                                    result.discriminator = interaction.data.resolved.users[result.id].discriminator;
+                                    result.tag = result.username + '#' + result.discriminator;
+
+                                    // Name
+                                    if (interaction.data.resolved.members[result.id] && typeof interaction.data.resolved.members[result.id].nick === "string") {
+                                        result.nick = interaction.data.resolved.members[result.id].nick;
+                                        result.name = interaction.data.resolved.members[result.id].nick;
+                                    } else {
+                                        result.name = interaction.data.resolved.users[result.id].username;
+                                    }
+
+                                    // Complete
+                                    return result;
+
+                                }
+
+                                // Nope
+                                else { return null; }
+
+                            }
+
+                            // Nope
+                            else { return null; }
+
                         }
 
                     }
