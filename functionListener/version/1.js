@@ -23,25 +23,31 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
 
                             // Result
                             const result = {};
+                            if (interaction.member && interaction.member.user) {
 
-                            // ID
-                            result.id = interaction.member.user.id;
+                                // ID
+                                result.id = interaction.member.user.id;
 
-                            // Username
-                            result.username = interaction.member.user.username;
-                            result.discriminator = interaction.member.user.discriminator;
-                            result.tag = result.username + '#' + result.discriminator;
+                                // Username
+                                result.username = interaction.member.user.username;
+                                result.discriminator = interaction.member.user.discriminator;
+                                result.tag = result.username + '#' + result.discriminator;
 
-                            // Name
-                            if (typeof interaction.member.nick === "string") {
-                                result.nick = interaction.member.nick;
-                                result.name = interaction.member.nick;
-                            } else if (typeof interaction.member.user.username === "string") {
-                                result.name = interaction.member.user.username;
+                                // Name
+                                if (typeof interaction.member.nick === "string") {
+                                    result.nick = interaction.member.nick;
+                                    result.name = interaction.member.nick;
+                                } else if (typeof interaction.member.user.username === "string") {
+                                    result.name = interaction.member.user.username;
+                                }
+
+                                // Complete
+                                return result;
+
                             }
 
-                            // Complete
-                            return result;
+                            // Nope
+                            else { return null; }
 
                         },
 
