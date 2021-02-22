@@ -1,11 +1,17 @@
 module.exports = function (cfg, botToken) {
 
     // JSON Simulator
-    const jsonSimulator = function () { 
-        
-        // Complete
-        return; 
-
+    const jsonSimulator = function (interaction) {
+        return function (data) {
+            const JSONfetch = require('@tinypudding/puddy-lib/http/fetch/json');
+            return JSONfetch(`https://discord.com/api/v8/interactions/${interaction.id}/${interaction.token}/callback`, {
+                method: 'POST',
+                body: new URLSearchParams(data),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+        }
     };
 
     // Config Template
@@ -63,7 +69,7 @@ module.exports = function (cfg, botToken) {
                     status: function () { return; },
                     send: function () { return; },
                     render: function () { return; },
-                    json: jsonSimulator
+                    json: jsonSimulator(interaction)
                 },
 
                 // Logger
