@@ -106,7 +106,26 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                             if (interaction.data.options) {
                                 const result = interaction.data.options.find(option => option.name === where && option.type === 5);
                                 if (result) {
-                                    if (result.value) { return true; } else { return false };
+                                    if (result.value) { return true; } else { return false; }
+                                }
+
+                                // Nope
+                                else { return null; }
+
+                            }
+
+                            // Nope
+                            else { return null; }
+
+                        },
+
+                        string: function (interaction, where) {
+
+                            // Prepare Options
+                            if (interaction.data.options) {
+                                const result = interaction.data.options.find(option => option.name === where && option.type === 3);
+                                if (result) {
+                                    if (typeof result.value === "string") { return result.value; } else { return null; }
                                 }
 
                                 // Nope
