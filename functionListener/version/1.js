@@ -98,6 +98,25 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                             // Nope
                             else { return null; }
 
+                        },
+
+                        boolean: function (interaction, where) {
+
+                            // Prepare Options
+                            if (interaction.data.options) {
+                                const result = interaction.data.options.find(option => option.name === where && option.type === 5);
+                                if (result) {
+                                    if (result.value) { return true; } else { return false };
+                                }
+
+                                // Nope
+                                else { return null; }
+
+                            }
+
+                            // Nope
+                            else { return null; }
+
                         }
 
                     }
