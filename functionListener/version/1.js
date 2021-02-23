@@ -71,7 +71,7 @@ const getValues = {
                 result.id = result.id.value;
 
                 // Username
-                if (interaction.data.resolved && interaction.data.resolved.users[result.id]) {
+                if (interaction.data.resolved && interaction.data.resolved.users && interaction.data.resolved.users[result.id]) {
 
                     result.username = interaction.data.resolved.users[result.id].username;
                     result.discriminator = interaction.data.resolved.users[result.id].discriminator;
