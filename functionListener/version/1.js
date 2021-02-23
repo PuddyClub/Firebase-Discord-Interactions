@@ -167,6 +167,30 @@ const getValues = {
 
 };
 
+// Message Editor Generator
+const messageEditorGenerator = function (interaction, messageID = '@original') {
+
+    // Get Module
+    const interactionResponse = require('../interactionResponse');
+
+    // Prepare Response
+    const response = {};
+    
+    // Edit Message
+    response.edit = interactionResponse(`https://discord.com/api/v8/webhooks/${interaction.id}/${interaction.token}/messages/${messageID}`, {
+        method: 'PATCH'
+    });
+
+    // Delete Message
+    response.delete = interactionResponse(`https://discord.com/api/v8/webhooks/${interaction.id}/${interaction.token}/messages/${messageID}`, {
+        method: 'DELETE'
+    });
+
+    // Complete
+    return response;
+
+};
+
 module.exports = async function (req, res, logger, di, tinyCfg) {
     try {
 
@@ -193,7 +217,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
             ) {
 
                 // Final Result
-                const final_result = { data: req.body, di: di, res: res, get: getValues, cfg: tinyCfg };
+                const final_result = { data: req.body, di: di, res: res, get: getValues, cfg: tinyCfg, msg: messageEditorGenerator(req.body) };
 
                 // Normal Callback
                 if (!tinyCfg.forceInvalidCommandCallback) {
