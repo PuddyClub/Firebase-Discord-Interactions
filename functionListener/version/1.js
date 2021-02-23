@@ -78,7 +78,7 @@ const getValues = {
                     result.tag = result.username + '#' + result.discriminator;
 
                     // Name
-                    if (interaction.data.resolved.members[result.id] && typeof interaction.data.resolved.members[result.id].nick === "string") {
+                    if (interaction.data.resolved.members && interaction.data.resolved.members[result.id] && typeof interaction.data.resolved.members[result.id].nick === "string") {
                         result.nick = interaction.data.resolved.members[result.id].nick;
                         result.name = interaction.data.resolved.members[result.id].nick;
                     } else {
