@@ -150,6 +150,9 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
 
         // Is Command
         if (req.body.type === di.InteractionType.COMMAND) {
+                              
+            // Warn
+            await logger.log(`New command made by ${req.body.client_id}.\nName: ${req.body.data.name}\nAuthor: ${req.body.member.user.username}#${req.body.member.user.discriminator} (${req.body.member.user.id})`);
 
             // Obj Type
             const objType = require('@tinypudding/puddy-lib/get/objType');
@@ -200,11 +203,13 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
 
         // Ping
         else if (req.body.type === di.InteractionType.PING) {
+            await logger.log(`The Bot ID ${req.body.client_id} received a pong.`);
             res.json({ type: di.InteractionResponseType.PONG });
         }
 
         // Nope
         else {
+            await logger.warn(`The Bot ID ${req.body.client_id} made a unknown action.`);
             tinyCfg.errorCallback(req, res, 404, 'Type not found!');
         }
 
@@ -212,7 +217,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
         return;
 
     } catch (err) {
-        logger.error(err);
+        await logger.error(err);
         tinyCfg.errorCallback(req, res, 500, 'Server Error!');
         return;
     }

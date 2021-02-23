@@ -41,7 +41,7 @@ module.exports = function (req, res, logger, tinyCfg) {
             getDBData(db.child('public_key')).then(async public_key => {
 
                 // Complete Action
-                const completeAction = function (client_id) {
+                const completeAction = async function (client_id) {
 
                     if (typeof public_key === "string") {
 
@@ -69,7 +69,7 @@ module.exports = function (req, res, logger, tinyCfg) {
                                 try {
                                     return require('./version/' + req.body.version)(req, res, logger, di, tinyCfg);
                                 } catch (err) {
-                                    logger.error(err);
+                                    await logger.error(err);
                                     tinyCfg.errorCallback(req, res, 404, 'Version not found!');
                                     return;
                                 }
@@ -82,7 +82,7 @@ module.exports = function (req, res, logger, tinyCfg) {
                             }
 
                         } catch (err) {
-                            logger.error(err);
+                            await logger.error(err);
                             tinyCfg.errorCallback(req, res, 500, err.message);
                             return;
                         }
@@ -102,7 +102,7 @@ module.exports = function (req, res, logger, tinyCfg) {
                 // Get Client ID
                 if (tinyCfg.getClientID) {
                     getDBData(db.child('client_id')).then(async client_id => {
-                        completeAction(client_id);
+                        await completeAction(client_id);
                         return;
                     }).catch(err => {
                         tinyCfg.errorCallback(req, res, 404, 'Bot ID not found!');
@@ -111,7 +111,7 @@ module.exports = function (req, res, logger, tinyCfg) {
                 }
 
                 // Nope
-                else { completeAction(null); }
+                else { await completeAction(null); }
 
                 // Complete
                 return;
