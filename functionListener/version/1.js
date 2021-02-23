@@ -49,6 +49,9 @@ const getValues = {
             result.name = interaction.user.username;
             result.tag = result.username + '#' + result.discriminator;
 
+            // Complete
+            return result;
+
         }
 
         // Nope
