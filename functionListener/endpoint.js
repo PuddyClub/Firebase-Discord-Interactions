@@ -104,7 +104,8 @@ module.exports = function (req, res, logger, tinyCfg) {
                     getDBData(db.child('client_id')).then(async client_id => {
                         await completeAction(client_id);
                         return;
-                    }).catch(err => {
+                    }).catch(async err => {
+                        await logger.error(err);
                         tinyCfg.errorCallback(req, res, 404, 'Bot ID not found!');
                         return;
                     });
