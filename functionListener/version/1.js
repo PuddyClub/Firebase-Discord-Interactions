@@ -176,6 +176,10 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
             // Warn
             if (req.body.member) {
                 await logger.log(`New command made by ${req.body.client_id}.\nName: ${req.body.data.name}\nAuthor: ${req.body.member.user.username}#${req.body.member.user.discriminator} (${req.body.member.user.id})`);
+            } else if (req.body.user) {
+                await logger.log(`New command made by ${req.body.client_id}.\nName: ${req.body.data.name}\nAuthor: ${req.body.user.username}#${req.body.user.discriminator} (${req.body.user.id})`);
+            } else {
+                await logger.log(`New command made by ${req.body.client_id}.`);
             }
 
             // Obj Type
