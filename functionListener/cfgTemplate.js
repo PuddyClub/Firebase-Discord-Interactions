@@ -4,6 +4,12 @@ module.exports = function (cfg) {
         // Commands
         commands: {},
 
+        // Debug
+        debug: false,
+
+        // Actions Notifications
+        actionNotifications: true,
+
         // Var Names
         varNames: {
 
