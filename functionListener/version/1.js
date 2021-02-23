@@ -152,7 +152,8 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
         if (req.body.type === di.InteractionType.COMMAND) {
                               
             // Warn
-            await logger.log(`New command made by ${req.body.client_id}.\nName: ${req.body.data.name}\nAuthor: ${req.body.member.user.username}#${req.body.member.user.discriminator} (${req.body.member.user.id})`);
+            await logger.log(req.body);
+            //await logger.log(`New command made by ${req.body.client_id}.\nName: ${req.body.data.name}\nAuthor: ${req.body.member.user.username}#${req.body.member.user.discriminator} (${req.body.member.user.id})`);
 
             // Obj Type
             const objType = require('@tinypudding/puddy-lib/get/objType');
