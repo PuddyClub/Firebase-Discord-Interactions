@@ -222,17 +222,13 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
     try {
 
         // Debug
-        if (tinyCfg.debug) {
-            await logger.log('The script V1 is being read...');
-        }
+        if (tinyCfg.debug) { await logger.log('The script V1 is being read...'); }
 
         // Is Command
         if (req.body.type === di.InteractionType.COMMAND) {
 
             // Debug
-            if (tinyCfg.debug) {
-                await logger.log('The request is a command...');
-            }
+            if (tinyCfg.debug) { await logger.log('The request is a command...'); }
 
             // Warn
             if (tinyCfg.actionNotifications) {
@@ -257,9 +253,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
             ) {
 
                 // Debug
-                if (tinyCfg.debug) {
-                    await logger.log('The request data was validated...');
-                }
+                if (tinyCfg.debug) { await logger.log('The request data was validated...'); }
 
                 // Final Result
                 const final_result = {
@@ -288,25 +282,19 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                 };
 
                 // Debug
-                if (tinyCfg.debug) {
-                    await logger.log('The methods of the command script was read...');
-                }
+                if (tinyCfg.debug) { await logger.log('The methods of the command script was read...'); }
 
                 // Normal Callback
                 if (!tinyCfg.forceInvalidCommandCallback) {
 
                     // Debug
-                    if (tinyCfg.debug) {
-                        await logger.log('Reading a command...');
-                    }
+                    if (tinyCfg.debug) { await logger.log('Reading a command...'); }
 
                     // Get by name
                     if (typeof tinyCfg.commands[req.body.data.name] === "function") {
 
                         // Debug
-                        if (tinyCfg.debug) {
-                            await logger.log('Starting the command "' + req.body.data.name + '"...');
-                        }
+                        if (tinyCfg.debug) { await logger.log('Starting the command "' + req.body.data.name + '"...'); }
 
                         // Result
                         await tinyCfg.commands[req.body.data.name](final_result);
@@ -317,9 +305,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                     else if (typeof tinyCfg.commands[req.body.id] === "function") {
 
                         // Debug
-                        if (tinyCfg.debug) {
-                            await logger.log('Starting the command id "' + req.body.id + '"...');
-                        }
+                        if (tinyCfg.debug) { await logger.log('Starting the command id "' + req.body.id + '"...'); }
 
                         // Result
                         await tinyCfg.commands[req.body.id](final_result);
@@ -330,9 +316,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                     else {
 
                         // Debug
-                        if (tinyCfg.debug) {
-                            await logger.log('Invalid Command!');
-                        }
+                        if (tinyCfg.debug) { await logger.log('Invalid Command!'); }
 
                         // Result
                         await tinyCfg.invalidCommandCallback(final_result);
@@ -346,13 +330,11 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                 else {
 
                     // Debug
-                    if (tinyCfg.debug) {
-                        await logger.log('Invalid Command Forced!');
-                    }
+                    if (tinyCfg.debug) { await logger.log('Invalid Command Forced!'); }
 
                     // Result
                     await tinyCfg.invalidCommandCallback(final_result);
-                
+
                 }
 
             }
