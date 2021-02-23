@@ -221,8 +221,18 @@ const createMessageEditor = function (interaction, version = '/v8') {
 module.exports = async function (req, res, logger, di, tinyCfg) {
     try {
 
+        // Debug
+        if (tinyCfg.debug) {
+            await logger.log('The script V1 is being read...');
+        }
+
         // Is Command
         if (req.body.type === di.InteractionType.COMMAND) {
+
+            // Debug
+            if (tinyCfg.debug) {
+                await logger.log('The request is a command...');
+            }
 
             // Warn
             if (tinyCfg.actionNotifications) {
@@ -245,6 +255,11 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                 (typeof req.body.id === "string" || typeof req.body.id === "number") &&
                 (typeof req.body.token === "string" || typeof req.body.token === "number")
             ) {
+
+                // Debug
+                if (tinyCfg.debug) {
+                    await logger.log('The request data was validated...');
+                }
 
                 // Final Result
                 const final_result = {
@@ -272,36 +287,79 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
 
                 };
 
+                // Debug
+                if (tinyCfg.debug) {
+                    await logger.log('The methods of the command script was read...');
+                }
+
                 // Normal Callback
                 if (!tinyCfg.forceInvalidCommandCallback) {
 
-                    // Get by name
-                    if (typeof tinyCfg.commands[req.body.data.name] === "function") {
-                        tinyCfg.commands[req.body.data.name](final_result);
+                    // Debug
+                    if (tinyCfg.debug) {
+                        await logger.log('Reading a command...');
                     }
 
                     // Get by name
+                    if (typeof tinyCfg.commands[req.body.data.name] === "function") {
+
+                        // Debug
+                        if (tinyCfg.debug) {
+                            await logger.log('Starting the command "' + req.body.data.name + '"...');
+                        }
+
+                        // Result
+                        await tinyCfg.commands[req.body.data.name](final_result);
+
+                    }
+
+                    // Get by ID
                     else if (typeof tinyCfg.commands[req.body.id] === "function") {
-                        tinyCfg.commands[req.body.id](final_result);
+
+                        // Debug
+                        if (tinyCfg.debug) {
+                            await logger.log('Starting the command id "' + req.body.id + '"...');
+                        }
+
+                        // Result
+                        await tinyCfg.commands[req.body.id](final_result);
+
                     }
 
                     // Nothing
                     else {
-                        tinyCfg.invalidCommandCallback(final_result);
+
+                        // Debug
+                        if (tinyCfg.debug) {
+                            await logger.log('Invalid Command!');
+                        }
+
+                        // Result
+                        await tinyCfg.invalidCommandCallback(final_result);
+
                     }
+
 
                 }
 
                 // Nope
                 else {
-                    tinyCfg.invalidCommandCallback(final_result);
+
+                    // Debug
+                    if (tinyCfg.debug) {
+                        await logger.log('Invalid Command Forced!');
+                    }
+
+                    // Result
+                    await tinyCfg.invalidCommandCallback(final_result);
+                
                 }
 
             }
 
             // Nope
             else {
-                tinyCfg.errorCallback(req, res, 500, 'The commands could not be loaded!');
+                await tinyCfg.errorCallback(req, res, 500, 'The commands could not be loaded!');
             }
 
         }
@@ -315,7 +373,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
         // Nope
         else {
             await logger.warn(`The Bot ID ${req.body.client_id} made a unknown action.`);
-            tinyCfg.errorCallback(req, res, 404, 'Type not found!');
+            await tinyCfg.errorCallback(req, res, 404, 'Type not found!');
         }
 
         // Complete
@@ -323,7 +381,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
 
     } catch (err) {
         await logger.error(err);
-        tinyCfg.errorCallback(req, res, 500, 'Server Error!');
+        await tinyCfg.errorCallback(req, res, 500, 'Server Error!');
         return;
     }
 };

@@ -1,4 +1,4 @@
-module.exports = function (req, res, logger, tinyCfg) {
+module.exports = async function (req, res, logger, tinyCfg) {
 
     // Object Type
     const objType = require('@tinypudding/puddy-lib/get/objType');
@@ -27,8 +27,19 @@ module.exports = function (req, res, logger, tinyCfg) {
     // Exist Firebase
     if (app) {
 
+        // Debug
+        if (tinyCfg.debug) {
+            await logger.log('Using Firebase Config...');
+            await logger.log(tinyCfg.firebase);
+        }
+
         // Get DB
         if (typeof req.query[tinyCfg.varNames.bot] === "string") {
+
+            // Debug
+            if (tinyCfg.debug) {
+                await logger.log('Reading Bot String: ' + req.query[tinyCfg.varNames.bot]);
+            }
 
             // Firebase Lib
             const databaseEscape = require('@tinypudding/firebase-lib/databaseEscape');
@@ -40,10 +51,20 @@ module.exports = function (req, res, logger, tinyCfg) {
             // Get Public Key
             getDBData(db.child('public_key')).then(async public_key => {
 
+                // Debug
+                if (tinyCfg.debug) {
+                    await logger.log('Bot Public Key was read...');
+                }
+
                 // Complete Action
                 const completeAction = async function (client_id) {
 
                     if (typeof public_key === "string") {
+
+                        // Debug
+                        if (tinyCfg.debug) {
+                            await logger.log('Bot Public Key was validated...');
+                        }
 
                         // Prepare Validation
                         const di = require('discord-interactions');
@@ -57,6 +78,11 @@ module.exports = function (req, res, logger, tinyCfg) {
 
                             // Is Valid
                             if (isValidRequest) {
+
+                                // Debug
+                                if (tinyCfg.debug) {
+                                    await logger.log('The command request was validated...');
+                                }
 
                                 // Version Validator
                                 if (typeof req.body.version !== "number" || isNaN(req.body.version) || !isFinite(req.body.version) || req.body.version < 1) {
@@ -102,8 +128,16 @@ module.exports = function (req, res, logger, tinyCfg) {
                 // Get Client ID
                 if (tinyCfg.getClientID) {
                     getDBData(db.child('client_id')).then(async client_id => {
+
+                        // Debug
+                        if (tinyCfg.debug) {
+                            await logger.log('Bot Client ID was read...');
+                        }
+
+                        // Complete
                         await completeAction(client_id);
                         return;
+
                     }).catch(async err => {
                         await logger.error(err);
                         tinyCfg.errorCallback(req, res, 404, 'Bot ID not found!');
