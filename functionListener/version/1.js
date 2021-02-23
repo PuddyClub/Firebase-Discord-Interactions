@@ -6,7 +6,12 @@ const getValues = {
 
         // Result
         const result = {};
+
+        // Is Member
         if (interaction.member && interaction.member.user) {
+
+            // Member
+            result.isMember = true;
 
             // ID
             result.id = interaction.member.user.id;
@@ -26,6 +31,23 @@ const getValues = {
 
             // Complete
             return result;
+
+        }
+
+        // Is User
+        else if (interaction.user) {
+
+            // Member
+            result.isMember = false;
+
+            // ID
+            result.id = interaction.user.id;
+
+            // Username
+            result.username = interaction.user.username;
+            result.discriminator = interaction.user.discriminator;
+            result.name = interaction.user.username;
+            result.tag = result.username + '#' + result.discriminator;
 
         }
 
@@ -150,10 +172,11 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
 
         // Is Command
         if (req.body.type === di.InteractionType.COMMAND) {
-                              
+
             // Warn
-            await logger.log(req.body);
-            //await logger.log(`New command made by ${req.body.client_id}.\nName: ${req.body.data.name}\nAuthor: ${req.body.member.user.username}#${req.body.member.user.discriminator} (${req.body.member.user.id})`);
+            if (req.body.member) {
+                await logger.log(`New command made by ${req.body.client_id}.\nName: ${req.body.data.name}\nAuthor: ${req.body.member.user.username}#${req.body.member.user.discriminator} (${req.body.member.user.id})`);
+            }
 
             // Obj Type
             const objType = require('@tinypudding/puddy-lib/get/objType');
