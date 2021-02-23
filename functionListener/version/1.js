@@ -168,26 +168,51 @@ const getValues = {
 };
 
 // Message Editor Generator
-const messageEditorGenerator = function (interaction, messageID = '@original') {
+const messageEditorGenerator = function (interaction, messageID = '@original', version = '/v8') {
 
     // Get Module
     const interactionResponse = require('../interactionResponse');
 
     // Prepare Response
     const response = {};
-    
+
     // Edit Message
-    response.edit = interactionResponse(`https://discord.com/api/v8/webhooks/${interaction.id}/${interaction.token}/messages/${messageID}`, {
+    response.edit = interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.id}/${interaction.token}/messages/${messageID}`, {
         method: 'PATCH'
     });
 
     // Delete Message
-    response.delete = interactionResponse(`https://discord.com/api/v8/webhooks/${interaction.id}/${interaction.token}/messages/${messageID}`, {
+    response.delete = interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.id}/${interaction.token}/messages/${messageID}`, {
         method: 'DELETE'
     });
 
     // Complete
     return response;
+
+};
+
+// Create Message Editor
+const createMessageEditor = function (interaction, version = '/v8') {
+
+    // Get Module
+    const interactionResponse = require('../interactionResponse');
+
+    // Return
+    return function (data) {
+        return new Promise(function (resolve, reject) {
+
+            // Result
+            interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.id}/${interaction.token}`)(data).then(data => {
+                return { data: data, msg: messageEditorGenerator(interaction, data.id) }
+            }).catch(err => {
+                reject(err);
+            });
+
+            // Complete
+            return;
+
+        });
+    };
 
 };
 
@@ -217,7 +242,30 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
             ) {
 
                 // Final Result
-                const final_result = { data: req.body, di: di, res: res, get: getValues, cfg: tinyCfg, msg: messageEditorGenerator(req.body) };
+                const final_result = {
+
+                    // interaction
+                    data: req.body,
+
+                    // Discord Interactions Module
+                    di: di,
+
+                    // Response
+                    res: res,
+
+                    // Get Value Manager
+                    get: getValues,
+
+                    // Config
+                    cfg: tinyCfg,
+
+                    // Message Editor
+                    msg: messageEditorGenerator(req.body),
+
+                    // New Message
+                    newMsg: createMessageEditor(req.body)
+
+                };
 
                 // Normal Callback
                 if (!tinyCfg.forceInvalidCommandCallback) {
