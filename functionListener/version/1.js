@@ -203,9 +203,11 @@ const createMessageEditor = function (interaction, version = '/v8') {
 
             // Result
             interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.id}/${interaction.token}`)(data).then(data => {
-                return { data: data, msg: messageEditorGenerator(interaction, data.id) }
+                resolve({ data: data, msg: messageEditorGenerator(interaction, data.id) });
+                return;
             }).catch(err => {
                 reject(err);
+                return;
             });
 
             // Complete
