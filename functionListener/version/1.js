@@ -262,12 +262,11 @@ const getValues = {
                                     if (typeof theItem.type === "string" && typeof theItem.name === "string") {
 
                                         // Look for
-                                        const finalResult = result.options.find(option => option.name === theItem.name && option.type === getValues.types[theItem.type.toLowerCase()]);
+                                        const type = theItem.type.toLowerCase();
+                                        const finalResult = result.options.find(option => option.name === theItem.name && option.type === getValues.types[type]);
 
                                         // Found
-                                        if (finalResult) {
-                                            
-                                        }
+                                        if (finalResult) { return getValues.items[type]({ data: { options: [finalResult] } })(theItem.name); }
 
                                         // Nope
                                         else { return null; }
