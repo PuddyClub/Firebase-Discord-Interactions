@@ -463,7 +463,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                     types: getValues.types,
 
                     // Reply Message
-                    reply: function (msg, type) {
+                    reply: function (msg, type, isNewMessage = false) {
 
                         // Prepare Result
                         const result = {};
@@ -481,7 +481,9 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                         }
 
                         // Send Result
-                        return res.json(result);
+                        if (!isNewMessage) { return res.json(result); } else {
+                            return final_result.newMsg(result);
+                        }
 
                     }
 
