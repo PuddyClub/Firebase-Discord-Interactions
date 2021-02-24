@@ -14,13 +14,7 @@ tinyCfg.invalidCommandCallback = function (result) {
     console.log(result.data);
     
     // Reply
-    return result.res.json({
-        type: result.di.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-            tts: false,
-            content: 'This command has no functionality!'
-        },
-    }).then(data => {
+    return result.reply('This command has no functionality!').then(data => {
         console.log(result.data.id + ' was replied!');
         console.log(data);
     }).catch(err => {
@@ -40,13 +34,7 @@ tinyCfg.commands = {
         console.log(result);
         
         // Reply
-        return result.res.json({
-            type: result.di.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-                tts: false,
-                content: 'Your pudding is here! 🍮'
-            },
-        }).then(data => {
+        return result.reply('Your pudding is here! 🍮').then(data => {
             console.log(result.data.id + ' was replied with a pudding!');
             console.log(data);
         }).catch(err => {
