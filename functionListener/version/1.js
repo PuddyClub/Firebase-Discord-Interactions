@@ -2,10 +2,10 @@
 const getValues = {
 
     // Create Functions
-    createFunctions: function () {
+    createFunctions: function (interaction) {
 
         // Result
-        const result = { interaction };
+        const result = {};
 
         // Get Items
         for (const item in getValues.items) {
