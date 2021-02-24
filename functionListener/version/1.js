@@ -202,15 +202,80 @@ const getValues = {
 
                 // Prepare Options
                 if (interaction.data.options) {
-                    
+
                     // Look for
                     const result = interaction.data.options.find(option => option.name === where && option.type === 1);
-                    
+
                     // Found
                     if (result) { return true; }
 
                     // Nope
                     else { return false; }
+
+                }
+
+                // Nope
+                else { return null; }
+
+            };
+        },
+
+        subCommandGroup: function (interaction) {
+            return function (where, subCommand, item) {
+
+                // Prepare Options
+                if (interaction.data.options) {
+
+                    // Look for
+                    const result = interaction.data.options.find(option => option.name === where && option.type === 2);
+
+                    // Found
+                    if (result) {
+
+                        // Look for
+                        const nextResult = result.options.find(option => option.name === subCommand && option.type === 1);
+
+                        // Exist Item
+                        if (typeof item === "string" || Array.isArray(item)) {
+
+                            // Found
+                            if (nextResult) { 
+                                
+                                // String
+                                if(typeof item === "string") {
+
+                                }
+
+                                // Array
+                                else if(Array.isArray(item)) {
+
+                                }
+
+                                // Nothing
+                                else { return null; }
+
+                             }
+
+                            // Nope
+                            else { return null; }
+
+                        }
+
+                        // Nope
+                        else {
+
+                            // Found
+                            if (nextResult) { return true; }
+
+                            // Nope
+                            else { return false; }
+
+                        }
+
+                    }
+
+                    // Nope
+                    else { return null; }
 
                 }
 
