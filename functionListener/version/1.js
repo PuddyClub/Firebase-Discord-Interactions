@@ -197,10 +197,25 @@ const getValues = {
             };
         },
 
-        sub_command: function (interaction) {
+        subCommand: function (interaction) {
             return function (where) {
 
+                // Prepare Options
+                if (interaction.data.options) {
+                    
+                    // Look for
+                    const result = interaction.data.options.find(option => option.name === where && option.type === 1);
+                    
+                    // Found
+                    if (result) { return true; }
 
+                    // Nope
+                    else { return false; }
+
+                }
+
+                // Nope
+                else { return null; }
 
             };
         }
