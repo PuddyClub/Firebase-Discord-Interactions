@@ -457,7 +457,10 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                     msg: messageEditorGenerator(req.body),
 
                     // New Message
-                    newMsg: createMessageEditor(req.body)
+                    newMsg: createMessageEditor(req.body),
+
+                    // Types
+                    types: getValues.types
 
                 };
 
