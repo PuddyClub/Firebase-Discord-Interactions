@@ -1,6 +1,17 @@
 // Get Values
 const getValues = {
 
+    types: {
+        'sub_command': 1,
+        'sub_command_group': 2,
+        'string': 3,
+        'integer': 4,
+        'boolean': 5,
+        'user': 6,
+        'channel': 7,
+        'role': 8
+    },
+
     // Create Functions
     createFunctions: function (interaction) {
 
@@ -235,26 +246,66 @@ const getValues = {
                         // Look for
                         const nextResult = result.options.find(option => option.name === subCommand && option.type === 1);
 
+                        // Obj Type
+                        const objType = require('@tinypudding/puddy-lib/get/objType');
+
                         // Exist Item
-                        if (typeof item === "string" || Array.isArray(item)) {
+                        if (objType(item, 'object') || Array.isArray(item)) {
 
                             // Found
-                            if (nextResult) { 
-                                
-                                // String
-                                if(typeof item === "string") {
+                            if (nextResult) {
 
+                                // Get Value
+                                const getValue = function (theItem) {
+
+                                    // Validator
+                                    if (typeof theItem.type === "string" && typeof theItem.name === "string") {
+
+                                        // Look for
+                                        const finalResult = result.options.find(option => option.name === theItem.name && option.type === getValues.types[theItem.type.toLowerCase()]);
+
+                                    }
+
+                                    // Nope
+                                    else { return null; }
+
+                                };
+
+                                // Object
+                                if (objType(item, 'object')) {
+                                    return getValue(item);
                                 }
 
                                 // Array
-                                else if(Array.isArray(item)) {
+                                else if (Array.isArray(item)) {
+
+                                    // Prepare Final Result
+                                    const finalResult = [];
+
+                                    // Get Values
+                                    for (const i in item) {
+
+                                        // Object
+                                        if (objType(item, 'object')) {
+                                            finalResult.push(getValue(item[i]));
+                                        }
+
+                                        // Nope
+                                        else {
+                                            finalResult.push(null);
+                                        }
+
+                                    }
+
+                                    // Complete
+                                    return finalResult;
 
                                 }
 
                                 // Nothing
                                 else { return null; }
 
-                             }
+                            }
 
                             // Nope
                             else { return null; }
