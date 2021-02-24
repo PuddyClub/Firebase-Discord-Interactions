@@ -37,7 +37,7 @@ tinyCfg.commands = {
 
         // Debug
         console.log('Pudding Command Received!');
-        console.log(result.data);
+        console.log(result);
         
         // Reply
         return result.res.json({
