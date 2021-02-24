@@ -264,6 +264,14 @@ const getValues = {
                                         // Look for
                                         const finalResult = result.options.find(option => option.name === theItem.name && option.type === getValues.types[theItem.type.toLowerCase()]);
 
+                                        // Found
+                                        if (finalResult) {
+                                            
+                                        }
+
+                                        // Nope
+                                        else { return null; }
+
                                     }
 
                                     // Nope
