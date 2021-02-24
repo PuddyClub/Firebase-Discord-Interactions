@@ -460,7 +460,30 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                     newMsg: createMessageEditor(req.body),
 
                     // Types
-                    types: getValues.types
+                    types: getValues.types,
+
+                    // Reply Message
+                    reply: function (msg, type) {
+
+                        // Prepare Result
+                        const result = {};
+
+                        // String Message
+                        if (typeof msg === "string") {
+                            result.data = { tts: false, content: msg };
+                        } else if (objType(msg, 'object')) {
+                            result.data = msg;
+                        }
+
+                        // No Type
+                        if (typeof type !== "number") { result.type = di.InteractionResponseType.CHANNEL_MESSAGE; } else {
+                            result.type = type;
+                        }
+
+                        // Send Result
+                        return res.json(result);
+
+                    }
 
                 };
 
