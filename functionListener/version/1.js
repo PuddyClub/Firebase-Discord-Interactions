@@ -1,92 +1,73 @@
 // Get Values
 const getValues = {
 
-    // Author
-    author: function (interaction) {
+    // Create Functions
+    createFunctions: function () {
 
         // Result
-        const result = {};
+        const result = { interaction };
 
-        // Is Member
-        if (interaction.member && interaction.member.user) {
-
-            // Member
-            result.isMember = true;
-
-            // ID
-            result.id = interaction.member.user.id;
-
-            // Username
-            result.username = interaction.member.user.username;
-            result.discriminator = interaction.member.user.discriminator;
-            result.tag = result.username + '#' + result.discriminator;
-
-            // Name
-            if (typeof interaction.member.nick === "string") {
-                result.nick = interaction.member.nick;
-                result.name = interaction.member.nick;
-            } else if (typeof interaction.member.user.username === "string") {
-                result.name = interaction.member.user.username;
-            }
-
-            // Complete
-            return result;
-
+        // Get Items
+        for (const item in getValues.items) {
+            result[item] = getValues.items[item](interaction);
         }
 
-        // Is User
-        else if (interaction.user) {
-
-            // Member
-            result.isMember = false;
-
-            // ID
-            result.id = interaction.user.id;
-
-            // Username
-            result.username = interaction.user.username;
-            result.discriminator = interaction.user.discriminator;
-            result.name = interaction.user.username;
-            result.tag = result.username + '#' + result.discriminator;
-
-            // Complete
-            return result;
-
-        }
-
-        // Nope
-        else { return null; }
+        // Send
+        return result;
 
     },
 
-    // User
-    user: function (interaction, where) {
+    // Functions List
+    items: {
 
-        // Result
-        const result = {};
+        // Author
+        author: function (interaction) {
+            return function () {
 
-        // Prepare ID
-        if (interaction.data.options) {
-            result.id = interaction.data.options.find(option => option.name === where && option.type === 6);
-            if (result.id) {
+                // Result
+                const result = {};
 
-                // Get ID
-                result.id = result.id.value;
+                // Is Member
+                if (interaction.member && interaction.member.user) {
 
-                // Username
-                if (interaction.data.resolved && interaction.data.resolved.users && interaction.data.resolved.users[result.id]) {
+                    // Member
+                    result.isMember = true;
 
-                    result.username = interaction.data.resolved.users[result.id].username;
-                    result.discriminator = interaction.data.resolved.users[result.id].discriminator;
+                    // ID
+                    result.id = interaction.member.user.id;
+
+                    // Username
+                    result.username = interaction.member.user.username;
+                    result.discriminator = interaction.member.user.discriminator;
                     result.tag = result.username + '#' + result.discriminator;
 
                     // Name
-                    if (interaction.data.resolved.members && interaction.data.resolved.members[result.id] && typeof interaction.data.resolved.members[result.id].nick === "string") {
-                        result.nick = interaction.data.resolved.members[result.id].nick;
-                        result.name = interaction.data.resolved.members[result.id].nick;
-                    } else {
-                        result.name = interaction.data.resolved.users[result.id].username;
+                    if (typeof interaction.member.nick === "string") {
+                        result.nick = interaction.member.nick;
+                        result.name = interaction.member.nick;
+                    } else if (typeof interaction.member.user.username === "string") {
+                        result.name = interaction.member.user.username;
                     }
+
+                    // Complete
+                    return result;
+
+                }
+
+                // Is User
+                else if (interaction.user) {
+
+                    // Member
+                    result.isMember = false;
+
+                    // ID
+                    result.id = interaction.user.id;
+
+                    // Username
+                    result.username = interaction.user.username;
+                    result.discriminator = interaction.user.discriminator;
+                    result.name = interaction.user.username;
+                    result.tag = result.username + '#' + result.discriminator;
 
                     // Complete
                     return result;
@@ -96,75 +77,133 @@ const getValues = {
                 // Nope
                 else { return null; }
 
-            }
+            };
+        },
 
-            // Nope
-            else { return null; }
+        // User
+        user: function (interaction) {
+            return function (where) {
 
+                // Result
+                const result = {};
+
+                // Prepare ID
+                if (interaction.data.options) {
+                    result.id = interaction.data.options.find(option => option.name === where && option.type === 6);
+                    if (result.id) {
+
+                        // Get ID
+                        result.id = result.id.value;
+
+                        // Username
+                        if (interaction.data.resolved && interaction.data.resolved.users && interaction.data.resolved.users[result.id]) {
+
+                            result.username = interaction.data.resolved.users[result.id].username;
+                            result.discriminator = interaction.data.resolved.users[result.id].discriminator;
+                            result.tag = result.username + '#' + result.discriminator;
+
+                            // Name
+                            if (interaction.data.resolved.members && interaction.data.resolved.members[result.id] && typeof interaction.data.resolved.members[result.id].nick === "string") {
+                                result.nick = interaction.data.resolved.members[result.id].nick;
+                                result.name = interaction.data.resolved.members[result.id].nick;
+                            } else {
+                                result.name = interaction.data.resolved.users[result.id].username;
+                            }
+
+                            // Complete
+                            return result;
+
+                        }
+
+                        // Nope
+                        else { return null; }
+
+                    }
+
+                    // Nope
+                    else { return null; }
+
+                }
+
+                // Nope
+                else { return null; }
+
+            };
+        },
+
+        // Boolean
+        boolean: function (interaction) {
+            return function (where) {
+
+                // Prepare Options
+                if (interaction.data.options) {
+                    const result = interaction.data.options.find(option => option.name === where && option.type === 5);
+                    if (result) {
+                        if (typeof result.value === "boolean" && result.value) { return true; } else { return false; }
+                    }
+
+                    // Nope
+                    else { return null; }
+
+                }
+
+                // Nope
+                else { return null; }
+
+            };
+        },
+
+        // String
+        string: function (interaction) {
+            return function (where) {
+
+                // Prepare Options
+                if (interaction.data.options) {
+                    const result = interaction.data.options.find(option => option.name === where && option.type === 3);
+                    if (result) {
+                        if (typeof result.value === "string") { return result.value; } else { return null; }
+                    }
+
+                    // Nope
+                    else { return null; }
+
+                }
+
+                // Nope
+                else { return null; }
+
+            };
+        },
+
+        // String
+        integer: function (interaction) {
+            return function (where) {
+
+                // Prepare Options
+                if (interaction.data.options) {
+                    const result = interaction.data.options.find(option => option.name === where && option.type === 4);
+                    if (result) {
+                        if (typeof result.value === "number") { return result.value; } else { return null; }
+                    }
+
+                    // Nope
+                    else { return null; }
+
+                }
+
+                // Nope
+                else { return null; }
+
+            };
+        },
+
+        sub_command: function (interaction) {
+            return function (where) {
+
+
+
+            };
         }
-
-        // Nope
-        else { return null; }
-
-    },
-
-    // Boolean
-    boolean: function (interaction, where) {
-
-        // Prepare Options
-        if (interaction.data.options) {
-            const result = interaction.data.options.find(option => option.name === where && option.type === 5);
-            if (result) {
-                if (typeof result.value === "boolean" && result.value) { return true; } else { return false; }
-            }
-
-            // Nope
-            else { return null; }
-
-        }
-
-        // Nope
-        else { return null; }
-
-    },
-
-    // String
-    string: function (interaction, where) {
-
-        // Prepare Options
-        if (interaction.data.options) {
-            const result = interaction.data.options.find(option => option.name === where && option.type === 3);
-            if (result) {
-                if (typeof result.value === "string") { return result.value; } else { return null; }
-            }
-
-            // Nope
-            else { return null; }
-
-        }
-
-        // Nope
-        else { return null; }
-
-    },
-
-    // String
-    integer: function (interaction, where) {
-
-        // Prepare Options
-        if (interaction.data.options) {
-            const result = interaction.data.options.find(option => option.name === where && option.type === 4);
-            if (result) {
-                if (typeof result.value === "number") { return result.value; } else { return null; }
-            }
-
-            // Nope
-            else { return null; }
-
-        }
-
-        // Nope
-        else { return null; }
 
     }
 
@@ -270,11 +309,11 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                     // Response
                     res: res,
 
-                    // Get Value Manager
-                    get: getValues,
-
                     // Config
                     cfg: tinyCfg,
+
+                    // Get Value Manager
+                    get: getValues.createFunctions(req.body),
 
                     // Message Editor
                     msg: messageEditorGenerator(req.body),
