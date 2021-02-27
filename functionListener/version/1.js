@@ -472,7 +472,16 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                         if (typeof msg === "string") {
                             result.data = { tts: false, content: msg };
                         } else if (objType(msg, 'object')) {
+
+                            // Insert Data
                             result.data = msg;
+
+                            // Embed
+                            if (objType(result.data.embed, 'object')) {
+                                result.data.embeds = [result.data.embed];
+                                delete result.data.embed;
+                            }
+
                         }
 
                         // No Type
