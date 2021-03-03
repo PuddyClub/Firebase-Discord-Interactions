@@ -32,7 +32,7 @@ const getValues = {
     items: {
 
         // Author
-        author: function (interaction) {
+        author: function (interaction, bot) {
             return function () {
 
                 // Result
@@ -92,7 +92,7 @@ const getValues = {
         },
 
         // User
-        user: function (interaction) {
+        user: function (interaction, bot) {
             return function (where) {
 
                 // Result
@@ -236,7 +236,7 @@ const getValues = {
             };
         },
 
-        subCommandGroup: function (interaction) {
+        subCommandGroup: function (interaction, bot) {
             return function (where, subCommand, item) {
 
                 // Prepare Options
