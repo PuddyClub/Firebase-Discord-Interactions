@@ -107,8 +107,8 @@ const getValues = {
                             // Get ID
                             result.id = result.id.value;
 
-                            // Username
-                            if (interaction.data.resolved && interaction.data.resolved.users && interaction.data.resolved.users[result.id]) {
+                            // Final Result data
+                            const finalResultData = function () {
 
                                 result.username = interaction.data.resolved.users[result.id].username;
                                 result.discriminator = interaction.data.resolved.users[result.id].discriminator;
@@ -124,7 +124,13 @@ const getValues = {
 
                                 // Complete
                                 resolve(result);
+                                return;
 
+                            };
+
+                            // Username
+                            if (interaction.data.resolved && interaction.data.resolved.users && interaction.data.resolved.users[result.id]) {
+                                finalResultData();
                             }
 
                             // Try Discord Bot
@@ -132,6 +138,11 @@ const getValues = {
 
                                 // Interaction
                                 const fixInteractionValues = function (user, member) {
+
+                                    // Fix Values
+                                    if (!interaction.data.resolved) { interaction.data.resolved = {}; }
+                                    if (!interaction.data.members) { interaction.data.members = {}; }
+                                    if (!interaction.data.users) { interaction.data.users = {}; }
 
                                     // Complete
                                     return;
