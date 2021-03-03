@@ -202,6 +202,9 @@ const getValues = {
                                         bot.guilds.fetch(interaction.guild_id).then(guild => {
                                             guild.members.fetch(result.id).then(member => {
                                                 return fixInteractionValues(member.user, member);
+                                            }).catch(err => {
+                                                reject(err);
+                                                return;
                                             });
                                             return;
                                         }).catch(err => {
@@ -247,7 +250,7 @@ const getValues = {
         },
 
         // Channel
-        channel: function (interaction) {
+        channel: function (interaction, bot) {
             return function (where) {
                 return new Promise((resolve, reject) => {
 
@@ -266,7 +269,10 @@ const getValues = {
                             // Final Result data
                             const finalResultData = function () {
 
-                                
+                                // Data
+                                result.name = interaction.data.resolved.channels[result.id].name;
+                                result.permissions = interaction.data.resolved.channels[result.id].permissions;
+                                result.type = interaction.data.resolved.channels[result.id].type;
 
                                 // Complete
                                 resolve(result);
@@ -287,6 +293,16 @@ const getValues = {
 
                                     // Fix Values
                                     if (!interaction.data.resolved) { interaction.data.resolved = {}; }
+                                    if (!interaction.data.resolved.channels) { interaction.data.resolved.channels = {}; }
+                                    if (!interaction.data.resolved.channels[result.id]) { interaction.data.resolved.channels[result.id] = {}; }
+
+                                    // Discord JS Values
+                                    interaction.data.resolved.discordjs = { channel: channel };
+
+                                    // Insert Values
+                                    interaction.data.resolved.channels[result.id].name = channel.name;
+                                    //interaction.data.resolved.channels[result.id].permissions = channel.name;
+                                    interaction.data.resolved.channels[result.id].id = result.id;
 
                                     // Complete
                                     return;
@@ -300,11 +316,33 @@ const getValues = {
                                     if (typeof interaction.guild_id === "string" || (typeof interaction.guild_id === "number")) {
                                         bot.guilds.fetch(interaction.guild_id).then(guild => {
 
-                                            guild.channels.fetch(result.id).then(channel => {
-                                                return fixInteractionValues(channel);
-                                            });
+                                            // Get Fetch
+                                            const getFetch = function () {
+                                                return bot.channels.fetch(result.id).then(channel => {
+                                                    return fixInteractionValues(channel);
+                                                }).catch(err => {
+                                                    reject(err);
+                                                    return;
+                                                });
+                                            };
+
+                                            // Get Cache
+                                            if (guild.channels && guild.channels.cache) {
+
+                                                // Get Channel
+                                                const channel = guild.channels.cache.get(result.id);
+                                                if (channel) { fixInteractionValues(channel); } else {
+                                                    getFetch();
+                                                }
+
+                                            }
+
+                                            // Nope
+                                            else { getFetch(); }
+
+                                            // Complete
                                             return;
-                                        
+
                                         }).catch(err => {
                                             reject(err);
                                             return;
@@ -312,7 +350,7 @@ const getValues = {
                                     }
 
                                     // Normal User
-                                    else {reject(new Error('Guild not found!'))}
+                                    else { reject(new Error('Guild not found!')) }
 
                                 }
 
@@ -341,7 +379,7 @@ const getValues = {
         },
 
         // Role
-        role: function (interaction) {
+        role: function (interaction, bot) {
             return function (where) {
                 return new Promise((resolve, reject) => {
 
@@ -360,7 +398,7 @@ const getValues = {
                             // Final Result data
                             const finalResultData = function () {
 
-                                
+
 
                                 // Complete
                                 resolve(result);
@@ -398,7 +436,7 @@ const getValues = {
                                                 return fixInteractionValues(role);
                                             });
                                             return;
-                                        
+
                                         }).catch(err => {
                                             reject(err);
                                             return;
@@ -406,7 +444,7 @@ const getValues = {
                                     }
 
                                     // Normal User
-                                    else {reject(new Error('Guild not found!'))}
+                                    else { reject(new Error('Guild not found!')) }
 
                                 }
 
