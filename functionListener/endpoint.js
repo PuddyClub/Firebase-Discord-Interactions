@@ -9,6 +9,12 @@ module.exports = async function (req, res, logger, tinyCfg) {
     // Exist Firebase
     if (objType(tinyCfg.firebase, 'object')) {
 
+        // Debug
+        if (tinyCfg.debug) {
+            await logger.log('Using Firebase Config...');
+            await logger.log(tinyCfg.firebase);
+        }
+
         // New Firebase
         if (objType(tinyCfg.firebase.options, 'object')) {
 
@@ -22,12 +28,6 @@ module.exports = async function (req, res, logger, tinyCfg) {
         // Nope
         else { app = tinyCfg.firebase; }
 
-    }
-
-    // Debug
-    if (tinyCfg.debug) {
-        await logger.log('Using Firebase Config...');
-        await logger.log(tinyCfg.firebase);
     }
 
     // Get DB
@@ -149,7 +149,7 @@ module.exports = async function (req, res, logger, tinyCfg) {
         }
 
         // Get App Values
-        else if(objType(tinyCfg.app, 'object') && objType(tinyCfg.app[req.query[tinyCfg.varNames.bot]], 'object')) {
+        else if (objType(tinyCfg.app, 'object') && objType(tinyCfg.app[req.query[tinyCfg.varNames.bot]], 'object')) {
             await completeAction(tinyCfg.app[req.query[tinyCfg.varNames.bot]].client_id, tinyCfg.app[req.query[tinyCfg.varNames.bot]].public_key);
         }
 
