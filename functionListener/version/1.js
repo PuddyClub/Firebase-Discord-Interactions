@@ -111,6 +111,7 @@ const getValues = {
                             // Final Result data
                             const finalResultData = function () {
 
+                                // Username
                                 result.username = interaction.data.resolved.users[result.id].username;
                                 result.discriminator = interaction.data.resolved.users[result.id].discriminator;
                                 result.tag = result.username + '#' + result.discriminator;
