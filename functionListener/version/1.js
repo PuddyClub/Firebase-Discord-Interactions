@@ -271,7 +271,7 @@ const getValues = {
                                         const finalResult = result.options.find(option => option.name === theItem.name && option.type === getValues.types[type]);
 
                                         // Found
-                                        if (finalResult) { return getValues.items[type]({ data: { options: [finalResult] } })(theItem.name); }
+                                        if (finalResult) { return getValues.items[type]({ data: { options: [finalResult] } }, bot)(theItem.name); }
 
                                         // Nope
                                         else { return null; }
