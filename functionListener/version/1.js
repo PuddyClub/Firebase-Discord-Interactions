@@ -93,64 +93,69 @@ const getValues = {
 
         // User
         user: function (interaction, bot) {
-            return async function (where) {
+            return function (where) {
+                return new Promise((resolve, reject) => {
 
-                // Result
-                const result = {};
+                    // Result
+                    const result = {};
 
-                // Prepare ID
-                if (interaction.data.options) {
-                    result.id = interaction.data.options.find(option => option.name === where && option.type === 6);
-                    if (result.id) {
+                    // Prepare ID
+                    if (interaction.data.options) {
+                        result.id = interaction.data.options.find(option => option.name === where && option.type === 6);
+                        if (result.id) {
 
-                        // Get ID
-                        result.id = result.id.value;
+                            // Get ID
+                            result.id = result.id.value;
 
-                        // Username
-                        if (interaction.data.resolved && interaction.data.resolved.users && interaction.data.resolved.users[result.id]) {
+                            // Username
+                            if (interaction.data.resolved && interaction.data.resolved.users && interaction.data.resolved.users[result.id]) {
 
-                            result.username = interaction.data.resolved.users[result.id].username;
-                            result.discriminator = interaction.data.resolved.users[result.id].discriminator;
-                            result.tag = result.username + '#' + result.discriminator;
+                                result.username = interaction.data.resolved.users[result.id].username;
+                                result.discriminator = interaction.data.resolved.users[result.id].discriminator;
+                                result.tag = result.username + '#' + result.discriminator;
 
-                            // Name
-                            if (interaction.data.resolved.members && interaction.data.resolved.members[result.id] && typeof interaction.data.resolved.members[result.id].nick === "string") {
-                                result.nick = interaction.data.resolved.members[result.id].nick;
-                                result.name = interaction.data.resolved.members[result.id].nick;
-                            } else {
-                                result.name = interaction.data.resolved.users[result.id].username;
-                            }
+                                // Name
+                                if (interaction.data.resolved.members && interaction.data.resolved.members[result.id] && typeof interaction.data.resolved.members[result.id].nick === "string") {
+                                    result.nick = interaction.data.resolved.members[result.id].nick;
+                                    result.name = interaction.data.resolved.members[result.id].nick;
+                                } else {
+                                    result.name = interaction.data.resolved.users[result.id].username;
+                                }
 
-                            // Complete
-                            return result;
-
-                        }
-
-                        // Try Discord Bot
-                        else {
-
-                            // Exist Bot
-                            if(objType(bot, 'object')) {
+                                // Complete
+                                return result;
 
                             }
 
-                            // Nope
+                            // Try Discord Bot
                             else {
-                                return null;
+
+                                // Exist Bot
+                                if (objType(bot, 'object')) {
+
+                                }
+
+                                // Nope
+                                else {
+                                    return null;
+                                }
+
                             }
 
                         }
+
+                        // Nope
+                        else { return null; }
 
                     }
 
                     // Nope
                     else { return null; }
 
-                }
+                    // Complete
+                    return;
 
-                // Nope
-                else { return null; }
-
+                });
             };
         },
 
