@@ -426,7 +426,15 @@ const getValues = {
                             // Final Result data
                             const finalResultData = function () {
 
-
+                                // Data
+                                result.color = interaction.data.resolved.roles[result.id].color;
+                                result.hoist = interaction.data.resolved.roles[result.id].hoist;
+                                result.managed = interaction.data.resolved.roles[result.id].managed;
+                                result.mentionable = interaction.data.resolved.roles[result.id].mentionable;
+                                result.permissions = interaction.data.resolved.roles[result.id].permissions;
+                                result.position = interaction.data.resolved.roles[result.id].position;
+                                result.tags = interaction.data.resolved.roles[result.id].tags;
+                                result.name = interaction.data.resolved.roles[result.id].name;
 
                                 // Complete
                                 resolve(result);
@@ -463,6 +471,9 @@ const getValues = {
 
                                             guild.roles.fetch(result.id).then(role => {
                                                 return fixInteractionValues(role);
+                                            }).catch(err => {
+                                                reject(err);
+                                                return;
                                             });
                                             return;
 
