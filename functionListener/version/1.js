@@ -274,7 +274,7 @@ const getValues = {
                             };
 
                             // Username
-                            if (interaction.data.resolved && interaction.data.resolved.users && interaction.data.resolved.users[result.id]) {
+                            if (interaction.data.resolved && interaction.data.resolved.channels && interaction.data.resolved.channels[result.id]) {
                                 finalResultData();
                             }
 
@@ -282,7 +282,7 @@ const getValues = {
                             else {
 
                                 // Interaction
-                                const fixInteractionValues = function (user, member) {
+                                const fixInteractionValues = function (channel) {
 
                                     // Fix Values
                                     if (!interaction.data.resolved) { interaction.data.resolved = {}; }
@@ -298,10 +298,12 @@ const getValues = {
                                     // Member User
                                     if (typeof interaction.guild_id === "string" || (typeof interaction.guild_id === "number")) {
                                         bot.guilds.fetch(interaction.guild_id).then(guild => {
-                                            guild.members.fetch(result.id).then(member => {
-                                                return fixInteractionValues(member.user, member);
+
+                                            guild.channels.fetch(result.id).then(channel => {
+                                                return fixInteractionValues(channel);
                                             });
                                             return;
+                                        
                                         }).catch(err => {
                                             reject(err);
                                             return;
@@ -366,7 +368,7 @@ const getValues = {
                             };
 
                             // Username
-                            if (interaction.data.resolved && interaction.data.resolved.users && interaction.data.resolved.users[result.id]) {
+                            if (interaction.data.resolved && interaction.data.resolved.roles && interaction.data.resolved.roles[result.id]) {
                                 finalResultData();
                             }
 
@@ -374,7 +376,7 @@ const getValues = {
                             else {
 
                                 // Interaction
-                                const fixInteractionValues = function (user, member) {
+                                const fixInteractionValues = function (role) {
 
                                     // Fix Values
                                     if (!interaction.data.resolved) { interaction.data.resolved = {}; }
@@ -390,10 +392,12 @@ const getValues = {
                                     // Member User
                                     if (typeof interaction.guild_id === "string" || (typeof interaction.guild_id === "number")) {
                                         bot.guilds.fetch(interaction.guild_id).then(guild => {
-                                            guild.members.fetch(result.id).then(member => {
-                                                return fixInteractionValues(member.user, member);
+
+                                            guild.roles.fetch(result.id).then(role => {
+                                                return fixInteractionValues(role);
                                             });
                                             return;
+                                        
                                         }).catch(err => {
                                             reject(err);
                                             return;
