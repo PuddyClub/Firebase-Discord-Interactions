@@ -248,48 +248,184 @@ const getValues = {
         // Channel
         channel: function (interaction) {
             return function (where) {
+                return new Promise((resolve, reject) => {
 
-                // Prepare Options
-                if (interaction.data.options) {
-                    const result = interaction.data.options.find(option => option.name === where  && (typeof option.type !== "number" || option.type === 7));
-                    if (result) {
-                        
-                        return result;
-                        
+                    // Result
+                    const result = {};
+
+                    // Prepare ID
+                    const objType = require('@tinypudding/puddy-lib/get/objType');
+                    if (Array.isArray(interaction.data.options)) {
+                        result.id = interaction.data.options.find(option => option.name === where && (typeof option.type !== "number" || option.type === 7));
+                        if (result.id) {
+
+                            // Get ID
+                            result.id = result.id.value;
+
+                            // Final Result data
+                            const finalResultData = function () {
+
+                                
+
+                                // Complete
+                                resolve(result);
+                                return;
+
+                            };
+
+                            // Username
+                            if (interaction.data.resolved && interaction.data.resolved.users && interaction.data.resolved.users[result.id]) {
+                                finalResultData();
+                            }
+
+                            // Try Discord Bot
+                            else {
+
+                                // Interaction
+                                const fixInteractionValues = function (user, member) {
+
+                                    // Fix Values
+                                    if (!interaction.data.resolved) { interaction.data.resolved = {}; }
+
+                                    // Complete
+                                    return;
+
+                                };
+
+                                // Exist Bot
+                                if (objType(bot, 'object')) {
+
+                                    // Member User
+                                    if (typeof interaction.guild_id === "string" || (typeof interaction.guild_id === "number")) {
+                                        bot.guilds.fetch(interaction.guild_id).then(guild => {
+                                            guild.members.fetch(result.id).then(member => {
+                                                return fixInteractionValues(member.user, member);
+                                            });
+                                            return;
+                                        }).catch(err => {
+                                            reject(err);
+                                            return;
+                                        });
+                                    }
+
+                                    // Normal User
+                                    else {reject(new Error('Guild not found!'))}
+
+                                }
+
+                                // Nope
+                                else {
+                                    reject(new Error('Channel Data not found!'));
+                                }
+
+                            }
+
+                        }
+
+                        // Nope
+                        else { reject(new Error('User ID not found!')); }
+
                     }
 
                     // Nope
-                    else { return null; }
+                    else { reject(new Error('Data Options not found!')); }
 
-                }
+                    // Complete
+                    return;
 
-                // Nope
-                else { return null; }
-
+                });
             };
         },
 
         // Role
         role: function (interaction) {
             return function (where) {
+                return new Promise((resolve, reject) => {
 
-                // Prepare Options
-                if (interaction.data.options) {
-                    const result = interaction.data.options.find(option => option.name === where  && (typeof option.type !== "number" || option.type === 8));
-                    if (result) {
-                        
-                        return result;
-                        
+                    // Result
+                    const result = {};
+
+                    // Prepare ID
+                    const objType = require('@tinypudding/puddy-lib/get/objType');
+                    if (Array.isArray(interaction.data.options)) {
+                        result.id = interaction.data.options.find(option => option.name === where && (typeof option.type !== "number" || option.type === 8));
+                        if (result.id) {
+
+                            // Get ID
+                            result.id = result.id.value;
+
+                            // Final Result data
+                            const finalResultData = function () {
+
+                                
+
+                                // Complete
+                                resolve(result);
+                                return;
+
+                            };
+
+                            // Username
+                            if (interaction.data.resolved && interaction.data.resolved.users && interaction.data.resolved.users[result.id]) {
+                                finalResultData();
+                            }
+
+                            // Try Discord Bot
+                            else {
+
+                                // Interaction
+                                const fixInteractionValues = function (user, member) {
+
+                                    // Fix Values
+                                    if (!interaction.data.resolved) { interaction.data.resolved = {}; }
+
+                                    // Complete
+                                    return;
+
+                                };
+
+                                // Exist Bot
+                                if (objType(bot, 'object')) {
+
+                                    // Member User
+                                    if (typeof interaction.guild_id === "string" || (typeof interaction.guild_id === "number")) {
+                                        bot.guilds.fetch(interaction.guild_id).then(guild => {
+                                            guild.members.fetch(result.id).then(member => {
+                                                return fixInteractionValues(member.user, member);
+                                            });
+                                            return;
+                                        }).catch(err => {
+                                            reject(err);
+                                            return;
+                                        });
+                                    }
+
+                                    // Normal User
+                                    else {reject(new Error('Guild not found!'))}
+
+                                }
+
+                                // Nope
+                                else {
+                                    reject(new Error('Role Data not found!'));
+                                }
+
+                            }
+
+                        }
+
+                        // Nope
+                        else { reject(new Error('User ID not found!')); }
+
                     }
 
                     // Nope
-                    else { return null; }
+                    else { reject(new Error('Data Options not found!')); }
 
-                }
+                    // Complete
+                    return;
 
-                // Nope
-                else { return null; }
-
+                });
             };
         },
 
@@ -299,7 +435,7 @@ const getValues = {
 
                 // Prepare Options
                 if (interaction.data.options) {
-                    const result = interaction.data.options.find(option => option.name === where  && (typeof option.type !== "number" || option.type === 5));
+                    const result = interaction.data.options.find(option => option.name === where && (typeof option.type !== "number" || option.type === 5));
                     if (result) {
                         if (typeof result.value === "boolean" && result.value) { return true; } else { return false; }
                     }
@@ -321,7 +457,7 @@ const getValues = {
 
                 // Prepare Options
                 if (interaction.data.options) {
-                    const result = interaction.data.options.find(option => option.name === where  && (typeof option.type !== "number" || option.type === 3));
+                    const result = interaction.data.options.find(option => option.name === where && (typeof option.type !== "number" || option.type === 3));
                     if (result) {
                         if (typeof result.value === "string") { return result.value; } else { return null; }
                     }
@@ -343,7 +479,7 @@ const getValues = {
 
                 // Prepare Options
                 if (interaction.data.options) {
-                    const result = interaction.data.options.find(option => option.name === where  && (typeof option.type !== "number" || option.type === 4));
+                    const result = interaction.data.options.find(option => option.name === where && (typeof option.type !== "number" || option.type === 4));
                     if (result) {
                         if (typeof result.value === "number") { return result.value; } else { return null; }
                     }
@@ -366,7 +502,7 @@ const getValues = {
                 if (interaction.data.options) {
 
                     // Look for
-                    const result = interaction.data.options.find(option => option.name === where  && (typeof option.type !== "number" || option.type === 1));
+                    const result = interaction.data.options.find(option => option.name === where && (typeof option.type !== "number" || option.type === 1));
 
                     // Found
                     if (result) { return true; }
@@ -389,13 +525,13 @@ const getValues = {
                 if (interaction.data.options) {
 
                     // Look for
-                    const result = interaction.data.options.find(option => option.name === where  && (typeof option.type !== "number" || option.type === 2));
+                    const result = interaction.data.options.find(option => option.name === where && (typeof option.type !== "number" || option.type === 2));
 
                     // Found
                     if (result) {
 
                         // Look for
-                        const nextResult = result.options.find(option => option.name === subCommand  && (typeof option.type !== "number" || option.type === 1));
+                        const nextResult = result.options.find(option => option.name === subCommand && (typeof option.type !== "number" || option.type === 1));
 
                         // Obj Type
                         const objType = require('@tinypudding/puddy-lib/get/objType');
