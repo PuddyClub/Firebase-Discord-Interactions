@@ -100,8 +100,8 @@ const getValues = {
                     const result = {};
 
                     // Prepare ID
-                    if (interaction.data.options) {
-                        result.id = interaction.data.options.find(option => option.name === where && option.type === 6);
+                    if (Array.isArray(interaction.data.options)) {
+                        result.id = interaction.data.options.find(option => option.name === where && (typeof option.type !== "number" || option.type === 6));
                         if (result.id) {
 
                             // Get ID
@@ -155,7 +155,13 @@ const getValues = {
                                     // Create User
                                     const createUserBase = function () {
 
-
+                                        // Create User data
+                                        /* interaction.data.resolved.users[result.id].avatar = ;
+                                        interaction.data.resolved.users[result.id].bot = ;
+                                        interaction.data.resolved.users[result.id].discriminator = ;
+                                        interaction.data.resolved.users[result.id].id = result.id;
+                                        interaction.data.resolved.users[result.id].public_flags = ;
+                                        interaction.data.resolved.users[result.id].username = ; */
 
                                         // Complete
                                         return;
@@ -164,6 +170,15 @@ const getValues = {
 
                                     // Exist Member
                                     if (member) {
+
+                                        // Create User data
+                                        /* interaction.data.resolved.members[result.id].is_pending = false;
+                                        interaction.data.resolved.members[result.id].joined_at = ;
+                                        interaction.data.resolved.members[result.id].nick = ;
+                                        interaction.data.resolved.members[result.id].pending = false;
+                                        interaction.data.resolved.members[result.id].premium_since = ;
+                                        interaction.data.resolved.members[result.id].roles = ; */
+
 
                                         // Create User Base
                                         createUserBase();
@@ -236,7 +251,7 @@ const getValues = {
 
                 // Prepare Options
                 if (interaction.data.options) {
-                    const result = interaction.data.options.find(option => option.name === where && option.type === 5);
+                    const result = interaction.data.options.find(option => option.name === where  && (typeof option.type !== "number" || option.type === 5));
                     if (result) {
                         if (typeof result.value === "boolean" && result.value) { return true; } else { return false; }
                     }
@@ -258,7 +273,7 @@ const getValues = {
 
                 // Prepare Options
                 if (interaction.data.options) {
-                    const result = interaction.data.options.find(option => option.name === where && option.type === 3);
+                    const result = interaction.data.options.find(option => option.name === where  && (typeof option.type !== "number" || option.type === 3));
                     if (result) {
                         if (typeof result.value === "string") { return result.value; } else { return null; }
                     }
@@ -280,7 +295,7 @@ const getValues = {
 
                 // Prepare Options
                 if (interaction.data.options) {
-                    const result = interaction.data.options.find(option => option.name === where && option.type === 4);
+                    const result = interaction.data.options.find(option => option.name === where  && (typeof option.type !== "number" || option.type === 4));
                     if (result) {
                         if (typeof result.value === "number") { return result.value; } else { return null; }
                     }
@@ -303,7 +318,7 @@ const getValues = {
                 if (interaction.data.options) {
 
                     // Look for
-                    const result = interaction.data.options.find(option => option.name === where && option.type === 1);
+                    const result = interaction.data.options.find(option => option.name === where  && (typeof option.type !== "number" || option.type === 1));
 
                     // Found
                     if (result) { return true; }
@@ -326,13 +341,13 @@ const getValues = {
                 if (interaction.data.options) {
 
                     // Look for
-                    const result = interaction.data.options.find(option => option.name === where && option.type === 2);
+                    const result = interaction.data.options.find(option => option.name === where  && (typeof option.type !== "number" || option.type === 2));
 
                     // Found
                     if (result) {
 
                         // Look for
-                        const nextResult = result.options.find(option => option.name === subCommand && option.type === 1);
+                        const nextResult = result.options.find(option => option.name === subCommand  && (typeof option.type !== "number" || option.type === 1));
 
                         // Obj Type
                         const objType = require('@tinypudding/puddy-lib/get/objType');

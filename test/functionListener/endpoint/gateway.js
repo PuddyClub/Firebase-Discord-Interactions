@@ -49,6 +49,26 @@ tinyCfg.invalidCommandCallback = function (result) {
 // Invalid Command
 tinyCfg.commands = {
 
+    user: async function (result) {
+
+        // Debug
+        console.log('Pudding Command Received!');
+        console.log(result);
+
+        const user = await result.get.user('user');
+        console.log(user);
+
+        // Reply
+        return result.reply('Test User Complete').then(data => {
+            console.log(result.data.id + ' was replied with a pudding!');
+            console.log(data);
+        }).catch(err => {
+            console.log(result.data.id + ' returned a error with a pudding!');
+            console.error(err);
+        });
+
+    },
+
     pudding: function (result) {
 
         // Debug
