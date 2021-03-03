@@ -141,8 +141,13 @@ const getValues = {
 
                                     // Fix Values
                                     if (!interaction.data.resolved) { interaction.data.resolved = {}; }
-                                    if (!interaction.data.members) { interaction.data.members = {}; }
-                                    if (!interaction.data.users) { interaction.data.users = {}; }
+                                    if (!interaction.data.resolved.members) { interaction.data.resolved.members = {}; }
+                                    if (!interaction.data.resolved.users) { interaction.data.resolved.users = {}; }
+                                    if (!interaction.data.resolved.users[result.id]) { interaction.data.resolved.users[result.id] = {}; }
+                                    if (!interaction.data.resolved.members[result.id]) { interaction.data.resolved.members[result.id] = {}; }
+
+                                    // Discord JS Values
+                                    interaction.data.resolved.discordjs = member;
 
                                     // Complete
                                     return;
