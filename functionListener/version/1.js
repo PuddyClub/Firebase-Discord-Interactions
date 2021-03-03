@@ -245,6 +245,54 @@ const getValues = {
             };
         },
 
+        // Channel
+        channel: function (interaction) {
+            return function (where) {
+
+                // Prepare Options
+                if (interaction.data.options) {
+                    const result = interaction.data.options.find(option => option.name === where  && (typeof option.type !== "number" || option.type === 7));
+                    if (result) {
+                        
+                        return result;
+                        
+                    }
+
+                    // Nope
+                    else { return null; }
+
+                }
+
+                // Nope
+                else { return null; }
+
+            };
+        },
+
+        // Role
+        role: function (interaction) {
+            return function (where) {
+
+                // Prepare Options
+                if (interaction.data.options) {
+                    const result = interaction.data.options.find(option => option.name === where  && (typeof option.type !== "number" || option.type === 8));
+                    if (result) {
+                        
+                        return result;
+                        
+                    }
+
+                    // Nope
+                    else { return null; }
+
+                }
+
+                // Nope
+                else { return null; }
+
+            };
+        },
+
         // Boolean
         boolean: function (interaction) {
             return function (where) {
