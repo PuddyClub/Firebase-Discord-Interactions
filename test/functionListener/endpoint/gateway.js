@@ -52,11 +52,51 @@ tinyCfg.commands = {
     user: async function (result) {
 
         // Debug
-        console.log('Pudding Command Received!');
+        console.log('User Command Received!');
         console.log(result);
 
         const user = await result.get.user('user');
         console.log(user);
+
+        // Reply
+        return result.reply('Test User Complete').then(data => {
+            console.log(result.data.id + ' was replied with a pudding!');
+            console.log(data);
+        }).catch(err => {
+            console.log(result.data.id + ' returned a error with a pudding!');
+            console.error(err);
+        });
+
+    },
+
+    channel: async function (result) {
+
+        // Debug
+        console.log('Channel Command Received!');
+        console.log(result);
+
+        const channel = await result.get.user('channel');
+        console.log(channel);
+
+        // Reply
+        return result.reply('Test User Complete').then(data => {
+            console.log(result.data.id + ' was replied with a pudding!');
+            console.log(data);
+        }).catch(err => {
+            console.log(result.data.id + ' returned a error with a pudding!');
+            console.error(err);
+        });
+
+    },
+
+    role: async function (result) {
+
+        // Debug
+        console.log('Role Command Received!');
+        console.log(result);
+
+        const role = await result.get.user('role');
+        console.log(role);
 
         // Reply
         return result.reply('Test User Complete').then(data => {
