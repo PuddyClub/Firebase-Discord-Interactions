@@ -32,7 +32,7 @@ const getValues = {
     items: {
 
         // Author
-        author: function (interaction, bot) {
+        author: function (interaction) {
             return function () {
 
                 // Result
@@ -93,7 +93,7 @@ const getValues = {
 
         // User
         user: function (interaction, bot) {
-            return function (where) {
+            return async function (where) {
 
                 // Result
                 const result = {};
@@ -129,8 +129,15 @@ const getValues = {
                         // Try Discord Bot
                         else {
 
+                            // Exist Bot
+                            if(objType(bot, 'object')) {
+
+                            }
+
                             // Nope
-                            return null;
+                            else {
+                                return null;
+                            }
 
                         }
 
