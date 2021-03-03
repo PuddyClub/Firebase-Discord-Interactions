@@ -75,7 +75,7 @@ tinyCfg.commands = {
         console.log('Channel Command Received!');
         console.log(result);
 
-        const channel = await result.get.user('channel');
+        const channel = await result.get.channel('channel');
         console.log(channel);
 
         // Reply
@@ -95,7 +95,7 @@ tinyCfg.commands = {
         console.log('Role Command Received!');
         console.log(result);
 
-        const role = await result.get.user('role');
+        const role = await result.get.role('role');
         console.log(role);
 
         // Reply
