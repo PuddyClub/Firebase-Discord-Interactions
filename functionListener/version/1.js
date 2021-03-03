@@ -100,6 +100,7 @@ const getValues = {
                     const result = {};
 
                     // Prepare ID
+                    const objType = require('@tinypudding/puddy-lib/get/objType');
                     if (Array.isArray(interaction.data.options)) {
                         result.id = interaction.data.options.find(option => option.name === where && (typeof option.type !== "number" || option.type === 6));
                         if (result.id) {
@@ -156,12 +157,12 @@ const getValues = {
                                     const createUserBase = function () {
 
                                         // Create User data
-                                        /* interaction.data.resolved.users[result.id].avatar = ;
-                                        interaction.data.resolved.users[result.id].bot = ;
-                                        interaction.data.resolved.users[result.id].discriminator = ;
+                                        interaction.data.resolved.users[result.id].avatar = user.avatar;
+                                        interaction.data.resolved.users[result.id].bot = user.bot;
+                                        interaction.data.resolved.users[result.id].discriminator = user.discriminator;
                                         interaction.data.resolved.users[result.id].id = result.id;
-                                        interaction.data.resolved.users[result.id].public_flags = ;
-                                        interaction.data.resolved.users[result.id].username = ; */
+                                        interaction.data.resolved.users[result.id].public_flags = user.flags;
+                                        interaction.data.resolved.users[result.id].username = user.username;
 
                                         // Complete
                                         return;
@@ -172,13 +173,12 @@ const getValues = {
                                     if (member) {
 
                                         // Create User data
-                                        /* interaction.data.resolved.members[result.id].is_pending = false;
-                                        interaction.data.resolved.members[result.id].joined_at = ;
-                                        interaction.data.resolved.members[result.id].nick = ;
+                                        interaction.data.resolved.members[result.id].is_pending = false;
+                                        interaction.data.resolved.members[result.id].joined_at = member.joinedAt;
+                                        interaction.data.resolved.members[result.id].nick = member.nickname;
                                         interaction.data.resolved.members[result.id].pending = false;
-                                        interaction.data.resolved.members[result.id].premium_since = ;
-                                        interaction.data.resolved.members[result.id].roles = ; */
-
+                                        interaction.data.resolved.members[result.id].premium_since = member.premiumSince;
+                                        interaction.data.resolved.members[result.id].roles = member._roles;
 
                                         // Create User Base
                                         createUserBase();
