@@ -127,12 +127,12 @@ const getValues = {
                         }
 
                         // Try Discord Bot
-                        else { 
+                        else {
 
                             // Nope
                             return null;
 
-                         }
+                        }
 
                     }
 
@@ -441,8 +441,15 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                 if (tinyCfg.debug) { await logger.log('The request data was validated...'); }
 
                 // Get Discord Bot Token
-                if(objType(tinyCfg.bot, 'object') && typeof tinyCfg.bot.token !== "string" && typeof tinyCfg.bot.token !== "number" && objType(tinyCfg.app, 'object')) {
-                    
+                if (
+                    objType(tinyCfg.bot, 'object') &&
+                    typeof tinyCfg.bot.token !== "string" &&
+                    typeof tinyCfg.bot.token !== "number" &&
+                    objType(tinyCfg.app, 'object') &&
+                    objType(tinyCfg.app[req.query[tinyCfg.varNames.bot]], 'object') &&
+                    (typeof tinyCfg.app[req.query[tinyCfg.varNames.bot]].bot_token === "string" || typeof tinyCfg.app[req.query[tinyCfg.varNames.bot]].bot_token == "number")
+                ) {
+                    tinyCfg.bot.token = tinyCfg.app[req.query[tinyCfg.varNames.bot]].bot_token;
                 }
 
                 // Final Result
