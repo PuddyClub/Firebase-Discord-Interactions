@@ -13,14 +13,14 @@ const getValues = {
     },
 
     // Create Functions
-    createFunctions: function (interaction) {
+    createFunctions: function (interaction, bot) {
 
         // Result
         const result = {};
 
         // Get Items
         for (const item in getValues.items) {
-            result[item] = getValues.items[item](interaction);
+            result[item] = getValues.items[item](interaction, bot);
         }
 
         // Send
@@ -468,7 +468,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                     cfg: tinyCfg,
 
                     // Get Value Manager
-                    get: getValues.createFunctions(req.body),
+                    get: getValues.createFunctions(req.body, tinyCfg.bot),
 
                     // Message Editor
                     msg: messageEditorGenerator(req.body),
