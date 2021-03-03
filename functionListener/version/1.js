@@ -152,7 +152,26 @@ const getValues = {
                                         user: user
                                     };
 
-                                    
+                                    // Create User
+                                    const createUserBase = function () {
+
+
+
+                                        // Complete
+                                        return;
+
+                                    };
+
+                                    // Exist Member
+                                    if (member) {
+
+                                        // Create User Base
+                                        createUserBase();
+
+                                    }
+
+                                    // Nope
+                                    else { createUserBase(); }
 
                                     // Complete
                                     return;
