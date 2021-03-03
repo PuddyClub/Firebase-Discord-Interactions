@@ -274,6 +274,32 @@ const getValues = {
                                 result.permissions = interaction.data.resolved.channels[result.id].permissions;
                                 result.type = interaction.data.resolved.channels[result.id].type;
 
+                                // Types
+                                if (typeof result.type === "number") {
+
+                                    // Text
+                                    if (result.type === 0) { result.type = 'text'; }
+
+                                    // DM
+                                    else if (result.type === 1) { result.type = 'dm'; }
+
+                                    // Voice
+                                    else if (result.type === 2) { result.type = 'voice'; }
+
+                                    // Category
+                                    else if (result.type === 4) { result.type = 'category'; }
+
+                                    // News
+                                    else if (result.type === 5) { result.type = 'news'; }
+
+                                    // Store
+                                    else if (result.type === 6) { result.type = 'store'; }
+
+                                    // Group
+                                    else if (result.type === 3) { result.type = 'group'; }
+
+                                }
+
                                 // Complete
                                 resolve(result);
                                 return;
@@ -301,7 +327,8 @@ const getValues = {
 
                                     // Insert Values
                                     interaction.data.resolved.channels[result.id].name = channel.name;
-                                    //interaction.data.resolved.channels[result.id].permissions = channel.name;
+                                    interaction.data.resolved.channels[result.id].permissions = channel.permissions;
+                                    interaction.data.resolved.channels[result.id].type = channel.type;
                                     interaction.data.resolved.channels[result.id].id = result.id;
 
                                     // Complete
