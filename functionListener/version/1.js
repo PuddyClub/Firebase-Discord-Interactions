@@ -147,7 +147,12 @@ const getValues = {
                                     if (!interaction.data.resolved.members[result.id]) { interaction.data.resolved.members[result.id] = {}; }
 
                                     // Discord JS Values
-                                    interaction.data.resolved.discordjs = member;
+                                    interaction.data.resolved.discordjs = {
+                                        member: member,
+                                        user: user
+                                    };
+
+                                    
 
                                     // Complete
                                     return;
