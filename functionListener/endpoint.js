@@ -136,7 +136,7 @@ module.exports = async function (req, res, logger, tinyCfg) {
                 }
 
                 // Nope
-                else { await completeAction(null); }
+                else { await completeAction(); }
 
                 // Complete
                 return;
