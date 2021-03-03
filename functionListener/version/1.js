@@ -328,7 +328,6 @@ const getValues = {
 
                                     // Insert Values
                                     interaction.data.resolved.channels[result.id].name = channel.name;
-                                    interaction.data.resolved.channels[result.id].permissions = channel.permissions;
                                     interaction.data.resolved.channels[result.id].type = channel.type;
                                     interaction.data.resolved.channels[result.id].id = result.id;
 
