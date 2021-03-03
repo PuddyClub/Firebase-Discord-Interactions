@@ -123,21 +123,52 @@ const getValues = {
                                 }
 
                                 // Complete
-                                return result;
+                                resolve(result);
 
                             }
 
                             // Try Discord Bot
                             else {
 
+                                // Interaction
+                                const fixInteractionValues = function (user, member) {
+
+                                    // Complete
+                                    return;
+
+                                };
+
                                 // Exist Bot
                                 if (objType(bot, 'object')) {
+
+                                    // Member User
+                                    if (typeof interaction.guild_id === "string" || (typeof interaction.guild_id === "number")) {
+                                        bot.guilds.fetch(interaction.guild_id).then(guild => {
+                                            guild.members.fetch(result.id).then(member => {
+                                                return fixInteractionValues(member.user, member);
+                                            });
+                                            return;
+                                        }).catch(err => {
+                                            reject(err);
+                                            return;
+                                        });
+                                    }
+
+                                    // Normal User
+                                    else {
+                                        bot.users.fetch(result.id).then(user => {
+                                            return fixInteractionValues(user);
+                                        }).catch(err => {
+                                            reject(err);
+                                            return;
+                                        });
+                                    }
 
                                 }
 
                                 // Nope
                                 else {
-                                    return null;
+                                    reject(new Error('User Data not found!'));
                                 }
 
                             }
@@ -145,12 +176,12 @@ const getValues = {
                         }
 
                         // Nope
-                        else { return null; }
+                        else { reject(new Error('User ID not found!')); }
 
                     }
 
                     // Nope
-                    else { return null; }
+                    else { reject(new Error('Data Options not found!')); }
 
                     // Complete
                     return;
