@@ -126,8 +126,13 @@ const getValues = {
 
                         }
 
-                        // Nope
-                        else { return null; }
+                        // Try Discord Bot
+                        else { 
+
+                            // Nope
+                            return null;
+
+                         }
 
                     }
 
@@ -434,6 +439,11 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
 
                 // Debug
                 if (tinyCfg.debug) { await logger.log('The request data was validated...'); }
+
+                // Get Discord Bot Token
+                if(objType(tinyCfg.bot, 'object') && typeof tinyCfg.bot.token !== "string" && typeof tinyCfg.bot.token !== "number" && objType(tinyCfg.app, 'object')) {
+                    
+                }
 
                 // Final Result
                 const final_result = {

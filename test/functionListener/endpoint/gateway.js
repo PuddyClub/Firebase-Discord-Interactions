@@ -18,6 +18,9 @@ bot.on('error', (data) => { logger.error(data); return; });
 
 bot.on('ready', () => { logger.log(`Bot Ready! ${bot.user.tag} (${bot.user.id})`); return; });
 
+// Bot
+tinyCfg.bot = bot;
+
 // Error Callback
 tinyCfg.errorCallback = function () {
     return;
