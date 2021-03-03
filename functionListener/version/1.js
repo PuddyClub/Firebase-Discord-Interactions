@@ -166,6 +166,7 @@ const getValues = {
                                         interaction.data.resolved.users[result.id].username = user.username;
 
                                         // Complete
+                                        finalResultData();
                                         return;
 
                                     };
@@ -332,6 +333,7 @@ const getValues = {
                                     interaction.data.resolved.channels[result.id].id = result.id;
 
                                     // Complete
+                                    finalResultData();
                                     return;
 
                                 };
@@ -448,6 +450,7 @@ const getValues = {
                                     if (!interaction.data.resolved) { interaction.data.resolved = {}; }
 
                                     // Complete
+                                    finalResultData();
                                     return;
 
                                 };
