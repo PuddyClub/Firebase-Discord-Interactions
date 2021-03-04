@@ -219,15 +219,16 @@ result.get.subCommandGroup(optionName, subCommandName, itemName); // return a su
 
 ### result.types
 Object of numbers with the option types for the value of "result.interaction.data[0].type".
-
-boolean<br/>
-channel<br/>
-integer<br/>
-role<br/>
-string<br/>
-user<br/>
-sub_command<br/>
-sub_command_group
+```js
+result.types.boolean;
+result.types.channel;
+result.types.integer;
+result.types.role;
+result.types.string;
+result.types.user;
+result.types.sub_command;
+result.types.sub_command_group;
+```
 
 <hr/>
 
