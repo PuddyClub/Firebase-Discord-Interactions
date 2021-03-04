@@ -210,13 +210,13 @@ Quick systems to obtain values that are within your slash command.<br/>
 ### result.types
 Object of numbers with the option types in the "result.interaction.data[0].type".
 
-boolean
-channel
-integer
-role
-string
-user
-sub_command
+boolean<br/>
+channel<br/>
+integer<br/>
+role<br/>
+string<br/>
+user<br/>
+sub_command<br/>
 sub_command_group
 
 <hr/>
