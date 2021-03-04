@@ -455,6 +455,8 @@ const getValues = {
 
                                     // Fix Values
                                     if (!interaction.data.resolved) { interaction.data.resolved = {}; }
+                                    if (!interaction.data.resolved.roles) { interaction.data.resolved.roles = {}; }
+                                    if (!interaction.data.resolved.roles[result.id]) = { interaction.data.resolved.roles[result.id] = {}; }
 
                                     // Complete
                                     finalResultData();
