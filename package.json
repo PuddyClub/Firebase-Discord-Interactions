@@ -1,7 +1,7 @@
 {
   "name": "@tinypudding/firebase-discord-interactions",
   "version": "1.4.0",
-  "description": "Use Firebase Database Realtime to synchronize your Discord Bot's command list.",
+  "description": "Use Firebase Database Realtime or static data to receivve your Discord Bot's commands from the command slash.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

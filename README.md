@@ -11,7 +11,62 @@
 </div>
 
 # Firebase-Discord-Interactions
-Use Firebase Database Realtime to synchronize your Discord Bot's command list.
+Use Firebase Database Realtime or static data to receivve your Discord Bot's commands from the command slash.
 
-# Information
-This repository is for the use of Tiny Pudding server functionality. The first commit was made to add the repository to the NPM, but soon the README will be updating teaching how to use this module.
+<hr/>
+
+## Function Listener
+This method is used within your HTTP request using the Express module.
+Once your request and response is sent into the module, the entire process will be done automatically.
+
+### req
+The Request Value from the express app module.
+
+### res
+The Response Value from the express app module.
+
+### options
+The module settings will be defined here.
+
+
+
+```js
+// Get Function Listener Base
+const functionListener = require('@tinypudding/firebase-discord-interactions/functionListener');
+
+// Options
+const options = {
+
+    // Error Callback
+    errorCallback: async function (req, res, code, message) {
+        await logger.log({ errorCode: code, message: message });
+        return error_page(res, code, message)
+    },
+
+    // Invalid Command
+    invalidCommandCallback: function (result) {
+        return result.res.json({
+            type: result.di.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+                tts: false,
+                content: 'This command has no functionality!'
+            },
+        });
+    },
+
+    // Firebase
+    firebase: {
+        app: cfg.firebase,
+        options: cfg.options
+    },
+
+    // Path
+    appPath: 'apps',
+    commands: commands,
+    varNames: varNames
+
+};
+
+// Start Module
+functionListener(req, res, options);
+```
