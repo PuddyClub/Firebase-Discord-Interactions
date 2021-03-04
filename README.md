@@ -178,3 +178,17 @@ All the configurations that are being used in the module will appear here.
 
 ### result.interaction
 All your interaction data is here.
+
+### result.di
+The module "discord-interactions" data.
+
+<hr/>
+
+## Not tested.
+
+### result.msg.delete
+Delete the message.
+
+### result.msg.edit
+Send a json in the first argument to edit the message. (All JSON options explained in the official Discord Documentation can be placed here.)
+
