@@ -53,6 +53,15 @@ You can insert an active or inactive Discord.JS Client to be used in conjunction
 ### options.varNames (Object / Optional)
 Here you can change the name of the http queries that will be used in the URL of your Discord Interaction Endpoint.
 
+### options.debug (Boolean / Optional)
+Enable the debug log.
+
+### options.actionNotifications (Boolean / Optional)
+Disable Action Notifications in the Log.
+
+### options.forceInvalidCommandCallback (Boolean / Optional)
+All commands will always return to the Invalid Command method.
+
 ```js
 // Get Function Listener Base
 const functionListener = require('@tinypudding/firebase-discord-interactions/functionListener');
