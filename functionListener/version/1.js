@@ -93,7 +93,7 @@ const getValues = {
 
         // User
         user: function (interaction, bot) {
-            return function (where) {
+            return function (where, forceBot = false) {
                 return new Promise((resolve, reject) => {
 
                     // Result
@@ -131,7 +131,7 @@ const getValues = {
                             };
 
                             // Username
-                            if (interaction.data.resolved && interaction.data.resolved.users && interaction.data.resolved.users[result.id]) {
+                            if (!forceBot && interaction.data.resolved && interaction.data.resolved.users && interaction.data.resolved.users[result.id]) {
                                 finalResultData();
                             }
 
@@ -253,7 +253,7 @@ const getValues = {
 
         // Channel
         channel: function (interaction, bot) {
-            return function (where) {
+            return function (where, forceBot = false) {
                 return new Promise((resolve, reject) => {
 
                     // Result
@@ -309,7 +309,7 @@ const getValues = {
                             };
 
                             // Username
-                            if (interaction.data.resolved && interaction.data.resolved.channels && interaction.data.resolved.channels[result.id]) {
+                            if (!forceBot && interaction.data.resolved && interaction.data.resolved.channels && interaction.data.resolved.channels[result.id]) {
                                 finalResultData();
                             }
 
@@ -411,7 +411,7 @@ const getValues = {
 
         // Role
         role: function (interaction, bot) {
-            return function (where) {
+            return function (where, forceBot = false) {
                 return new Promise((resolve, reject) => {
 
                     // Result
@@ -446,7 +446,7 @@ const getValues = {
                             };
 
                             // Username
-                            if (interaction.data.resolved && interaction.data.resolved.roles && interaction.data.resolved.roles[result.id]) {
+                            if (!forceBot && interaction.data.resolved && interaction.data.resolved.roles && interaction.data.resolved.roles[result.id]) {
                                 finalResultData();
                             }
 
