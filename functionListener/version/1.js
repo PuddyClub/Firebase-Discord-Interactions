@@ -205,12 +205,14 @@ const getValues = {
                                             guild.members.fetch(result.id).then(member => {
                                                 return fixInteractionValues(member.user, member);
                                             }).catch(err => {
-                                                reject(err);
+                                                result.err = err;
+                                                resolve(result);
                                                 return;
                                             });
                                             return;
                                         }).catch(err => {
-                                            reject(err);
+                                            result.err = err;
+                                            resolve(result);
                                             return;
                                         });
                                     }
@@ -220,7 +222,8 @@ const getValues = {
                                         bot.users.fetch(result.id).then(user => {
                                             return fixInteractionValues(user);
                                         }).catch(err => {
-                                            reject(err);
+                                            result.err = err;
+                                            resolve(result);
                                             return;
                                         });
                                     }
@@ -352,7 +355,8 @@ const getValues = {
                                                 return bot.channels.fetch(result.id).then(channel => {
                                                     return fixInteractionValues(channel);
                                                 }).catch(err => {
-                                                    reject(err);
+                                                    result.err = err;
+                                                    resolve(result);
                                                     return;
                                                 });
                                             };
@@ -375,7 +379,8 @@ const getValues = {
                                             return;
 
                                         }).catch(err => {
-                                            reject(err);
+                                            result.err = err;
+                                            resolve(result);
                                             return;
                                         });
                                     }
@@ -490,13 +495,15 @@ const getValues = {
                                             guild.roles.fetch(result.id).then(role => {
                                                 return fixInteractionValues(role);
                                             }).catch(err => {
-                                                reject(err);
+                                                result.err = err;
+                                                resolve(result);
                                                 return;
                                             });
                                             return;
 
                                         }).catch(err => {
-                                            reject(err);
+                                            result.err = err;
+                                            resolve(result);
                                             return;
                                         });
                                     }
