@@ -207,7 +207,7 @@ Quick systems to obtain values that are within your slash command.<br/>
 <strong>user(optionName, forceBot)</strong> - return a promise with the mentioned user.<br/>
 <strong>channel(optionName, forceBot)</strong> - return a promise with the mentioned channel.<br/>
 <strong>role(optionName, forceBot)</strong> - return a promise with the mentioned role.<br/>
-(forceBot will force the Discord.JS values from the mentioned value if you are using the Discord.JS with the module. The all data will be stored in the value "result.interaction.data.discordjs")
+<strong>(forceBot will force the Discord.JS values from the mentioned value if you are using the Discord.JS with the module. The all data will be stored in the value "result.interaction.data.discordjs")</strong>
 
 <strong>boolean(optionName)</strong> - return a boolean value.<br/>
 <strong>integer(optionName)</strong> - return a integer value.<br/>
