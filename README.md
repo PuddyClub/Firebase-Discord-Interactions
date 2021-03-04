@@ -192,3 +192,5 @@ Delete the message.
 ### result.msg.edit
 Send a json in the first argument to edit the message. (All JSON options explained in the official Discord Documentation can be placed here.)
 
+### result.newMsg
+Send a json in the first argument to create a message. (All JSON options explained in the official Discord Documentation can be placed here.)
