@@ -193,19 +193,19 @@ Place a string or an object with the JSON values that will be returned to the Di
 ### result.get
 Quick systems to obtain values that are within your slash command.
 
-author() - return the message author.
+<strong>author()</strong> - return the message author.
 
-user(optionName, forceBot) - return the mentioned user.
-channel(optionName, forceBot) - return the mentioned channel.
-role(optionName, forceBot) - return the mentioned role.
+<strong>user(optionName, forceBot)</strong> - return the mentioned user.
+<strong>channel(optionName, forceBot)</strong> - return the mentioned channel.
+<strong>role(optionName, forceBot)</strong> - return the mentioned role.
 (forceBot will force the Discord.JS values from the mentioned value if you are using the Discord.JS with the module. The all data will be stored in the value "result.interaction.data.discordjs")
 
-boolean(optionName) - return a boolean value.
-integer(optionName) - return a integer value.
-string(optionName) - return a boolean value.
+<strong>boolean(optionName)</strong> - return a boolean value.
+<strong>integer(optionName)</strong> - return a integer value.
+<strong>string(optionName)</strong> - return a boolean value.
 
-subCommand(optionName) - return a subCommand value.
-subCommandGroup(optionName, subCommandName, itemName) - return a subCommand group value. (Not Tested)
+<strong>subCommand(optionName)</strong> - return a subCommand value.
+<strong>subCommandGroup(optionName, subCommandName, itemName)</strong> - return a subCommand group value. (Not Tested)
 
 ### result.types
 Object of numbers with the option types in the "result.interaction.data[0].type".
