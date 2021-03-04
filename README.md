@@ -191,20 +191,20 @@ Place a string or an object with the JSON values that will be returned to the Di
 (All JSON options explained in the official Discord Documentation can be placed here.)
 
 ### result.get
-Quick systems to obtain values that are within your slash command.
+Quick systems to obtain values that are within your slash command.<br/>
 
-<strong>author()</strong> - return the message author.
+<strong>author()</strong> - return the message author.<br/>
 
-<strong>user(optionName, forceBot)</strong> - return the mentioned user.
-<strong>channel(optionName, forceBot)</strong> - return the mentioned channel.
-<strong>role(optionName, forceBot)</strong> - return the mentioned role.
+<strong>user(optionName, forceBot)</strong> - return the mentioned user.<br/>
+<strong>channel(optionName, forceBot)</strong> - return the mentioned channel.<br/>
+<strong>role(optionName, forceBot)</strong> - return the mentioned role.<br/>
 (forceBot will force the Discord.JS values from the mentioned value if you are using the Discord.JS with the module. The all data will be stored in the value "result.interaction.data.discordjs")
 
-<strong>boolean(optionName)</strong> - return a boolean value.
-<strong>integer(optionName)</strong> - return a integer value.
-<strong>string(optionName)</strong> - return a boolean value.
+<strong>boolean(optionName)</strong> - return a boolean value.<br/>
+<strong>integer(optionName)</strong> - return a integer value.<br/>
+<strong>string(optionName)</strong> - return a boolean value.<br/>
 
-<strong>subCommand(optionName)</strong> - return a subCommand value.
+<strong>subCommand(optionName)</strong> - return a subCommand value.<br/>
 <strong>subCommandGroup(optionName, subCommandName, itemName)</strong> - return a subCommand group value. (Not Tested)
 
 ### result.types
