@@ -182,6 +182,22 @@ All your interaction data is here.
 ### result.di
 The module "discord-interactions" data.
 
+### result.res
+The vanilla Express Response.
+It is recommended that you use only the methods: res.status | res.json
+
+### result.types
+Object of numbers with the option types in the "result.interaction.data[0].type".
+
+boolean
+channel
+integer
+role
+string
+user
+sub_command
+sub_command_group
+
 <hr/>
 
 ## Not tested.
