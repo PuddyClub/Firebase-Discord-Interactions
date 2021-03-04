@@ -11,7 +11,7 @@
     "url": "git+https://github.com/TinyPudding/Firebase-Discord-Interactions.git"
   },
   "keywords": [
-    "discord-interactions"
+    "discord-interactions", "discord-js", "discord", "command-slash", "express", "http", "plugin"
   ],
   "author": "Yasmin Seidel (JasminDreasond)",
   "license": "MIT",
