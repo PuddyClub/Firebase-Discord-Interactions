@@ -467,14 +467,12 @@ const getValues = {
                                     interaction.data.discordjs.roles[result.id] = role;
 
                                     // Data
-                                    /* interaction.data.resolved.roles[result.id].color = ;
-                                    interaction.data.resolved.roles[result.id].hoist = ;
-                                    interaction.data.resolved.roles[result.id].managed = ;
-                                    interaction.data.resolved.roles[result.id].mentionable = ;
-                                    interaction.data.resolved.roles[result.id].permissions = ;
-                                    interaction.data.resolved.roles[result.id].position = ;
-                                    interaction.data.resolved.roles[result.id].tags = ;
-                                    interaction.data.resolved.roles[result.id].name = ; */
+                                    interaction.data.resolved.roles[result.id].color = role.color;
+                                    interaction.data.resolved.roles[result.id].hoist = role.hoist;
+                                    interaction.data.resolved.roles[result.id].managed = role.managed;
+                                    interaction.data.resolved.roles[result.id].mentionable = role.mentionable;
+                                    interaction.data.resolved.roles[result.id].position = role.position;
+                                    interaction.data.resolved.roles[result.id].name = role.name;
 
                                     // Complete
                                     finalResultData();
