@@ -1,6 +1,6 @@
 {
   "name": "@tinypudding/firebase-discord-interactions",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Use Firebase Database Realtime or static data to receivve your Discord Bot's commands from the command slash.",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "url": "git+https://github.com/TinyPudding/Firebase-Discord-Interactions.git"
   },
   "keywords": [
-    "discord-interactions", "discord-js", "discord", "command-slash", "express", "http", "plugin"
+    "discord-interactions", "discord.js", "discord", "command-slash", "express", "http", "plugin"
   ],
   "author": "Yasmin Seidel (JasminDreasond)",
   "license": "MIT",
