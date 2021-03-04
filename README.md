@@ -207,7 +207,7 @@ result.get.author() // return the message author.
 result.get.user(optionName, forceBot); // return a promise with the mentioned user.
 result.get.channel(optionName, forceBot); // return a promise with the mentioned channel.
 result.get.role(optionName, forceBot); // return a promise with the mentioned role.
-// (forceBot will force the Discord.JS values from the mentioned value if you are using the Discord.JS with the module. The all data will be stored in the value "result.interaction.data.discordjs")
+// forceBot will force the Discord.JS values from the mentioned value if you are using the Discord.JS with the module. The all data will be stored in the value "result.interaction.data.discordjs"
 
 result.get.boolean(optionName); // return a boolean value.
 result.get.integer(optionName); // return a integer value.
