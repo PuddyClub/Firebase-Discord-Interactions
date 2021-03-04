@@ -28,7 +28,21 @@ The Response Value from the express app module.
 ### options
 The module settings will be defined here.
 
+### options.errorCallback (Function)
+The errors that happen in the module will appear here for you to send a response to the Discord Endpoint.
 
+### options.invalidCommandCallback (Function)
+If you receive an invalid command, it will be sent to this function.
+
+### options.commands (Object)
+All of your commands should be here. Each object Key must be a command ID or a command name.
+All returned values are the same as the "options.invalidCommandCallback".
+
+### options.firebase (Object / Optional)
+JSON data from your Firebase you want to get your bot data through Firebase Database Realtime.
+
+### options.appPath (String / Optional)
+The Path of your Firebase Database Realtime where you is storing your bot data.
 
 ```js
 // Get Function Listener Base
@@ -39,19 +53,12 @@ const options = {
 
     // Error Callback
     errorCallback: async function (req, res, code, message) {
-        await logger.log({ errorCode: code, message: message });
-        return error_page(res, code, message)
+        return res.json({ errorCode: code, message: message })
     },
 
     // Invalid Command
     invalidCommandCallback: function (result) {
-        return result.res.json({
-            type: result.di.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-                tts: false,
-                content: 'This command has no functionality!'
-            },
-        });
+        return result.reply('This command has no functionality!');
     },
 
     // Firebase
