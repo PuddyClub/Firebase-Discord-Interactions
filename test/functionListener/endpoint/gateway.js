@@ -31,14 +31,14 @@ tinyCfg.invalidCommandCallback = function (result) {
 
     // Debug
     console.log('Command Received!');
-    console.log(result.data);
+    console.log(result.interaction);
 
     // Reply
     return result.reply('This command has no functionality!').then(data => {
-        console.log(result.data.id + ' was replied!');
+        console.log(result.interaction.id + ' was replied!');
         console.log(data);
     }).catch(err => {
-        console.log(result.data.id + ' returned a error!');
+        console.log(result.interaction.id + ' returned a error!');
         console.error(err);
     });
 
@@ -60,10 +60,10 @@ tinyCfg.commands = {
 
         // Reply
         return result.reply('Test User Complete').then(data => {
-            console.log(result.data.id + ' was replied with a pudding!');
+            console.log(result.interaction.id + ' was replied with a pudding!');
             console.log(data);
         }).catch(err => {
-            console.log(result.data.id + ' returned a error with a pudding!');
+            console.log(result.interaction.id + ' returned a error with a pudding!');
             console.error(err);
         });
 
@@ -80,10 +80,10 @@ tinyCfg.commands = {
 
         // Reply
         return result.reply('Test User Complete').then(data => {
-            console.log(result.data.id + ' was replied with a pudding!');
+            console.log(result.interaction.id + ' was replied with a pudding!');
             console.log(data);
         }).catch(err => {
-            console.log(result.data.id + ' returned a error with a pudding!');
+            console.log(result.interaction.id + ' returned a error with a pudding!');
             console.error(err);
         });
 
@@ -100,10 +100,10 @@ tinyCfg.commands = {
 
         // Reply
         return result.reply('Test User Complete').then(data => {
-            console.log(result.data.id + ' was replied with a pudding!');
+            console.log(result.interaction.id + ' was replied with a pudding!');
             console.log(data);
         }).catch(err => {
-            console.log(result.data.id + ' returned a error with a pudding!');
+            console.log(result.interaction.id + ' returned a error with a pudding!');
             console.error(err);
         });
 
@@ -141,10 +141,10 @@ tinyCfg.commands = {
             content: 'Your [pudding](https://puddy.club/) is here! 🍮',
             embed: embed
         }).then(data => {
-            console.log(result.data.id + ' was replied with a pudding!');
+            console.log(result.interaction.id + ' was replied with a pudding!');
             console.log(data);
         }).catch(err => {
-            console.log(result.data.id + ' returned a error with a pudding!');
+            console.log(result.interaction.id + ' returned a error with a pudding!');
             console.error(err);
         });
 

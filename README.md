@@ -167,3 +167,14 @@ const commands = {
     }
 }
 ```
+
+<hr/>
+
+## Command Callback
+Both valid commands and invalid commands, you will receive the same values and methods to use when sending a response to the Discord Command Slash Endpoint.
+
+### result.cfg
+All the configurations that are being used in the module will appear here.
+
+### result.interaction
+All your interaction data is here.

@@ -845,8 +845,8 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                 // Final Result
                 const final_result = {
 
-                    // interaction
-                    data: req.body,
+                    // Interaction
+                    interaction: req.body,
 
                     // Discord Interactions Module
                     di: di,
