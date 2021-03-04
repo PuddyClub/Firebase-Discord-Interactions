@@ -38,11 +38,17 @@ If you receive an invalid command, it will be sent to this function.
 All of your commands should be here. Each object Key must be a command ID or a command name.
 All returned values are the same as the "options.invalidCommandCallback".
 
+### app (Object / Optional)
+JSON static data to get your bot data.
+
 ### options.firebase (Object / Optional)
 JSON data from your Firebase you want to get your bot data through Firebase Database Realtime.
 
 ### options.appPath (String / Optional)
 The Path of your Firebase Database Realtime where you is storing your bot data.
+
+### options.bot (Discord.JS Client / Optional)
+You can insert an active or inactive Discord.JS Client to be used in conjunction with the API. (Tested in the Discord.JS 12.5.1)
 
 ```js
 // Get Function Listener Base
@@ -69,11 +75,89 @@ const options = {
 
     // Path
     appPath: 'apps',
+
+    // Commands
     commands: commands,
-    varNames: varNames
+
+    // Varnames
+    varNames: varNames,
+
+    // App
+    app: app,
+
+    // Bot
+    bot: bot
 
 };
 
 // Start Module
 functionListener(req, res, options);
+```
+
+## JSON Values
+The JSON Value Examples
+
+### commands
+```js
+const commands = {
+    ping: function (result) {
+
+        // Embed (Discord.JS API converted to normal JSON Vanilla from the official Discord Documentation)
+        const Discord = require('discord.js');
+        const embed = new Discord.MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle('Some title')
+            .setURL('https://discord.js.org/')
+            .setAuthor('Some name', 'https://i.imgur.com/wSTFkRM.png', 'https://discord.js.org')
+            .setDescription('Some description here')
+            .setThumbnail('https://i.imgur.com/wSTFkRM.png')
+            .addFields(
+                { name: 'Regular field title', value: 'Some value here' },
+                { name: '\u200B', value: '\u200B' },
+                { name: 'Inline field title', value: 'Some value here', inline: true },
+                { name: 'Inline field title', value: 'Some value here', inline: true },
+            )
+            .addField('Inline field title', 'Some value here', true)
+            .setImage('https://i.imgur.com/wSTFkRM.png')
+            .setTimestamp()
+            .setFooter('Some footer text here', 'https://i.imgur.com/wSTFkRM.png')
+            .toJSON();
+
+        // Reply (All JSON options explained in the official Discord Documentation can be placed here.)
+        return result.reply({
+            tts: false,
+            content: 'Pong!',
+            embed: embed
+        })
+        
+        // Result
+        .then(data => {
+            console.log(result.data.id + ' was replied!');
+            console.log(data);
+        })
+        
+        // Error
+        .catch(err => {
+            console.log(result.data.id + ' returned a error!');
+            console.error(err);
+        });
+
+    }
+};
+```
+
+### varNames
+```json
+
+```
+
+### app
+```json
+{
+    "test": {
+        "client_id": "",
+        "public_key": "",
+        "bot_token": ""
+    }
+}
 ```
