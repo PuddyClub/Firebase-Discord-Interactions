@@ -208,7 +208,7 @@ Quick systems to obtain values that are within your slash command.<br/>
 <strong>subCommandGroup(optionName, subCommandName, itemName)</strong> - return a subCommand group value. (Not Tested)
 
 ### result.types
-Object of numbers with the option types in the "result.interaction.data[0].type".
+Object of numbers with the option types for the value of "result.interaction.data[0].type".
 
 boolean<br/>
 channel<br/>
