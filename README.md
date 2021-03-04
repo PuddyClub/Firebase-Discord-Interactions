@@ -202,7 +202,7 @@ Quick systems to obtain values that are within your slash command.<br/>
 
 <strong>boolean(optionName)</strong> - return a boolean value.<br/>
 <strong>integer(optionName)</strong> - return a integer value.<br/>
-<strong>string(optionName)</strong> - return a boolean value.<br/>
+<strong>string(optionName)</strong> - return a string value.<br/>
 
 <strong>subCommand(optionName)</strong> - return a subCommand value.<br/>
 <strong>subCommandGroup(optionName, subCommandName, itemName)</strong> - return a subCommand group value. (Not Tested)
