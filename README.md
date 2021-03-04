@@ -50,6 +50,9 @@ The Path of your Firebase Database Realtime where you is storing your bot data.
 ### options.bot (Discord.JS Client / Optional)
 You can insert an active or inactive Discord.JS Client to be used in conjunction with the API. (Tested in the Discord.JS 12.5.1)
 
+### options.varNames (Object / Optional)
+Here you can change the name of the http queries that will be used in the URL of your Discord Interaction Endpoint.
+
 ```js
 // Get Function Listener Base
 const functionListener = require('@tinypudding/firebase-discord-interactions/functionListener');
@@ -148,7 +151,10 @@ const commands = {
 
 ### varNames
 ```json
-
+{
+    "type": "type",
+    "bot": "bot"
+}
 ```
 
 ### app
