@@ -201,20 +201,21 @@ Place a string or an object with the JSON values that will be returned to the Di
 
 ### result.get
 Quick systems to obtain values that are within your slash command.<br/>
+```js
+result.get.author() // return the message author.<br/>
 
-<strong>author()</strong> - return the message author.<br/>
+result.get.user(optionName, forceBot) // return a promise with the mentioned user.<br/>
+result.get.channel(optionName, forceBot) // return a promise with the mentioned channel.<br/>
+result.get.role(optionName, forceBot) // return a promise with the mentioned role.<br/>
+// (forceBot will force the Discord.JS values from the mentioned value if you are using the Discord.JS with the module. The all data will be stored in the value "result.interaction.data.discordjs")</strong>
 
-<strong>user(optionName, forceBot)</strong> - return a promise with the mentioned user.<br/>
-<strong>channel(optionName, forceBot)</strong> - return a promise with the mentioned channel.<br/>
-<strong>role(optionName, forceBot)</strong> - return a promise with the mentioned role.<br/>
-<strong>(forceBot will force the Discord.JS values from the mentioned value if you are using the Discord.JS with the module. The all data will be stored in the value "result.interaction.data.discordjs")</strong>
+result.get.boolean(optionName) // return a boolean value.<br/>
+result.get.integer(optionName) // return a integer value.<br/>
+result.get.string(optionName) // return a string value.<br/>
 
-<strong>boolean(optionName)</strong> - return a boolean value.<br/>
-<strong>integer(optionName)</strong> - return a integer value.<br/>
-<strong>string(optionName)</strong> - return a string value.<br/>
-
-<strong>subCommand(optionName)</strong> - return a subCommand value.<br/>
-<strong>subCommandGroup(optionName, subCommandName, itemName)</strong> - return a subCommand group value. (Not Tested)
+result.get.subCommand(optionName) // return a subCommand value.<br/>
+result.get.subCommandGroup(optionName, subCommandName, itemName)</strong> // return a subCommand group value. (Not Tested)
+```
 
 ### result.types
 Object of numbers with the option types for the value of "result.interaction.data[0].type".
