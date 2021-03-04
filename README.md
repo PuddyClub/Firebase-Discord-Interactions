@@ -202,19 +202,19 @@ Place a string or an object with the JSON values that will be returned to the Di
 ### result.get
 Quick systems to obtain values that are within your slash command.<br/>
 ```js
-result.get.author() // return the message author.<br/>
+result.get.author() // return the message author.
 
-result.get.user(optionName, forceBot) // return a promise with the mentioned user.<br/>
-result.get.channel(optionName, forceBot) // return a promise with the mentioned channel.<br/>
-result.get.role(optionName, forceBot) // return a promise with the mentioned role.<br/>
-// (forceBot will force the Discord.JS values from the mentioned value if you are using the Discord.JS with the module. The all data will be stored in the value "result.interaction.data.discordjs")</strong>
+result.get.user(optionName, forceBot); // return a promise with the mentioned user.
+result.get.channel(optionName, forceBot); // return a promise with the mentioned channel.
+result.get.role(optionName, forceBot); // return a promise with the mentioned role.
+// (forceBot will force the Discord.JS values from the mentioned value if you are using the Discord.JS with the module. The all data will be stored in the value "result.interaction.data.discordjs")
 
-result.get.boolean(optionName) // return a boolean value.<br/>
-result.get.integer(optionName) // return a integer value.<br/>
-result.get.string(optionName) // return a string value.<br/>
+result.get.boolean(optionName); // return a boolean value.
+result.get.integer(optionName); // return a integer value.
+result.get.string(optionName); // return a string value.
 
-result.get.subCommand(optionName) // return a subCommand value.<br/>
-result.get.subCommandGroup(optionName, subCommandName, itemName)</strong> // return a subCommand group value. (Not Tested)
+result.get.subCommand(optionName); // return a subCommand value.
+result.get.subCommandGroup(optionName, subCommandName, itemName); // return a subCommand group value. (Not Tested)
 ```
 
 ### result.types
