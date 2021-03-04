@@ -135,13 +135,13 @@ const commands = {
         
         // Result
         .then(data => {
-            console.log(result.data.id + ' was replied!');
+            console.log(result.interaction.id + ' was replied!');
             console.log(data);
         })
         
         // Error
         .catch(err => {
-            console.log(result.data.id + ' returned a error!');
+            console.log(result.interaction.id + ' returned a error!');
             console.error(err);
         });
 
