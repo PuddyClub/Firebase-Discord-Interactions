@@ -195,6 +195,11 @@ Quick systems to obtain values that are within your slash command.
 
 author() - return the message author.
 
+user(optionName, forceBot) - return the mentioned user.
+channel(optionName, forceBot) - return the mentioned channel.
+role(optionName, forceBot) - return the mentioned role.
+(forceBot will force the Discord.JS values from the mentioned value if you are using the Discord.JS with the module. The all data will be stored in the value "result.interaction.data.discordjs")
+
 boolean(optionName) - return a boolean value.
 integer(optionName) - return a integer value.
 string(optionName) - return a boolean value.
