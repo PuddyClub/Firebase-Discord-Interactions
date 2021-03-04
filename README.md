@@ -233,3 +233,53 @@ Send a json in the first argument to edit the message.
 ### result.newMsg
 Send a json in the first argument to create a message.
 (All JSON options explained in the official Discord Documentation can be placed here.)
+
+<hr/>
+
+## Gateway
+You can use your bot through a Gateway of Discord Interactions with the Discord.JS module and the results will be the same as in the examples mentioned above. The only thing that will be changed is how to build the initial code.
+
+```js
+// Tiny Config
+const tinyCfg = require('../../config.json');
+const Discord = require('discord.js');
+const bot = new Discord.Client({ autoReconnect: true });
+
+// The Ready Message
+bot.on('ready', () => { logger.log(`Bot Ready! ${bot.user.tag} (${bot.user.id})`); return; });
+
+// Insert the Discord.JS Client into the Cfg Bot Value
+tinyCfg.bot = bot;
+
+// Error Callback
+tinyCfg.errorCallback = function () {
+    return;
+};
+
+// Invalid Command Callback
+tinyCfg.invalidCommandCallback = function (result) {
+
+    // Reply
+    return result.reply('This command has no functionality!').then(data => {
+        console.log(result.interaction.id + ' was replied!');
+        console.log(data);
+    }).catch(err => {
+        console.log(result.interaction.id + ' returned a error!');
+        console.error(err);
+    });
+
+};
+
+// Command List
+tinyCfg.commands = commands;
+
+// Prepare Gateway
+const interactionsGateway = require('@tinypudding/firebase-discord-interactions/functionListener/gateway');
+
+// Start Interaction Gateway
+interactionsGateway(tinyCfg, bot);
+
+// Start the Discord.JS Gateway
+bot.login('BOT_TOKEN');
+
+```
