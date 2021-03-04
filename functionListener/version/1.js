@@ -147,12 +147,13 @@ const getValues = {
                                     if (!interaction.data.resolved.users) { interaction.data.resolved.users = {}; }
                                     if (!interaction.data.resolved.users[result.id]) { interaction.data.resolved.users[result.id] = {}; }
                                     if (!interaction.data.resolved.members[result.id]) { interaction.data.resolved.members[result.id] = {}; }
+                                    if (!interaction.data.discordjs) { interaction.data.discordjs = {}; }
+                                    if (!interaction.data.discordjs.members) { interaction.data.discordjs.members = {}; }
+                                    if (!interaction.data.discordjs.users) { interaction.data.discordjs.users = {}; }
 
                                     // Discord JS Values
-                                    interaction.data.resolved.discordjs = {
-                                        member: member,
-                                        user: user
-                                    };
+                                    interaction.data.discordjs.members[result.id] = member;
+                                    interaction.data.discordjs.users[result.id] = user;
 
                                     // Create User
                                     const createUserBase = function () {
@@ -322,9 +323,11 @@ const getValues = {
                                     if (!interaction.data.resolved) { interaction.data.resolved = {}; }
                                     if (!interaction.data.resolved.channels) { interaction.data.resolved.channels = {}; }
                                     if (!interaction.data.resolved.channels[result.id]) { interaction.data.resolved.channels[result.id] = {}; }
+                                    if (!interaction.data.discordjs) { interaction.data.discordjs = {}; }
+                                    if (!interaction.data.discordjs.channels) { interaction.data.discordjs.channels = {}; }
 
                                     // Discord JS Values
-                                    interaction.data.resolved.discordjs = { channel: channel };
+                                    interaction.data.discordjs.channels[result.id] = channel;
 
                                     // Insert Values
                                     interaction.data.resolved.channels[result.id].name = channel.name;
@@ -456,7 +459,22 @@ const getValues = {
                                     // Fix Values
                                     if (!interaction.data.resolved) { interaction.data.resolved = {}; }
                                     if (!interaction.data.resolved.roles) { interaction.data.resolved.roles = {}; }
-                                    if (!interaction.data.resolved.roles[result.id]) = { interaction.data.resolved.roles[result.id] = {}; }
+                                    if (!interaction.data.resolved.roles[result.id]) { interaction.data.resolved.roles[result.id] = {}; }
+                                    if (!interaction.data.discordjs) { interaction.data.discordjs = {}; }
+                                    if (!interaction.data.discordjs.roles) { interaction.data.discordjs.roles = {}; }
+
+                                    // Discord JS Values
+                                    interaction.data.discordjs.roles[result.id] = role;
+
+                                    // Data
+                                    /* interaction.data.resolved.roles[result.id].color = ;
+                                    interaction.data.resolved.roles[result.id].hoist = ;
+                                    interaction.data.resolved.roles[result.id].managed = ;
+                                    interaction.data.resolved.roles[result.id].mentionable = ;
+                                    interaction.data.resolved.roles[result.id].permissions = ;
+                                    interaction.data.resolved.roles[result.id].position = ;
+                                    interaction.data.resolved.roles[result.id].tags = ;
+                                    interaction.data.resolved.roles[result.id].name = ; */
 
                                     // Complete
                                     finalResultData();
