@@ -186,6 +186,22 @@ The module "discord-interactions" data.
 The vanilla Express Response.
 It is recommended that you use only the methods: res.status | res.json
 
+### result.reply
+Place a string or an object with the JSON values that will be returned to the Discord Interaction Endpoint API.
+(All JSON options explained in the official Discord Documentation can be placed here.)
+
+### result.get
+Quick systems to obtain values that are within your slash command.
+
+author() - return the message author.
+
+boolean(optionName) - return a boolean value.
+integer(optionName) - return a integer value.
+string(optionName) - return a boolean value.
+
+subCommand(optionName) - return a subCommand value.
+subCommandGroup(optionName, subCommandName, itemName) - return a subCommand group value. (Not Tested)
+
 ### result.types
 Object of numbers with the option types in the "result.interaction.data[0].type".
 
@@ -206,7 +222,9 @@ sub_command_group
 Delete the message.
 
 ### result.msg.edit
-Send a json in the first argument to edit the message. (All JSON options explained in the official Discord Documentation can be placed here.)
+Send a json in the first argument to edit the message.
+(All JSON options explained in the official Discord Documentation can be placed here.)
 
 ### result.newMsg
-Send a json in the first argument to create a message. (All JSON options explained in the official Discord Documentation can be placed here.)
+Send a json in the first argument to create a message.
+(All JSON options explained in the official Discord Documentation can be placed here.)
