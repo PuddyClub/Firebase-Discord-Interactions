@@ -893,7 +893,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                             }
 
                             // No Type
-                            if (typeof type !== "number") { result.type = di.InteractionResponseType.CHANNEL_MESSAGE; } else {
+                            if (typeof type !== "number") { result.type = 4; } else {
                                 result.type = type;
                             }
 

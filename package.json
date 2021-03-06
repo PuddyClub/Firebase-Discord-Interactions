@@ -11,7 +11,13 @@
     "url": "git+https://github.com/TinyPudding/Firebase-Discord-Interactions.git"
   },
   "keywords": [
-    "discord-interactions", "discord.js", "discord", "command-slash", "express", "http", "plugin"
+    "discord-interactions",
+    "discord.js",
+    "discord",
+    "command-slash",
+    "express",
+    "http",
+    "plugin"
   ],
   "author": "Yasmin Seidel (JasminDreasond)",
   "license": "MIT",
@@ -23,7 +29,7 @@
     "@tinypudding/discord-slash-commands": "^1.0.0",
     "@tinypudding/puddy-lib": "^1.1.18",
     "clone": "^2.1.2",
-    "discord-interactions": "^1.3.3",
+    "discord-interactions": "^1.5.2",
     "for-promise": "^1.3.2",
     "lodash": "^4.17.20",
     "moment-timezone": "^0.5.32",
