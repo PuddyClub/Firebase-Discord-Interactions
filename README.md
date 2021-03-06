@@ -195,8 +195,8 @@ The module "discord-interactions" data.
 The vanilla Express Response.
 It is recommended that you use only the methods: res.status | res.json
 
-### result.reply
-Place a string or an object with the JSON values that will be returned to the Discord Interaction Endpoint API.
+### result.reply(msg, msgType)
+Place a string or an object with the JSON values in the "msg" that will be returned to the Discord Interaction Endpoint API. The "msgType" is your Reply Type to be sent to the Discord Interaction Endpoint.
 (All JSON options explained in the official Discord Documentation can be placed here.)
 
 ### result.get
