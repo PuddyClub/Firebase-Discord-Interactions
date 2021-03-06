@@ -20,6 +20,7 @@ bot.on('ready', () => { logger.log(`Bot Ready! ${bot.user.tag} (${bot.user.id})`
 
 // Bot
 tinyCfg.bot = bot;
+tinyCfg.debug = true;
 
 // Error Callback
 tinyCfg.errorCallback = function () {
@@ -141,6 +142,25 @@ tinyCfg.commands = {
             content: 'Your [pudding](https://puddy.club/) is here! 🍮',
             embed: embed
         }).then(data => {
+            console.log(result.interaction.id + ' was replied with a pudding!');
+            console.log(data);
+        }).catch(err => {
+            console.log(result.interaction.id + ' returned a error with a pudding!');
+            console.error(err);
+        });
+
+    },
+
+    puddingawait: function (result) {
+
+        // Debug
+        console.log('Pudding Command Received!');
+        console.log(result);
+
+        // Reply
+        return result.reply({
+            content: 'Your pudding being cooked...'
+        }, 5).then(data => {
             console.log(result.interaction.id + ' was replied with a pudding!');
             console.log(data);
         }).catch(err => {

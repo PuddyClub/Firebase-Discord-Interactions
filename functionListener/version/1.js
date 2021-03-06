@@ -892,6 +892,12 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
 
                             }
 
+                            // Visible for you only
+                            if (typeof result.data.visible === "boolean" && result.data.visible === false) { 
+                                result.data.flags = 64; 
+                                delete result.data.visible;
+                            }
+
                             // No Type
                             if (typeof type !== "number") { result.type = 4; } else {
                                 result.type = type;
