@@ -871,36 +871,45 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
 
                     // Reply Message
                     reply: function (msg, type, isNewMessage = false) {
+                        return new Promise((resolve, reject) => {
 
-                        // Prepare Result
-                        const result = {};
+                            // Prepare Result
+                            const result = {};
 
-                        // String Message
-                        if (typeof msg === "string") {
-                            result.data = { tts: false, content: msg };
-                        } else if (objType(msg, 'object')) {
+                            // String Message
+                            if (typeof msg === "string") {
+                                result.data = { tts: false, content: msg };
+                            } else if (objType(msg, 'object')) {
 
-                            // Insert Data
-                            result.data = msg;
+                                // Insert Data
+                                result.data = msg;
 
-                            // Embed
-                            if (objType(result.data.embed, 'object')) {
-                                result.data.embeds = [result.data.embed];
-                                delete result.data.embed;
+                                // Embed
+                                if (objType(result.data.embed, 'object')) {
+                                    result.data.embeds = [result.data.embed];
+                                    delete result.data.embed;
+                                }
+
                             }
 
-                        }
+                            // No Type
+                            if (typeof type !== "number") { result.type = di.InteractionResponseType.CHANNEL_MESSAGE; } else {
+                                result.type = type;
+                            }
 
-                        // No Type
-                        if (typeof type !== "number") { result.type = di.InteractionResponseType.CHANNEL_MESSAGE; } else {
-                            result.type = type;
-                        }
+                            // Debug
+                            if (tinyCfg.debug) { await logger.log('Sending message...'); }
+                            if (tinyCfg.debug) { await logger.log(result); }
 
-                        // Send Result
-                        if (!isNewMessage) { return res.json(result); } else {
-                            return final_result.newMsg(result);
-                        }
+                            // Send Result
+                            if (!isNewMessage) { res.json(result); resolve(); } else {
+                                final_result.newMsg(result).then(data => { resolve(data); }).catch(err => { reject(err); });
+                            }
 
+                            // Complete
+                            return;
+
+                        });
                     }
 
                 };
