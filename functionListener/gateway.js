@@ -52,7 +52,7 @@ module.exports = function (cfg, botToken) {
             return require('./version/' + interaction.version)(
 
                 // Body
-                { body: interaction },
+                { body: interaction, isGateway: true },
 
                 // Res
                 {

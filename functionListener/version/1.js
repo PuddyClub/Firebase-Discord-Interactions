@@ -871,7 +871,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
 
                     // Reply Message
                     reply: function (msg, type, isNewMessage = false) {
-                        return new Promise((resolve, reject) => {
+                        return new Promise(async (resolve, reject) => {
 
                             // Prepare Result
                             const result = {};
@@ -902,7 +902,22 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                             if (tinyCfg.debug) { await logger.log(result); }
 
                             // Send Result
-                            if (!isNewMessage) { resolve(); res.json(result); } else {
+                            if (!isNewMessage) {
+
+                                // Normal JSON
+                                if (!req.isGateway) {
+                                    resolve(); res.json(result);
+                                }
+
+                                // Nope
+                                else {
+                                    res.json(result).then(data => { resolve(data); }).catch(err => { reject(err); });
+                                }
+
+                            }
+
+                            // Is New Message
+                            else {
                                 final_result.newMsg(result).then(data => { resolve(data); }).catch(err => { reject(err); });
                             }
 
