@@ -902,7 +902,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                             if (tinyCfg.debug) { await logger.log(result); }
 
                             // Send Result
-                            if (!isNewMessage) { res.json(result); resolve(); } else {
+                            if (!isNewMessage) { resolve(); res.json(result); } else {
                                 final_result.newMsg(result).then(data => { resolve(data); }).catch(err => { reject(err); });
                             }
 
