@@ -756,8 +756,8 @@ const messageEditorGenerator = function (logger, req, res, tinyCfg, interaction,
         return replyMessage({
             custom_result: interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.id}/${interaction.token}/messages/${messageID}`, {
                 method: 'PATCH'
-            }, tinyCfg, logger, req, res)
-        })(data);
+            })
+        }, tinyCfg, logger, req, res)(data);
     });
 
     // Delete Message
