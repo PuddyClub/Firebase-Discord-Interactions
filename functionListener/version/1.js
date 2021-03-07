@@ -957,6 +957,12 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                     // Reply Message
                     reply: replyMessage({ temp: require('../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`) }, tinyCfg, logger, req, res),
 
+                    // Pong
+                    pong: async () => {
+                        if (tinyCfg.debug) { await logger.log(`The message ID ${req.body.id} received a pong.`); }
+                        return res.json({ type: di.InteractionResponseType.PONG });
+                    },
+
                     // Types
                     types: getValues.types
 
