@@ -160,9 +160,24 @@ tinyCfg.commands = {
         // Reply
         return result.reply({
             content: 'Your pudding being cooked...'
-        }, 5).then(data => {
-            console.log(result.interaction.id + ' was replied with a pudding!');
+        }, 'temp').then(data => {
+
             console.log(data);
+            console.log('Cooking the pudding...');
+
+            // Reply
+            return result.msg.edit({
+                tts: false,
+                content: 'Your [pudding](https://puddy.club/) is here! 🍮',
+                embed: embed
+            }).then(data => {
+                console.log(result.interaction.id + ' was replied with a pudding!');
+                console.log(data);
+            }).catch(err => {
+                console.log(result.interaction.id + ' returned a error with a pudding!');
+                console.error(err);
+            });
+
         }).catch(err => {
             console.log(result.interaction.id + ' returned a error with a pudding!');
             console.error(err);

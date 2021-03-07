@@ -752,8 +752,12 @@ const messageEditorGenerator = function (interaction, messageID = '@original', v
     const response = {};
 
     // Edit Message
-    response.edit = interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.id}/${interaction.token}/messages/${messageID}`, {
-        method: 'PATCH'
+    response.edit = (data => {
+        return replyMessage({
+            custom_result: interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.id}/${interaction.token}/messages/${messageID}`, {
+                method: 'PATCH'
+            })
+        })(data);
     });
 
     // Delete Message
@@ -791,6 +795,87 @@ const createMessageEditor = function (interaction, version = '/v8') {
         });
     };
 
+};
+
+// Reply Message
+const replyMessage = (urlResult = {}) => {
+    return (msg, isNewMessage = false) => {
+        return new Promise(async (resolve, reject) => {
+
+            // Prepare Result
+            const result = {};
+
+            // String Message
+            if (typeof msg === "string") {
+                result.data = { tts: false, content: msg };
+            } else if (objType(msg, 'object')) {
+
+                // Insert Data
+                result.data = msg;
+
+                // Embed
+                if (objType(result.data.embed, 'object')) {
+                    result.data.embeds = [result.data.embed];
+                    delete result.data.embed;
+                }
+
+            }
+
+            // Visible for you only
+            if (typeof result.data.visible === "boolean" && result.data.visible === false) {
+                result.data.flags = 64;
+                delete result.data.visible;
+            }
+
+            // Debug
+            if (tinyCfg.debug) { await logger.log('Sending message...'); }
+            if (tinyCfg.debug) { await logger.log(result); }
+
+            // Await Response
+            if (urlResult.temp && isNewMessage === 'temp') {
+
+                // Prepare Temp Reply
+                result.type = 5;
+
+                // Send Message
+                urlResult.temp(result).then(data => { resolve(data); }).catch(err => { reject(err); });
+
+            }
+
+            // Is New Message
+            else if (isNewMessage === "new") {
+                result.type = 4;
+                final_result.newMsg(result).then(data => { resolve(data); }).catch(err => { reject(err); });
+            }
+
+            // Send Result
+            else {
+
+                // Type
+                result.type = 4;
+
+                // Custom Result
+                if (urlResult.custom_result) {
+                    urlResult.custom_result(result).then(data => { resolve(data); }).catch(err => { reject(err); });
+                }
+
+                // Normal JSON
+                else if (!req.isGateway) {
+                    resolve(); res.json(result);
+                }
+
+                // Nope
+                else {
+                    res.json(result).then(data => { resolve(data); }).catch(err => { reject(err); });
+                }
+
+            }
+
+            // Complete
+            return;
+
+        });
+    };
 };
 
 module.exports = async function (req, res, logger, di, tinyCfg) {
@@ -866,83 +951,11 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                     // New Message
                     newMsg: createMessageEditor(req.body),
 
-                    // Types
-                    types: getValues.types,
-
                     // Reply Message
-                    reply: function (msg, isNewMessage = false) {
-                        return new Promise(async (resolve, reject) => {
+                    reply: replyMessage({ temp: require('../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`) }),
 
-                            // Prepare Result
-                            const result = {};
-
-                            // String Message
-                            if (typeof msg === "string") {
-                                result.data = { tts: false, content: msg };
-                            } else if (objType(msg, 'object')) {
-
-                                // Insert Data
-                                result.data = msg;
-
-                                // Embed
-                                if (objType(result.data.embed, 'object')) {
-                                    result.data.embeds = [result.data.embed];
-                                    delete result.data.embed;
-                                }
-
-                            }
-
-                            // Visible for you only
-                            if (typeof result.data.visible === "boolean" && result.data.visible === false) { 
-                                result.data.flags = 64; 
-                                delete result.data.visible;
-                            }
-
-                            // Debug
-                            if (tinyCfg.debug) { await logger.log('Sending message...'); }
-                            if (tinyCfg.debug) { await logger.log(result); }
-
-                            // Await Response
-                            if(isNewMessage === 'temp') {
-
-                                // Prepare Temp Reply
-                                const tempReply = require('../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`);
-                                result.type = 5;
-
-                                // Send Message
-                                tempReply(result).then(data => { resolve(data); }).catch(err => { reject(err); });
-
-                            }
-
-                            // Is New Message
-                            else if(isNewMessage === "new") {
-                                result.type = 4;
-                                final_result.newMsg(result).then(data => { resolve(data); }).catch(err => { reject(err); });
-                            }
-
-                            // Send Result
-                            else {
-
-                                // Type
-                                result.type = 4;
-
-                                // Normal JSON
-                                if (!req.isGateway) {
-                                    resolve(); res.json(result);
-                                }
-
-                                // Nope
-                                else {
-                                    res.json(result).then(data => { resolve(data); }).catch(err => { reject(err); });
-                                }
-
-                            }
-
-                            // Complete
-                            return;
-
-                        });
-                    }
+                    // Types
+                    types: getValues.types
 
                 };
 
