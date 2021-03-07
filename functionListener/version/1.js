@@ -743,7 +743,7 @@ const getValues = {
 };
 
 // Message Editor Generator
-const messageEditorGenerator = function (logger, tinyCfg, interaction, messageID = '@original', version = '/v8') {
+const messageEditorGenerator = function (logger, req, res, tinyCfg, interaction, messageID = '@original', version = '/v8') {
 
     // Get Module
     const interactionResponse = require('../interactionResponse');
@@ -756,7 +756,7 @@ const messageEditorGenerator = function (logger, tinyCfg, interaction, messageID
         return replyMessage({
             custom_result: interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.id}/${interaction.token}/messages/${messageID}`, {
                 method: 'PATCH'
-            }, tinyCfg, logger)
+            }, tinyCfg, logger, req, res)
         })(data);
     });
 
@@ -771,7 +771,7 @@ const messageEditorGenerator = function (logger, tinyCfg, interaction, messageID
 };
 
 // Create Message Editor
-const createMessageEditor = function (logger, tinyCfg, interaction, version = '/v8') {
+const createMessageEditor = function (logger, req, res, tinyCfg, interaction, version = '/v8') {
 
     // Get Module
     const interactionResponse = require('../interactionResponse');
@@ -782,7 +782,7 @@ const createMessageEditor = function (logger, tinyCfg, interaction, version = '/
 
             // Result
             interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.id}/${interaction.token}`)(data).then(data => {
-                resolve({ data: data, msg: messageEditorGenerator(logger, tinyCfg, interaction, data.id) });
+                resolve({ data: data, msg: messageEditorGenerator(logger, req, res, tinyCfg, interaction, data.id) });
                 return;
             }).catch(err => {
                 reject(err);
@@ -798,7 +798,7 @@ const createMessageEditor = function (logger, tinyCfg, interaction, version = '/
 };
 
 // Reply Message
-const replyMessage = (urlResult = {}, tinyCfg, logger) => {
+const replyMessage = (urlResult = {}, tinyCfg, logger, req, res) => {
     return (msg, isNewMessage = false) => {
         return new Promise(async (resolve, reject) => {
 
@@ -949,13 +949,13 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                     get: getValues.createFunctions(req.body, tinyCfg.bot),
 
                     // Message Editor
-                    msg: messageEditorGenerator(logger, tinyCfg, req.body),
+                    msg: messageEditorGenerator(logger, req, res, tinyCfg, req.body),
 
                     // New Message
-                    newMsg: createMessageEditor(logger, tinyCfg, req.body),
+                    newMsg: createMessageEditor(logger, req, res, tinyCfg, req.body),
 
                     // Reply Message
-                    reply: replyMessage({ temp: require('../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`) }, tinyCfg, logger),
+                    reply: replyMessage({ temp: require('../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`) }, tinyCfg, logger, req, res),
 
                     // Types
                     types: getValues.types
