@@ -743,7 +743,7 @@ const getValues = {
 };
 
 // Message Editor Generator
-const messageEditorGenerator = function (interaction, messageID = '@original', version = '/v8') {
+const messageEditorGenerator = function (tinyCfg, interaction, messageID = '@original', version = '/v8') {
 
     // Get Module
     const interactionResponse = require('../interactionResponse');
@@ -757,7 +757,7 @@ const messageEditorGenerator = function (interaction, messageID = '@original', v
             custom_result: interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.id}/${interaction.token}/messages/${messageID}`, {
                 method: 'PATCH'
             })
-        })(data);
+        })(data, tinyCfg);
     });
 
     // Delete Message
@@ -771,7 +771,7 @@ const messageEditorGenerator = function (interaction, messageID = '@original', v
 };
 
 // Create Message Editor
-const createMessageEditor = function (interaction, version = '/v8') {
+const createMessageEditor = function (tinyCfg, interaction, version = '/v8') {
 
     // Get Module
     const interactionResponse = require('../interactionResponse');
@@ -782,7 +782,7 @@ const createMessageEditor = function (interaction, version = '/v8') {
 
             // Result
             interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.id}/${interaction.token}`)(data).then(data => {
-                resolve({ data: data, msg: messageEditorGenerator(interaction, data.id) });
+                resolve({ data: data, msg: messageEditorGenerator(tinyCfg, interaction, data.id) });
                 return;
             }).catch(err => {
                 reject(err);
@@ -798,9 +798,12 @@ const createMessageEditor = function (interaction, version = '/v8') {
 };
 
 // Reply Message
-const replyMessage = (urlResult = {}) => {
+const replyMessage = (urlResult = {}, tinyCfg) => {
     return (msg, isNewMessage = false) => {
         return new Promise(async (resolve, reject) => {
+
+            // Preparing Module
+            const objType = require('@tinypudding/puddy-lib/get/objType');
 
             // Prepare Result
             const result = {};
@@ -946,13 +949,13 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                     get: getValues.createFunctions(req.body, tinyCfg.bot),
 
                     // Message Editor
-                    msg: messageEditorGenerator(req.body),
+                    msg: messageEditorGenerator(tinyCfg, req.body),
 
                     // New Message
-                    newMsg: createMessageEditor(req.body),
+                    newMsg: createMessageEditor(tinyCfg, req.body),
 
                     // Reply Message
-                    reply: replyMessage({ temp: require('../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`) }),
+                    reply: replyMessage({ temp: require('../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`) }, tinyCfg),
 
                     // Types
                     types: getValues.types
