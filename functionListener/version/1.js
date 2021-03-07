@@ -870,7 +870,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                     types: getValues.types,
 
                     // Reply Message
-                    reply: function (msg, type, isNewMessage = false) {
+                    reply: function (msg, isNewMessage = false) {
                         return new Promise(async (resolve, reject) => {
 
                             // Prepare Result
@@ -898,17 +898,33 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                                 delete result.data.visible;
                             }
 
-                            // No Type
-                            if (typeof type !== "number") { result.type = 4; } else {
-                                result.type = type;
-                            }
-
                             // Debug
                             if (tinyCfg.debug) { await logger.log('Sending message...'); }
                             if (tinyCfg.debug) { await logger.log(result); }
 
+                            // Await Response
+                            if(isNewMessage === 'temp') {
+
+                                // Prepare Temp Reply
+                                const tempReply = require('../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`);
+                                result.type = 5;
+
+                                // Send Message
+                                tempReply(result).then(data => { resolve(data); }).catch(err => { reject(err); });
+
+                            }
+
+                            // Is New Message
+                            else if(isNewMessage === "new") {
+                                result.type = 4;
+                                final_result.newMsg(result).then(data => { resolve(data); }).catch(err => { reject(err); });
+                            }
+
                             // Send Result
-                            if (!isNewMessage) {
+                            else {
+
+                                // Type
+                                result.type = 4;
 
                                 // Normal JSON
                                 if (!req.isGateway) {
@@ -920,11 +936,6 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                                     res.json(result).then(data => { resolve(data); }).catch(err => { reject(err); });
                                 }
 
-                            }
-
-                            // Is New Message
-                            else {
-                                final_result.newMsg(result).then(data => { resolve(data); }).catch(err => { reject(err); });
                             }
 
                             // Complete
