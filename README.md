@@ -195,9 +195,13 @@ The module "discord-interactions" data.
 The vanilla Express Response.
 It is recommended that you use only the methods: res.status | res.json
 
-### result.reply(msg, msgType)
+### result.reply(msg, msgType) [msgType = 'default' or 'temp']
 Place a string or an object with the JSON values in the "msg" that will be returned to the Discord Interaction Endpoint API. The "msgType" is your Reply Type to be sent to the Discord Interaction Endpoint.
 (All JSON options explained in the official Discord Documentation can be placed here.)
+
+Default: A normal message reply 
+
+Temp: Reply the message using a DeferredChannelMessageWithSource response. You will need to use the result.msg.edit to send your final reply and the result.pong to finish the request response.
 
 ### result.get
 Quick systems to obtain values that are within your slash command.<br/>
