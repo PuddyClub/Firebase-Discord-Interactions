@@ -166,11 +166,7 @@ tinyCfg.commands = {
             console.log('Cooking the pudding...');
 
             // Reply
-            return result.msg.edit({
-                tts: false,
-                content: 'Your [pudding](https://puddy.club/) is here! 🍮',
-                embed: embed
-            }).then(data => {
+            return result.msg.edit('Your [pudding](https://puddy.club/) is here! 🍮').then(data => {
                 console.log(result.interaction.id + ' was replied with a pudding!');
                 console.log(data);
             }).catch(err => {
