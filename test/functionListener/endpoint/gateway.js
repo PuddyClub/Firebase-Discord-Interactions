@@ -159,7 +159,7 @@ tinyCfg.commands = {
 
         // Reply
         return result.reply({
-            content: 'Your pudding being cooked...'
+            content: 'Your pudding is being cooked...'
         }, 'temp').then(data => {
 
             console.log(data);
