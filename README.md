@@ -15,7 +15,7 @@ Use Firebase Database Realtime or static data to receive your Discord Bot's comm
 
 This module can be used as a plugin for the Discord.JS via Gateway API.
 
-If you use this module as a webhook request, your final URL will be: https://<your-domain>/<your-url-path>?type=endpoint&bot=<bot-object-name-in-your-file-config>
+If you use this module as a webhook request, your final URL will be: https://{your-domain}/{your-url-path}?type=endpoint&bot={bot-object-name-in-your-file-config}
 
 <hr/>
 
