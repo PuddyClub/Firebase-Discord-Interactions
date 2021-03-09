@@ -857,14 +857,10 @@ const replyMessage = (urlResult = {}, tinyCfg, logger, req, res) => {
                 // Type
 
                 // Is Temp
-                if(isNewMessage === 'temp'){
-                    result.type = 5;
-                }
+                if (isNewMessage === 'temp') { result.type = 5; }
 
                 // Nope
-                else {
-                    result.type = 4;
-                }
+                else { result.type = 4; }
 
                 // Custom Result
                 if (urlResult.custom_result) {
