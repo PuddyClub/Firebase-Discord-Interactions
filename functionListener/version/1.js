@@ -960,7 +960,10 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                     newMsg: createMessageEditor(logger, req, res, tinyCfg, req.body),
 
                     // Reply Message
-                    reply: replyMessage({ temp: require('../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`) }, tinyCfg, logger, req, res),
+                    replyCallback: replyMessage({ temp: require('../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`) }, tinyCfg, logger, req, res),
+
+                    // Reply Message
+                    reply: replyMessage({}, tinyCfg, logger, req, res),
 
                     // Pong
                     pong: async () => {

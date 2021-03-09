@@ -158,7 +158,7 @@ tinyCfg.commands = {
         console.log(result);
 
         // Reply
-        return result.reply({
+        return result.replyCallback({
             content: 'Your pudding is being cooked...'
         }, 'temp').then(data => {
 
