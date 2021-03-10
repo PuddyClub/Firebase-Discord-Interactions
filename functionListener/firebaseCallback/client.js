@@ -76,7 +76,7 @@ module.exports = function (tinyCfg) {
 
                                 // Send Function
                                 const commandCallback = app.root.functions().httpsCallable(tinyCfg.callbackName);
-                                commandCallback({ body: req.body }).then(resolve).catch(reject);
+                                commandCallback({ body: req.body, public_key: tinyCfg.app[req.query[tinyCfg.varNames.bot]].public_key }).then(resolve).catch(reject);
 
                             }
 
