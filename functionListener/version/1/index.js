@@ -746,7 +746,7 @@ const getValues = {
 const messageEditorGenerator = function (logger, req, res, tinyCfg, interaction, messageID = '@original', version = '/v8') {
 
     // Get Module
-    const interactionResponse = require('../interactionResponse');
+    const interactionResponse = require('../../interactionResponse');
 
     // Prepare Response
     const response = {};
@@ -774,7 +774,7 @@ const messageEditorGenerator = function (logger, req, res, tinyCfg, interaction,
 const createMessageEditor = function (logger, req, res, tinyCfg, interaction, version = '/v8') {
 
     // Get Module
-    const interactionResponse = require('../interactionResponse');
+    const interactionResponse = require('../../interactionResponse');
 
     // Return
     return function (data) {
@@ -960,7 +960,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                     newMsg: createMessageEditor(logger, req, res, tinyCfg, req.body),
 
                     // Reply Message
-                    replyCallback: replyMessage({ temp: require('../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`) }, tinyCfg, logger, req, res),
+                    replyCallback: replyMessage({ temp: require('../../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`) }, tinyCfg, logger, req, res),
 
                     // Reply Message
                     reply: replyMessage({}, tinyCfg, logger, req, res),
