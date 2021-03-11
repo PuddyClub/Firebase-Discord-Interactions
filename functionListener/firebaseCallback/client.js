@@ -80,9 +80,7 @@ module.exports = function (tinyCfg) {
 
                                 // Prepare Reply
                                 const reply = optionalRequire('../version/' + req.body.version + '/reply');
-                                if (reply) {
-                                    return reply({}, tinyCfg, logger, req, res)(msg);
-                                }
+                                if (reply) { return reply({}, tinyCfg, logger, req, res)(msg, 'temp'); }
 
                                 // Nope
                                 else { return tinyCfg.errorCallback(req, res, 404, 'Version not found!'); }
