@@ -45,7 +45,14 @@ module.exports = function (tinyCfg) {
         }
 
         // Prepare Response
-        const res = {};
+        const res = {
+            status: function () { return; },
+            send: function () { return; },
+            render: function () { return; },
+            json: require('../interactionResponse')(`https://discord.com/api${data.apiVersion}/webhooks/${data.body.id}/${data.body.token}/messages/@original`, {
+                method: 'PATCH'
+            })
+        };
 
         // Get DB
         if (typeof data.query[tinyCfg.varNames.bot] === "string") {

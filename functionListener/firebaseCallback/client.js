@@ -76,6 +76,9 @@ module.exports = function (tinyCfg) {
                                 const commandCallback = app.root.functions().httpsCallable(tinyCfg.callbackName);
                                 commandCallback({ 
 
+                                    // API Version
+                                    apiVersion: 8,
+
                                     // Body
                                     body: req.body,
                                     
