@@ -4,6 +4,12 @@ module.exports = function (tinyCfg) {
     const functions = require('firebase-functions');
     return functions.https.onCall(async (data) => {
 
+        // Create Error
+        const errorResult = async function (code, message) {
+            await tinyCfg.errorCallback(data, res, code, message);
+            throw new functions.https.HttpsError('failed-callback', `Error ${code}: ${message}`);
+        };
+
         // Modules
         const objType = require('@tinypudding/puddy-lib/get/objType');
         const optionalRequire = require('@tinypudding/puddy-lib/get/module');
@@ -82,7 +88,7 @@ module.exports = function (tinyCfg) {
                                 return require('../version/' + data.body.version)(data, res, logger, di, tinyCfg);
                             } catch (err) {
                                 await logger.error(err);
-                                tinyCfg.errorCallback(data, res, 404, 'Version not found!');
+                                await errorResult(404, 'Version not found!');
                                 return;
                             }
 
@@ -90,12 +96,13 @@ module.exports = function (tinyCfg) {
 
                         // Nope
                         else {
-                            return tinyCfg.errorCallback(data, res, 401, 'Bad request signature!');
+                            await errorResult(401, 'Bad request signature!');
+                            return;
                         }
 
                     } catch (err) {
                         await logger.error(err);
-                        tinyCfg.errorCallback(data, res, 500, err.message);
+                        await errorResult(500, err.message);
                         return;
                     }
 
@@ -103,21 +110,21 @@ module.exports = function (tinyCfg) {
 
                 // Nope
                 else {
-                    tinyCfg.errorCallback(data, res, 401, 'Invalid Public Key or Client ID!');
+                    await errorResult(401, 'Invalid Public Key or Client ID!');
                 }
 
             }
 
             // Nope
             else {
-                tinyCfg.errorCallback(data, res, 404, 'App Data not found!');
+                await errorResult(404, 'App Data not found!');
             }
 
         }
 
         // Nope
         else {
-            tinyCfg.errorCallback(data, res, 401, 'Invalid Bot Data!');
+            await errorResult(401, 'Invalid Bot Data!');
         }
 
         // Complete
