@@ -5,9 +5,7 @@ module.exports = function (tinyCfg) {
             // Modules
             const objType = require('@tinypudding/puddy-lib/get/objType');
             const optionalRequire = require('@tinypudding/puddy-lib/get/module');
-
-            let logger = optionalRequire('@tinypudding/firebase-lib/logger');
-            if (!logger) { logger = console; }
+            const logger = console;
 
             // App
             let app = null;
@@ -17,8 +15,8 @@ module.exports = function (tinyCfg) {
 
                 // Debug
                 if (tinyCfg.debug) {
-                    await logger.log('Preparing Firebase Config...');
-                    await logger.log(tinyCfg.firebase);
+                    logger.log('Preparing Firebase Config...');
+                    logger.log(tinyCfg.firebase);
                 }
 
                 // New Firebase
@@ -40,7 +38,7 @@ module.exports = function (tinyCfg) {
             if (typeof req.query[tinyCfg.varNames.bot] === "string") {
 
                 // Debug
-                if (tinyCfg.debug) { await logger.log('Reading Bot String: ' + req.query[tinyCfg.varNames.bot]); }
+                if (tinyCfg.debug) { logger.log('Reading Bot String: ' + req.query[tinyCfg.varNames.bot]); }
 
                 // Get App Values
                 if (objType(tinyCfg.app, 'object') && objType(tinyCfg.app[req.query[tinyCfg.varNames.bot]], 'object')) {
@@ -48,7 +46,7 @@ module.exports = function (tinyCfg) {
                     if ((typeof tinyCfg.app[req.query[tinyCfg.varNames.bot]].client_id === "string" || typeof tinyCfg.app[req.query[tinyCfg.varNames.bot]].client_id === "number") && (typeof tinyCfg.app[req.query[tinyCfg.varNames.bot]].public_key === "string" || typeof tinyCfg.app[req.query[tinyCfg.varNames.bot]].public_key === "number")) {
 
                         // Debug
-                        if (tinyCfg.debug) { await logger.log('Bot Public Key was validated...'); }
+                        if (tinyCfg.debug) { logger.log('Bot Public Key was validated...'); }
 
                         // Prepare Validation
                         const di = require('discord-interactions');
@@ -64,7 +62,7 @@ module.exports = function (tinyCfg) {
                             if (isValidRequest) {
 
                                 // Debug
-                                if (tinyCfg.debug) { await logger.log('The command request was validated...'); }
+                                if (tinyCfg.debug) { logger.log('The command request was validated...'); }
 
                                 // Version Validator
                                 if (typeof req.body.version !== "number" || isNaN(req.body.version) || !isFinite(req.body.version) || req.body.version < 1) {
@@ -76,7 +74,27 @@ module.exports = function (tinyCfg) {
 
                                 // Send Function
                                 const commandCallback = app.root.functions().httpsCallable(tinyCfg.callbackName);
-                                commandCallback({ body: req.body, public_key: tinyCfg.app[req.query[tinyCfg.varNames.bot]].public_key }).then(resolve).catch(reject);
+                                commandCallback({ 
+
+                                    // Body
+                                    body: req.body,
+                                    
+                                    // Query
+                                    query: req.query,
+
+                                    // Public Key
+                                    public_key: tinyCfg.app[req.query[tinyCfg.varNames.bot]].public_key,
+
+                                    // Headers
+                                    headers: {
+                                        'X-Signature-Ed25519': req.get('X-Signature-Ed25519'),
+                                        'X-Signature-Timestamp': req.get('X-Signature-Timestamp')
+                                    },
+
+                                    // Raw Body
+                                    rawBody: req.rawBody
+                                
+                                }).then(resolve).catch(reject);
 
                                 // Prepare Reply
                                 const reply = optionalRequire('../version/' + req.body.version + '/reply');
@@ -93,7 +111,7 @@ module.exports = function (tinyCfg) {
                             }
 
                         } catch (err) {
-                            await logger.error(err);
+                            logger.error(err);
                             tinyCfg.errorCallback(req, res, 500, err.message);
                             return;
                         }
