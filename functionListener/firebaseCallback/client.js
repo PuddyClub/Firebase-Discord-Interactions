@@ -1,5 +1,5 @@
 module.exports = function (tinyCfg) {
-    return (req, res) => {
+    return (req, res, msg) => {
         return new Promise((resolve, reject) => {
 
             // Modules
@@ -77,6 +77,15 @@ module.exports = function (tinyCfg) {
                                 // Send Function
                                 const commandCallback = app.root.functions().httpsCallable(tinyCfg.callbackName);
                                 commandCallback({ body: req.body, public_key: tinyCfg.app[req.query[tinyCfg.varNames.bot]].public_key }).then(resolve).catch(reject);
+
+                                // Prepare Reply
+                                const reply = optionalRequire('../version/' + req.body.version + '/reply');
+                                if (reply) {
+                                    return reply({}, tinyCfg, logger, req, res)(msg);
+                                }
+
+                                // Nope
+                                else { return tinyCfg.errorCallback(req, res, 404, 'Version not found!'); }
 
                             }
 
