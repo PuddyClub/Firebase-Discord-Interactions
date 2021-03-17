@@ -1,8 +1,7 @@
 module.exports = function (tinyCfg) {
 
     // Prepare Firebase Function
-    const functions = require('firebase-functions');
-    return functions.https.onCall(async (data) => {
+    return async (functions, data) => {
 
         // Create Error
         const errorResult = async function (code, message) {
@@ -139,6 +138,6 @@ module.exports = function (tinyCfg) {
         // Complete
         return;
 
-    });
+    };
 
 };
