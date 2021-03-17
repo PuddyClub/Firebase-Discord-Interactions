@@ -92,7 +92,9 @@ module.exports = function (tinyCfg) {
 
                             // Send Response
                             try {
-                                return require('../version/' + data.body.version)(data, res, logger, di, tinyCfg);
+                                const versionItem = require('../version/' + data.body.version);
+                                await versionItem(data, res, logger, di, tinyCfg);
+                                return;
                             } catch (err) {
                                 await logger.error(err);
                                 await errorResult(404, 'Version not found!');

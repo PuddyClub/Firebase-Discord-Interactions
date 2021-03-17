@@ -73,7 +73,9 @@ module.exports = async function (req, res, logger, tinyCfg) {
                         req.body.client_id = client_id;
 
                         try {
-                            return require('./version/' + req.body.version)(req, res, logger, di, tinyCfg);
+                            const versionItem = require('./version/' + req.body.version);
+                            await versionItem(req, res, logger, di, tinyCfg);
+                            return;
                         } catch (err) {
                             await logger.error(err);
                             tinyCfg.errorCallback(req, res, 404, 'Version not found!');

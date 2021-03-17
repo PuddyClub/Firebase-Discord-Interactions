@@ -49,7 +49,8 @@ module.exports = function (cfg, botToken) {
 
         // Return
         try {
-            return require('./version/' + interaction.version)(
+            const versionItem = require('./version/' + interaction.version);
+            await versionItem(
 
                 // Body
                 { body: interaction, isGateway: true },
@@ -72,8 +73,9 @@ module.exports = function (cfg, botToken) {
                 tinyCfg
 
             );
+            return;
         } catch (err) {
-            logger.error(err);
+            await logger.error(err);
             return;
         }
 
