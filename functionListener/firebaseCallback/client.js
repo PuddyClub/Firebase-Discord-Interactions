@@ -72,39 +72,47 @@ module.exports = function (tinyCfg) {
                                 // Insert Client ID
                                 req.body.client_id = tinyCfg.app[req.query[tinyCfg.varNames.bot]].client_id;
 
-                                // Send Function
-                                const commandCallback = app.root.functions().httpsCallable(tinyCfg.callbackName);
-                                commandCallback({ 
+                                // Normal Request
+                                if (req.body.type !== di.InteractionType.PING) {
 
-                                    // API Version
-                                    apiVersion: 8,
+                                    // Send Function
+                                    const commandCallback = app.root.functions().httpsCallable(tinyCfg.callbackName);
+                                    commandCallback({
 
-                                    // Body
-                                    body: req.body,
-                                    
-                                    // Query
-                                    query: req.query,
+                                        // API Version
+                                        apiVersion: 8,
 
-                                    // Public Key
-                                    public_key: tinyCfg.app[req.query[tinyCfg.varNames.bot]].public_key,
+                                        // Body
+                                        body: req.body,
 
-                                    // Headers
-                                    headers: {
-                                        'X-Signature-Ed25519': req.get('X-Signature-Ed25519'),
-                                        'X-Signature-Timestamp': req.get('X-Signature-Timestamp')
-                                    },
+                                        // Query
+                                        query: req.query,
 
-                                    // Raw Body
-                                    rawBody: req.rawBody
-                                
-                                }).then(resolve).catch(reject);
+                                        // Public Key
+                                        public_key: tinyCfg.app[req.query[tinyCfg.varNames.bot]].public_key,
 
-                                // Prepare Reply
-                                const reply = optionalRequire('../version/' + req.body.version + '/reply');
-                                if (reply) { return reply({}, tinyCfg, logger, req, res)(msg, 'temp'); }
+                                        // Headers
+                                        headers: {
+                                            'X-Signature-Ed25519': req.get('X-Signature-Ed25519'),
+                                            'X-Signature-Timestamp': req.get('X-Signature-Timestamp')
+                                        },
 
-                                // Nope
-                                else { return tinyCfg.errorCallback(req, res, 404, 'Version not found!'); }
+                                        // Raw Body
+                                        rawBody: req.rawBody
+
+                                    }).then(resolve).catch(reject);
+
+                                    // Prepare Reply
+                                    const reply = optionalRequire('../version/' + req.body.version + '/reply');
+                                    if (reply) { return reply({}, tinyCfg, logger, req, res)(msg, 'temp'); }
+
+                                    // Nope
+                                    else { return tinyCfg.errorCallback(req, res, 404, 'Version not found!'); }
+
+                                }
+
+                                // Pong Request
+                                else { res.json({ type: di.InteractionResponseType.PONG }); }
 
                             }
 
