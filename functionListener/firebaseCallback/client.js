@@ -43,7 +43,8 @@ module.exports = function (tinyCfg) {
                 // Get App Values
                 if (objType(tinyCfg.app, 'object') && objType(tinyCfg.app[req.query[tinyCfg.varNames.bot]], 'object')) {
 
-                    if ((typeof tinyCfg.app[req.query[tinyCfg.varNames.bot]].client_id === "string" || typeof tinyCfg.app[req.query[tinyCfg.varNames.bot]].client_id === "number") && (typeof tinyCfg.app[req.query[tinyCfg.varNames.bot]].public_key === "string" || typeof tinyCfg.app[req.query[tinyCfg.varNames.bot]].public_key === "number")) {
+                    const botApp = tinyCfg.app[req.query[tinyCfg.varNames.bot]];
+                    if ((typeof botApp.client_id === "string" || typeof botApp.client_id === "number") && (typeof botApp.public_key === "string" || typeof botApp.public_key === "number")) {
 
                         // Debug
                         if (tinyCfg.debug) { logger.log('Bot Public Key was validated...'); }
@@ -56,7 +57,7 @@ module.exports = function (tinyCfg) {
                         try {
 
                             // Get Valid Request
-                            const isValidRequest = await di.verifyKey(req.rawBody, signature, timestamp, tinyCfg.app[req.query[tinyCfg.varNames.bot]].public_key);
+                            const isValidRequest = await di.verifyKey(req.rawBody, signature, timestamp, botApp.public_key);
 
                             // Is Valid
                             if (isValidRequest) {
@@ -70,7 +71,7 @@ module.exports = function (tinyCfg) {
                                 }
 
                                 // Insert Client ID
-                                req.body.client_id = tinyCfg.app[req.query[tinyCfg.varNames.bot]].client_id;
+                                req.body.client_id = botApp.client_id;
 
                                 // Normal Request
                                 if (req.body.type !== di.InteractionType.PING) {
@@ -89,7 +90,7 @@ module.exports = function (tinyCfg) {
                                         query: req.query,
 
                                         // Public Key
-                                        public_key: tinyCfg.app[req.query[tinyCfg.varNames.bot]].public_key,
+                                        public_key: botApp.public_key,
 
                                         // Headers
                                         headers: {
