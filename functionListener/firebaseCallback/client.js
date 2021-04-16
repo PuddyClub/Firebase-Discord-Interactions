@@ -5,40 +5,16 @@ module.exports = function (tinyCfg) {
             // Modules
             const objType = require('@tinypudding/puddy-lib/get/objType');
             const optionalRequire = require('@tinypudding/puddy-lib/get/module');
-            const logger = console;
 
-            // App
+            // Firebase
             let app = null;
-
-            // Exist Firebase
-            if (objType(tinyCfg.firebase, 'object')) {
-
-                // Debug
-                if (tinyCfg.debug) {
-                    logger.log('Preparing Firebase Config...');
-                    logger.log(tinyCfg.firebase);
-                }
-
-                // New Firebase
-                if (objType(tinyCfg.firebase.options, 'object')) {
-
-                    // Start Firebase
-                    const firebase = require('@tinypudding/firebase-lib');
-                    firebase.start(require('firebase-admin'), tinyCfg.firebase.options, tinyCfg.firebase.app);
-                    app = firebase.get(tinyCfg.firebase.options.id);
-
-                }
-
-                // Nope
-                else { app = tinyCfg.firebase; }
-
-            }
+            if (objType(tinyCfg.firebase, 'object')) { app = tinyCfg.firebase; }
 
             // Get DB
             if (typeof req.query[tinyCfg.varNames.bot] === "string") {
 
                 // Debug
-                if (tinyCfg.debug) { logger.log('Reading Bot String: ' + req.query[tinyCfg.varNames.bot]); }
+                if (tinyCfg.debug) { console.log('Reading Bot String: ' + req.query[tinyCfg.varNames.bot]); }
 
                 // Get App Values
                 if (objType(tinyCfg.app, 'object') && objType(tinyCfg.app[req.query[tinyCfg.varNames.bot]], 'object')) {
@@ -47,7 +23,7 @@ module.exports = function (tinyCfg) {
                     if ((typeof botApp.client_id === "string" || typeof botApp.client_id === "number") && (typeof botApp.public_key === "string" || typeof botApp.public_key === "number")) {
 
                         // Debug
-                        if (tinyCfg.debug) { logger.log('Bot Public Key was validated...'); }
+                        if (tinyCfg.debug) { console.log('Bot Public Key was validated...'); }
 
                         // Prepare Validation
                         const di = require('discord-interactions');
@@ -63,7 +39,7 @@ module.exports = function (tinyCfg) {
                             if (isValidRequest) {
 
                                 // Debug
-                                if (tinyCfg.debug) { logger.log('The command request was validated...'); }
+                                if (tinyCfg.debug) { console.log('The command request was validated...'); }
 
                                 // Version Validator
                                 if (typeof req.body.version !== "number" || isNaN(req.body.version) || !isFinite(req.body.version) || req.body.version < 1) {
@@ -105,7 +81,7 @@ module.exports = function (tinyCfg) {
 
                                     // Prepare Reply
                                     const reply = optionalRequire('../version/' + req.body.version + '/reply');
-                                    if (reply) { return reply({}, tinyCfg, logger, req, res)(msg, 'temp'); }
+                                    if (reply) { return reply({}, tinyCfg, console, req, res)(msg, 'temp'); }
 
                                     // Nope
                                     else { return tinyCfg.errorCallback(req, res, 404, 'Version not found!'); }
@@ -123,9 +99,14 @@ module.exports = function (tinyCfg) {
                             }
 
                         } catch (err) {
-                            logger.error(err);
+
+                            if (!tinyCfg.objString) { console.error(err); } else {
+                                console.error(JSON.stringify(err, null, 2));
+                            }
+
                             tinyCfg.errorCallback(req, res, 500, err.message);
                             return;
+                            
                         }
 
                     }
