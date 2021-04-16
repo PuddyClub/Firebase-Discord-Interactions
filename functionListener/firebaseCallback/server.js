@@ -90,11 +90,11 @@ module.exports = async (functions, tinyCfg, data) => {
                         try {
                             const versionItem = require('../version/' + data.body.version);
                             await versionItem(data, res, logger, di, tinyCfg);
-                            return;
+                            return { success: true };
                         } catch (err) {
                             await logger.error(err);
                             await errorResult(404, 'Version not found!');
-                            return;
+                            return { success: false, error: 'Version not found!' };
                         }
 
                     }
@@ -102,13 +102,13 @@ module.exports = async (functions, tinyCfg, data) => {
                     // Nope
                     else {
                         await errorResult(401, 'Bad request signature!');
-                        return;
+                        return { success: false, error: 'Bad request signature!' };
                     }
 
                 } catch (err) {
                     await logger.error(err);
                     await errorResult(500, err.message);
-                    return;
+                    return { success: false, error: err.message };
                 }
 
             }
@@ -116,6 +116,7 @@ module.exports = async (functions, tinyCfg, data) => {
             // Nope
             else {
                 await errorResult(401, 'Invalid Public Key or Client ID!');
+                return { success: false, error: 'Invalid Public Key or Client ID!' };
             }
 
         }
@@ -123,6 +124,7 @@ module.exports = async (functions, tinyCfg, data) => {
         // Nope
         else {
             await errorResult(404, 'App Data not found!');
+            return { success: false, error: 'App Data not found!' };
         }
 
     }
@@ -130,9 +132,7 @@ module.exports = async (functions, tinyCfg, data) => {
     // Nope
     else {
         await errorResult(401, 'Invalid Bot Data!');
+        return { success: false, error: 'Invalid Bot Data!' };
     }
-
-    // Complete
-    return;
 
 };
