@@ -80,7 +80,9 @@ module.exports = function (tinyCfg) {
                                     }).then(resolve).catch(reject);
 
                                     // Prepare Reply
+                                    console.log(req.body.version);
                                     const reply = optionalRequire('../version/' + req.body.version + '/reply');
+                                    console.log((reply));
                                     if (reply) { return reply({}, tinyCfg, console, req, res)(msg, 'temp'); }
 
                                     // Nope
