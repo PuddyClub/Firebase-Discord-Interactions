@@ -133,6 +133,6 @@ module.exports = async (functions, tinyCfg, data) => {
     }
 
     // Complete
-    return;;
+    return;
 
 };
