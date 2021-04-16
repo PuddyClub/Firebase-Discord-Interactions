@@ -80,9 +80,7 @@ module.exports = function (tinyCfg) {
                                     }).then(resolve).catch(reject);
 
                                     // Prepare Reply
-                                    console.log(req.body.version);
-                                    const reply = optionalRequire('../version/' + req.body.version + '/reply');
-                                    console.log((reply));
+                                    let reply; try { reply = require('../version/' + req.body.version + '/reply'); } catch (err) { reply = null; }
                                     if (reply) { return reply({}, tinyCfg, console, req, res)(msg, 'temp'); }
 
                                     // Nope
@@ -108,7 +106,7 @@ module.exports = function (tinyCfg) {
 
                             tinyCfg.errorCallback(req, res, 500, err.message);
                             return;
-                            
+
                         }
 
                     }
