@@ -4,7 +4,6 @@ module.exports = function (tinyCfg) {
 
             // Modules
             const objType = require('@tinypudding/puddy-lib/get/objType');
-            const optionalRequire = require('@tinypudding/puddy-lib/get/module');
 
             // Firebase
             let app = null;
