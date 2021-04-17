@@ -92,7 +92,8 @@ module.exports = function (req, res, logger, tinyCfg, completeAction) {
 
         // Get App Values
         else if (objType(tinyCfg.app, 'object') && objType(tinyCfg.app[req.query[tinyCfg.varNames.bot]], 'object')) {
-            await completeAction(tinyCfg.app[req.query[tinyCfg.varNames.bot]].client_id, tinyCfg.app[req.query[tinyCfg.varNames.bot]].public_key);
+            const botData = tinyCfg.app[req.query[tinyCfg.varNames.bot]];
+            await completeAction(botData.client_id, botData.public_key);
             resolve();
         }
 
