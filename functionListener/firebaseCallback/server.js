@@ -33,7 +33,7 @@ module.exports = async (functions, tinyCfg, data) => {
             const finalResult = require('../validator/send');
 
             try {
-                await finalResult(data, res, logger, tinyCfg, require('./validator/checker')(req, res, logger));
+                await finalResult(data, res, logger, tinyCfg, require('../validator/checker')(req, res, logger));
                 return { success: true };
             } catch (err) {
                 return { success: false, error: err.message };
