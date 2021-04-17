@@ -1,4 +1,4 @@
-module.exports = async function (req, res, logger, tinyCfg, completeAction) {
+module.exports = function (req, res, logger, tinyCfg, completeAction) {
     return new Promise(async function (resolve, reject) {
 
         // Object Type
@@ -50,7 +50,7 @@ module.exports = async function (req, res, logger, tinyCfg, completeAction) {
 
                 // Get Client ID
                 if (tinyCfg.getClientID) {
-                    getDBData(db.child('client_id')).then(client_id => {
+                    getDBData(db.child('client_id')).then(async client_id => {
 
                         // Debug
                         if (tinyCfg.debug) { await logger.log('Bot Client ID was read...'); }
