@@ -11,8 +11,8 @@ module.exports = (functions, tinyCfg, data) => {
 
             // Create Error Data
             const errorResult = { success: false };
-            if (err && typeof err.message === "string") { errorResult.error = err.message; } 
-            else if(typeof err === "string") {
+            if (err && typeof err.message === "string") { errorResult.error = err.message; }
+            else if (typeof err === "string") {
                 errorResult.error = err;
             } else {
                 errorResult.error = 'Unknown Error';
@@ -39,7 +39,7 @@ module.exports = (functions, tinyCfg, data) => {
             data.get = (item) => {
 
                 // Is String
-                if(typeof data.headers[item] === "string" || typeof data.headers[item] === "number") {
+                if (typeof data.headers[item] === "string" || typeof data.headers[item] === "number") {
                     return data.headers[item];
                 } else {
                     return null;
