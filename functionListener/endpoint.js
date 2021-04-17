@@ -8,7 +8,7 @@ module.exports = async function (req, res, logger, tinyCfg) {
 
         // Complete Action
         const finalResult = require('./validator/send');
-        await finalResult(req, res, logger, tinyCfg, require('./validator/checker')(req, res, logger));
+        await finalResult(req, res, logger, tinyCfg, require('./validator/checker')(req, res, logger, tinyCfg));
 
     }
 

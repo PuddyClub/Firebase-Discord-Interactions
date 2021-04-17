@@ -1,4 +1,4 @@
-module.exports = function (req, res, logger) {
+module.exports = function (req, res, logger, tinyCfg) {
     return async function (client_id, public_key) {
 
         if ((typeof client_id === "string" || typeof client_id === "number") && (typeof public_key === "string" || typeof public_key === "number")) {
