@@ -50,7 +50,7 @@ module.exports = (functions, tinyCfg, data) => {
 
                 // Complete Action
                 const finalResult = require('../validator/send');
-                await finalResult(data, res, logger, tinyCfg, require('../validator/checker')(req, res, logger, tinyCfg)).then(() => {
+                await finalResult(data, res, logger, tinyCfg, require('../validator/checker')(data, res, logger, tinyCfg)).then(() => {
                     resolve({ success: true }); return;
                 }).catch(err => { return sendError(err); });
 
