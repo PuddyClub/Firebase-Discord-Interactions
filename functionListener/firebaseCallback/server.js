@@ -29,78 +29,14 @@ module.exports = async (functions, tinyCfg, data) => {
         // Get DB
         if (typeof data.query[tinyCfg.varNames.bot] === "string") {
 
-            // Debug
-            if (tinyCfg.debug) { await logger.log('Reading Bot String: ' + data.query[tinyCfg.varNames.bot]); }
+            // Complete Action
+            const finalResult = require('../validator/send');
 
-            // Get App Values
-            if (objType(tinyCfg.app, 'object') && objType(tinyCfg.app[data.query[tinyCfg.varNames.bot]], 'object')) {
-
-                if ((typeof tinyCfg.app[data.query[tinyCfg.varNames.bot]].client_id === "string" || typeof tinyCfg.app[data.query[tinyCfg.varNames.bot]].client_id === "number") && (typeof tinyCfg.app[data.query[tinyCfg.varNames.bot]].public_key === "string" || typeof tinyCfg.app[data.query[tinyCfg.varNames.bot]].public_key === "number")) {
-
-                    // Debug
-                    if (tinyCfg.debug) { await logger.log('Bot Public Key was validated...'); }
-
-                    // Prepare Validation
-                    const di = require('discord-interactions');
-
-                    try {
-
-                        // Get Valid Request
-                        const isValidRequest = await di.verifyKey(data.rawBody, data.headers['X-Signature-Ed25519'], data.headers['X-Signature-Timestamp'], tinyCfg.app[data.query[tinyCfg.varNames.bot]].public_key);
-
-                        // Is Valid
-                        if (isValidRequest) {
-
-                            // Debug
-                            if (tinyCfg.debug) { await logger.log('The command request was validated...'); }
-
-                            // Version Validator
-                            if (typeof data.body.version !== "number" || isNaN(data.body.version) || !isFinite(data.body.version) || data.body.version < 1) {
-                                data.body.version = 1;
-                            }
-
-                            // Insert Client ID
-                            data.body.client_id = tinyCfg.app[data.query[tinyCfg.varNames.bot]].client_id;
-
-                            // Send Response
-                            try {
-                                const versionItem = require('../version/' + data.body.version);
-                                await versionItem(data, res, logger, di, tinyCfg);
-                                return { success: true };
-                            } catch (err) {
-                                await logger.error(err);
-                                await errorResult(404, 'Version not found!');
-                                return { success: false, error: 'Version not found!' };
-                            }
-
-                        }
-
-                        // Nope
-                        else {
-                            await errorResult(401, 'Bad request signature!');
-                            return { success: false, error: 'Bad request signature!' };
-                        }
-
-                    } catch (err) {
-                        await logger.error(err);
-                        await errorResult(500, err.message);
-                        return { success: false, error: err.message };
-                    }
-
-                }
-
-                // Nope
-                else {
-                    await errorResult(401, 'Invalid Public Key or Client ID!');
-                    return { success: false, error: 'Invalid Public Key or Client ID!' };
-                }
-
-            }
-
-            // Nope
-            else {
-                await errorResult(404, 'App Data not found!');
-                return { success: false, error: 'App Data not found!' };
+            try {
+                await finalResult(data, res, logger, tinyCfg, require('./validator/checker')(req, res, logger));
+                return { success: true };
+            } catch (err) {
+                return { success: false, error: err.message };
             }
 
         }
