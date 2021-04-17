@@ -14,7 +14,7 @@ module.exports = async (functions, tinyCfg, data) => {
     if (!logger) { logger = console; }
 
     // Validate Data
-    if (objType(data, 'object') && objType(data.body, 'object') && objType(data.query, 'object') && objType(data.headers, 'object') && typeof data.rawBody === "string") {
+    if (objType(data, 'object') && objType(data.body, 'object') && objType(data.query, 'object') && objType(data.headers, 'object') && typeof data.rawBody === "string" && (typeof data.public_key === "string" || typeof data.public_key === "number")) {
 
         // App
         let app = null;
