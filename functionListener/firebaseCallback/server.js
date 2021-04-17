@@ -1,9 +1,28 @@
-module.exports = async (functions, tinyCfg, data) => {
-    return new Promise(async function (resolve, reject) {
+module.exports = (functions, tinyCfg, data) => {
+    return new Promise(async function (resolve) {
 
         // Create Error
         tinyCfg.errorCallback = function (req, res, code, message) {
             throw new functions.https.HttpsError('failed-callback', `Error ${code}: ${message}`);
+        };
+
+        // Send Error
+        const sendError = function (err) {
+
+            // Create Error Data
+            const errorResult = { success: false };
+            if (err && typeof err.message === "string") { errorResult.error = err.message; } 
+            else if(typeof err === "string") {
+                errorResult.error = err;
+            } else {
+                errorResult.error = 'Unknown Error';
+                errorResult.data = err;
+            }
+
+            // Send Error
+            resolve(errorResult);
+            return;
+
         };
 
         // Modules
@@ -31,22 +50,16 @@ module.exports = async (functions, tinyCfg, data) => {
 
                 // Complete Action
                 const finalResult = require('../validator/send');
-
-                try {
-                    await finalResult(data, res, logger, tinyCfg, require('../validator/checker')(req, res, logger, tinyCfg));
-                    return { success: true };
-                } catch (err) {
-                    if (err && typeof err.message === "string") { return { success: false, error: err.message }; } else {
-                        return { success: false, error: err };
-                    }
-                }
+                await finalResult(data, res, logger, tinyCfg, require('../validator/checker')(req, res, logger, tinyCfg)).then(() => {
+                    resolve({ success: true }); return;
+                }).catch(err => { return sendError(err); });
 
             }
 
             // Nope
             else {
                 await tinyCfg.errorCallback(null, null, 401, 'Invalid Bot Data!');
-                return { success: false, error: 'Invalid Bot Data!' };
+                return sendError('Invalid Bot Data!');
             }
 
         }
@@ -54,7 +67,7 @@ module.exports = async (functions, tinyCfg, data) => {
         // Nope
         else {
             await tinyCfg.errorCallback(null, null, 401, 'Invalid Body Data!');
-            return { success: false, error: 'Invalid Body Data!' };
+            return sendError('Invalid Body Data!');
         }
 
     });
