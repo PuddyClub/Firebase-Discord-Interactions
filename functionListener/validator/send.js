@@ -1,4 +1,4 @@
-module.exports = async function (logger, tinyCfg, completeAction) {
+module.exports = async function (req, res, logger, tinyCfg, completeAction) {
     return new Promise(function (resolve, reject) {
 
         // Object Type
