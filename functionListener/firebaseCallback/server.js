@@ -35,9 +35,7 @@ module.exports = async (functions, tinyCfg, data) => {
                 await finalResult(data, res, logger, tinyCfg, require('../validator/checker')(req, res, logger, tinyCfg));
                 return { success: true };
             } catch (err) {
-                if (err && typeof err.message === "string") {
-                    return { success: false, error: err.message };
-                } else {
+                if (err && typeof err.message === "string") { return { success: false, error: err.message }; } else {
                     return { success: false, error: err };
                 }
             }
