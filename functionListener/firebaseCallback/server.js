@@ -35,6 +35,18 @@ module.exports = (functions, tinyCfg, data) => {
         // Validate Data
         if (objType(data, 'object') && objType(data.body, 'object') && objType(data.query, 'object') && objType(data.headers, 'object') && typeof data.rawBody === "string" && (typeof data.public_key === "string" || typeof data.public_key === "number")) {
 
+            // Add Get Header
+            data.get = (item) => {
+
+                // Is String
+                if(typeof data.headers[item] === "string" || typeof data.headers[item] === "number") {
+                    return data.headers[item];
+                } else {
+                    return null;
+                }
+
+            };
+
             // Prepare Response
             const res = {
                 status: function () { return; },
