@@ -50,14 +50,22 @@ module.exports = async function (req, res, logger, tinyCfg, completeAction) {
 
                 // Get Client ID
                 if (tinyCfg.getClientID) {
-                    getDBData(db.child('client_id')).then(async client_id => {
+                    getDBData(db.child('client_id')).then(client_id => {
 
                         // Debug
                         if (tinyCfg.debug) { await logger.log('Bot Client ID was read...'); }
 
                         // Complete
-                        await completeAction(client_id, public_key);
-                        resolve();
+                        completeAction(client_id, public_key).then(() => {
+                            resolve();
+                            return;
+                        }).catch(async err => {
+                            await logger.error(err);
+                            tinyCfg.errorCallback(req, res, 500, 'Action Error!');
+                            reject(err);
+                            return;
+                        });
+                        
                         return;
 
                     }).catch(async err => {
