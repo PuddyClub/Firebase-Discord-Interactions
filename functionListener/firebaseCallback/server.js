@@ -1,8 +1,7 @@
 module.exports = async (functions, tinyCfg, data) => {
 
     // Create Error
-    const errorResult = async function (code, message) {
-        await tinyCfg.errorCallback(data, res, code, message);
+    tinyCfg.errorCallback = function (req, res, code, message) {
         throw new functions.https.HttpsError('failed-callback', `Error ${code}: ${message}`);
     };
 
@@ -43,7 +42,7 @@ module.exports = async (functions, tinyCfg, data) => {
 
         // Nope
         else {
-            await errorResult(401, 'Invalid Bot Data!');
+            await tinyCfg.errorCallback(null, null, 401, 'Invalid Bot Data!');
             return { success: false, error: 'Invalid Bot Data!' };
         }
 
@@ -51,7 +50,7 @@ module.exports = async (functions, tinyCfg, data) => {
 
     // Nope
     else {
-        await errorResult(401, 'Invalid Body Data!');
+        await tinyCfg.errorCallback(null, null, 401, 'Invalid Body Data!');
         return { success: false, error: 'Invalid Body Data!' };
     }
 
