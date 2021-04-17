@@ -16,33 +16,6 @@ module.exports = async (functions, tinyCfg, data) => {
     // Validate Data
     if (objType(data, 'object') && objType(data.body, 'object') && objType(data.query, 'object') && objType(data.headers, 'object') && typeof data.rawBody === "string" && (typeof data.public_key === "string" || typeof data.public_key === "number")) {
 
-        // App
-        let app = null;
-
-        // Exist Firebase
-        if (objType(tinyCfg.firebase, 'object')) {
-
-            // Debug
-            if (tinyCfg.debug) {
-                await logger.log('Preparing Firebase Config...');
-                await logger.log(tinyCfg.firebase);
-            }
-
-            // New Firebase
-            if (objType(tinyCfg.firebase.options, 'object')) {
-
-                // Start Firebase
-                const firebase = require('@tinypudding/firebase-lib');
-                firebase.start(require('firebase-admin'), tinyCfg.firebase.options, tinyCfg.firebase.app);
-                app = firebase.get(tinyCfg.firebase.options.id);
-
-            }
-
-            // Nope
-            else { app = tinyCfg.firebase; }
-
-        }
-
         // Prepare Response
         const res = {
             status: function () { return; },
