@@ -1,5 +1,5 @@
 module.exports = async function (req, res, logger, tinyCfg, completeAction) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(async function (resolve, reject) {
 
         // Object Type
         const objType = require('@tinypudding/puddy-lib/get/objType');
