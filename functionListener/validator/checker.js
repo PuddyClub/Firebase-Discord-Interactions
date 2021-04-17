@@ -34,10 +34,12 @@ module.exports = function (req, res, logger, tinyCfg) {
                         try {
                             const versionItem = require('../version/' + req.body.version);
                             await versionItem(req, res, logger, di, tinyCfg);
+                            resolve();
                             return;
                         } catch (err) {
                             await logger.error(err);
                             tinyCfg.errorCallback(req, res, 404, 'Version not found!');
+                            reject(err);
                             return;
                         }
 
@@ -45,12 +47,14 @@ module.exports = function (req, res, logger, tinyCfg) {
 
                     // Nope
                     else {
+                        reject(new Error('Bad request signature!'));
                         return tinyCfg.errorCallback(req, res, 401, 'Bad request signature!');
                     }
 
                 } catch (err) {
                     await logger.error(err);
                     tinyCfg.errorCallback(req, res, 500, err.message);
+                    reject(err);
                     return;
                 }
 
@@ -59,6 +63,7 @@ module.exports = function (req, res, logger, tinyCfg) {
             // Nope
             else {
                 tinyCfg.errorCallback(req, res, 401, 'Invalid Public Key or Client ID!');
+                reject(new Error('Invalid Public Key or Client ID!'));
             }
 
             // Complete
