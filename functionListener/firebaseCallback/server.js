@@ -47,6 +47,9 @@ module.exports = (functions, tinyCfg, data) => {
 
             };
 
+            // Gateway Mode
+            data.isGateway = true;
+
             // Prepare Response
             const res = {
                 status: function () { return; },
