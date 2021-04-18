@@ -67,9 +67,6 @@ module.exports = function (tinyCfg) {
                                         // Public Key
                                         public_key: botApp.public_key,
 
-                                        // Client ID
-                                        client_id: botApp.client_id,
-
                                         // Headers
                                         headers: {
                                             'X-Signature-Ed25519': req.get('X-Signature-Ed25519'),

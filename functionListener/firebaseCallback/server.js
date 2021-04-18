@@ -39,8 +39,7 @@ module.exports = (functions, tinyCfg, data) => {
             objType(data.query, 'object') && 
             objType(data.headers, 'object') && 
             typeof data.rawBody === "string" && 
-            (typeof data.public_key === "string" || typeof data.public_key === "number") && 
-            (typeof data.client_id === "string" || typeof data.client_id === "number")
+            (typeof data.public_key === "string" || typeof data.public_key === "number")
         ) {
 
             // Add Get Header
@@ -64,7 +63,7 @@ module.exports = (functions, tinyCfg, data) => {
                 status: function () { return; },
                 send: function () { return; },
                 render: function () { return; },
-                json: require('../interactionResponse')(`https://discord.com/api/v${data.apiVersion}/webhooks/${data.client_id}/${data.body.token}/messages/@original`, {
+                json: require('../interactionResponse')(`https://discord.com/api/v${data.apiVersion}/webhooks/${data.body.client_id}/${data.body.token}/messages/@original`, {
                     method: 'PATCH'
                 })
             };
