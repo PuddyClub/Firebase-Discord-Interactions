@@ -50,13 +50,14 @@ module.exports = (functions, tinyCfg, data) => {
             // Gateway Mode
             data.isGateway = true;
             data.isFollowup = true;
+            console.log(data.apiVersion);
 
             // Prepare Response
             const res = {
                 status: function () { return; },
                 send: function () { return; },
                 render: function () { return; },
-                json: require('../interactionResponse')(`https://discord.com/api${data.apiVersion}/webhooks/${data.body.id}/${data.body.token}`, {
+                json: require('../interactionResponse')(`https://discord.com/api/v${data.apiVersion}/webhooks/${data.body.id}/${data.body.token}`, {
                     method: 'POST'
                 })
             };
