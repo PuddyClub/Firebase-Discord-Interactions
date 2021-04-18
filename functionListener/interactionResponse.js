@@ -17,17 +17,15 @@ module.exports = function (url, options, extraCfg = {}) {
                 
                 // Exist Data
                 const objType = require('@tinypudding/puddy-lib/get/objType');
-                if(objType(tinyCfg.body, 'object') && objType(tinyCfg.body.data, 'object') && (
-                    typeof tinyCfg.body.data.content === "string" ||
-                    Array.isArray(tinyCfg.body.data.embeds)
+                if(
+                    objType(data, 'object') && objType(data.data, 'object') && (
+                    typeof data.data.content === "string" ||
+                    Array.isArray(data.data.embeds)
                 )) {
-                    tinyCfg.body = tinyCfg.body.data;
+                    data = data.data;
                 }
 
             }
-
-            const logger = require('@tinypudding/firebase-lib/logger');
-            logger.log(tinyCfg);
 
             // JSON Fetch
             const JSONfetch = require('@tinypudding/puddy-lib/http/fetch/json');
