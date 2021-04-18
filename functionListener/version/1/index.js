@@ -754,14 +754,14 @@ const messageEditorGenerator = function (logger, req, res, tinyCfg, interaction,
     // Edit Message
     response.edit = (data => {
         return replyMessage({
-            custom_result: interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.id}/${interaction.token}/messages/${messageID}`, {
+            custom_result: interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.client_id}/${interaction.token}/messages/${messageID}`, {
                 method: 'PATCH'
             })
         }, tinyCfg, logger, req, res)(data);
     });
 
     // Delete Message
-    response.delete = interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.id}/${interaction.token}/messages/${messageID}`, {
+    response.delete = interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.client_id}/${interaction.token}/messages/${messageID}`, {
         method: 'DELETE'
     });
 
@@ -781,7 +781,7 @@ const createMessageEditor = function (logger, req, res, tinyCfg, interaction, ve
         return new Promise(function (resolve, reject) {
 
             // Result
-            interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.id}/${interaction.token}`)(data).then(data => {
+            interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.client_id}/${interaction.token}`)(data).then(data => {
                 resolve({ data: data, msg: messageEditorGenerator(logger, req, res, tinyCfg, interaction, data.id) });
                 return;
             }).catch(err => {
