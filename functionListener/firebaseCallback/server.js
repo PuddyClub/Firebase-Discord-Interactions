@@ -63,8 +63,8 @@ module.exports = (functions, tinyCfg, data) => {
                 status: function () { return; },
                 send: function () { return; },
                 render: function () { return; },
-                json: require('../interactionResponse')(`https://discord.com/api/v${data.apiVersion}/webhooks/${data.body.client_id}/${data.body.token}/messages/@original`, {
-                    method: 'PATCH'
+                json: require('../interactionResponse')(`https://discord.com/api/v${data.apiVersion}/webhooks/${data.body.client_id}/${data.body.token}`, {
+                    method: 'POST'
                 })
             };
 

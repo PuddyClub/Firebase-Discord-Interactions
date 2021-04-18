@@ -62,6 +62,9 @@ module.exports = (urlResult = {}, tinyCfg, logger, req, res) => {
                 // Nope
                 else { result.type = 4; }
 
+                // Remove Type
+                if (req.isFollowup) { await logger.log(result); }
+
                 // Custom Result
                 if (urlResult.custom_result) {
                     urlResult.custom_result(result).then(data => { resolve(data); }).catch(err => { reject(err); });
