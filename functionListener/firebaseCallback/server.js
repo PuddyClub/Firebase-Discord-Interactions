@@ -49,6 +49,7 @@ module.exports = (functions, tinyCfg, data) => {
 
             // Gateway Mode
             data.isGateway = true;
+            data.isFollowup = true;
 
             // Prepare Response
             const res = {
