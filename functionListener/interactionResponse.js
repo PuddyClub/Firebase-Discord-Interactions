@@ -1,4 +1,4 @@
-module.exports = function (url, options) {
+module.exports = function (url, options, extraCfg = {}) {
     
     // Config
     const tinyCfg = require('lodash').defaultsDeep({}, options, {
@@ -11,6 +11,20 @@ module.exports = function (url, options) {
     // Return Data
     return function (data) {
         return new Promise(function (resolve, reject) {
+
+            // Fix Message
+            if(extraCfg.fixData) {
+                
+                // Exist Data
+                const objType = require('@tinypudding/puddy-lib/get/objType');
+                if(objType(tinyCfg.body, 'object') && objType(tinyCfg.body.data, 'object') && (
+                    typeof tinyCfg.body.data.content === "string" ||
+                    Array.isArray(tinyCfg.body.data.embeds)
+                )) {
+                    tinyCfg.body = tinyCfg.body.data;
+                }
+
+            }
 
             // JSON Fetch
             const JSONfetch = require('@tinypudding/puddy-lib/http/fetch/json');

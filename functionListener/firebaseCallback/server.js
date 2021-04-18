@@ -34,11 +34,11 @@ module.exports = (functions, tinyCfg, data) => {
 
         // Validate Data
         if (
-            objType(data, 'object') && 
-            objType(data.body, 'object') && 
-            objType(data.query, 'object') && 
-            objType(data.headers, 'object') && 
-            typeof data.rawBody === "string" && 
+            objType(data, 'object') &&
+            objType(data.body, 'object') &&
+            objType(data.query, 'object') &&
+            objType(data.headers, 'object') &&
+            typeof data.rawBody === "string" &&
             (typeof data.public_key === "string" || typeof data.public_key === "number")
         ) {
 
@@ -57,15 +57,15 @@ module.exports = (functions, tinyCfg, data) => {
             // Gateway Mode
             data.isGateway = true;
             data.isFollowup = true;
-            
+
             // Prepare Response
             const res = {
                 status: function () { return; },
                 send: function () { return; },
                 render: function () { return; },
-                json: require('../interactionResponse')(`https://discord.com/api/v${data.apiVersion}/webhooks/${data.body.client_id}/${data.body.token}`, {
-                    method: 'POST'
-                })
+                json: require('../interactionResponse')(`https://discord.com/api/v${data.apiVersion}/webhooks/${data.body.client_id}/${data.body.token}/messages/@original`, {
+                    method: 'PATCH'
+                }, { fixData: true })
             };
 
             // Get DB

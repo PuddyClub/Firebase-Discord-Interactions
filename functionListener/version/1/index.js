@@ -756,7 +756,7 @@ const messageEditorGenerator = function (logger, req, res, tinyCfg, interaction,
         return replyMessage({
             custom_result: interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.client_id}/${interaction.token}/messages/${messageID}`, {
                 method: 'PATCH'
-            })
+            }, { fixData: true })
         }, tinyCfg, logger, req, res)(data);
     });
 
@@ -781,7 +781,9 @@ const createMessageEditor = function (logger, req, res, tinyCfg, interaction, ve
         return new Promise(function (resolve, reject) {
 
             // Result
-            interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.client_id}/${interaction.token}`)(data).then(data => {
+            interactionResponse(`https://discord.com/api${version}/webhooks/${interaction.client_id}/${interaction.token}`, {
+                method: 'POST'
+            }, { fixData: true })(data).then(data => {
                 resolve({ data: data, msg: messageEditorGenerator(logger, req, res, tinyCfg, interaction, data.id) });
                 return;
             }).catch(err => {
@@ -879,7 +881,7 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                     newMsg: createMessageEditor(logger, req, res, tinyCfg, req.body),
 
                     // Reply Message
-                    replyCallback: replyMessage({ temp: require('../../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`) }, tinyCfg, logger, req, res),
+                    //replyCallback: replyMessage({ temp: require('../../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`) }, tinyCfg, logger, req, res),
 
                     // Reply Message
                     reply: replyMessage({}, tinyCfg, logger, req, res),
