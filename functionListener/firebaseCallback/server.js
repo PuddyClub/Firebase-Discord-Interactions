@@ -50,14 +50,13 @@ module.exports = (functions, tinyCfg, data) => {
             // Gateway Mode
             data.isGateway = true;
             data.isFollowup = true;
-            console.log(`https://discord.com/api/v${data.apiVersion}/webhooks/${data.body.id}/${data.body.token}/messages/@original`);
-
+            
             // Prepare Response
             const res = {
                 status: function () { return; },
                 send: function () { return; },
                 render: function () { return; },
-                json: require('../interactionResponse')(`https://discord.com/api/v${data.apiVersion}/webhooks/${data.body.id}/${data.body.token}/messages/@original`, {
+                json: require('../interactionResponse')(`https://discord.com/api/v${data.apiVersion}/webhooks/${data.client_id}/${data.body.token}/messages/@original`, {
                     method: 'PATCH'
                 })
             };

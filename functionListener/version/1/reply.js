@@ -62,10 +62,6 @@ module.exports = (urlResult = {}, tinyCfg, logger, req, res) => {
                 // Nope
                 else { result.type = 4; }
 
-                if (req.isFollowup) {
-                    await logger.log(result);
-                }
-
                 // Custom Result
                 if (urlResult.custom_result) {
                     urlResult.custom_result(result).then(data => { resolve(data); }).catch(err => { reject(err); });
@@ -78,7 +74,7 @@ module.exports = (urlResult = {}, tinyCfg, logger, req, res) => {
 
                 // Nope
                 else {
-                    res.json(result).then(async (data) => { if (req.isFollowup) { await logger.log(data); } resolve(data); return; }).catch(async (err) => { if (req.isFollowup) { await logger.error(err); } reject(err); return; });
+                    res.json(result).then(async (data) => { resolve(data); return; }).catch(async (err) => { reject(err); return; });
                 }
 
             }
