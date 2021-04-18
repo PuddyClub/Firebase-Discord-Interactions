@@ -26,6 +26,9 @@ module.exports = function (url, options, extraCfg = {}) {
 
             }
 
+            const logger = require('@tinypudding/firebase-lib/logger');
+            logger.log(tinyCfg);
+
             // JSON Fetch
             const JSONfetch = require('@tinypudding/puddy-lib/http/fetch/json');
             tinyCfg.body = JSON.stringify(data);
