@@ -33,8 +33,8 @@ module.exports = function (req, res, logger, tinyCfg) {
 
                         try {
                             const versionItem = require('../version/' + req.body.version);
-                            await versionItem(req, res, logger, di, tinyCfg);
-                            resolve();
+                            const versionResult = await versionItem(req, res, logger, di, tinyCfg);
+                            resolve(versionResult);
                             return;
                         } catch (err) {
                             await logger.error(err);

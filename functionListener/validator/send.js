@@ -56,8 +56,8 @@ module.exports = function (req, res, logger, tinyCfg, completeAction) {
                         if (tinyCfg.debug) { await logger.log('Bot Client ID was read...'); }
 
                         // Complete
-                        completeAction(client_id, public_key).then(() => {
-                            resolve();
+                        await completeAction(client_id, public_key).then((result) => {
+                            resolve(result);
                             return;
                         }).catch(async err => {
                             await logger.error(err);
@@ -65,7 +65,7 @@ module.exports = function (req, res, logger, tinyCfg, completeAction) {
                             reject(err);
                             return;
                         });
-                        
+
                         return;
 
                     }).catch(async err => {
@@ -77,7 +77,19 @@ module.exports = function (req, res, logger, tinyCfg, completeAction) {
                 }
 
                 // Nope
-                else { await completeAction(); resolve(); }
+                else {
+
+                    await completeAction().then((result) => {
+                        resolve(result);
+                        return;
+                    }).catch(async err => {
+                        await logger.error(err);
+                        tinyCfg.errorCallback(req, res, 500, 'Action Error 2!');
+                        reject(err);
+                        return;
+                    });
+
+                }
 
                 // Complete
                 return;
@@ -93,8 +105,15 @@ module.exports = function (req, res, logger, tinyCfg, completeAction) {
         // Get App Values
         else if (objType(tinyCfg.app, 'object') && objType(tinyCfg.app[req.query[tinyCfg.varNames.bot]], 'object')) {
             const botData = tinyCfg.app[req.query[tinyCfg.varNames.bot]];
-            await completeAction(botData.client_id, botData.public_key);
-            resolve();
+            await completeAction(botData.client_id, botData.public_key).then((result) => {
+                resolve(result);
+                return;
+            }).catch(async err => {
+                await logger.error(err);
+                tinyCfg.errorCallback(req, res, 500, 'Action Error 3!');
+                reject(err);
+                return;
+            });
         }
 
         // Nope
