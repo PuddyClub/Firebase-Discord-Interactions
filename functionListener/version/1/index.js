@@ -234,6 +234,31 @@ const getValues = {
                                         interaction.data.resolved.members[result.id].premium_since = member.premiumSince;
                                         interaction.data.resolved.members[result.id].roles = member._roles;
 
+                                        // Mute and Deaf
+                                        if (member.voice) {
+                                            
+                                            // Mute
+                                            if(member.voice.mute) { 
+                                                interaction.data.resolved.members[result.id].mute = member.voice.mute; 
+                                            } else {
+                                                interaction.data.resolved.members[result.id].mute = false;
+                                            }
+
+                                            // Deaf
+                                            if(member.voice.deaf) { 
+                                                interaction.data.resolved.members[result.id].deaf = member.voice.deaf; 
+                                            } else {
+                                                interaction.data.resolved.members[result.id].deaf = false;
+                                            }
+                                            
+                                        } 
+                                        
+                                        // Disable All
+                                        else {
+                                            interaction.data.resolved.members[result.id].mute = false;
+                                            interaction.data.resolved.members[result.id].deaf = false;
+                                        }
+
                                         // Flags
                                         if (member.permissions && member.permissions.bitfield) {
                                             interaction.data.resolved.members[result.id].permissions = member.permissions.bitfield;
