@@ -221,7 +221,7 @@ result.get.boolean(optionName); // return a boolean value.
 result.get.integer(optionName); // return a integer value.
 result.get.string(optionName); // return a string value.
 
-result.get.subCommand(optionName); // return a subCommand value.
+result.get.subCommand(optionName); // The value can be String or Array with Strings. This method will look for which of the Strings is the selected subcommand. You will receive the selected subcommand value and another "get method" to search for the next option inside the subcommand.
 result.get.subCommandGroup(optionName, subCommandName, itemName); // return a subCommand group value. (Not Tested)
 ```
 
