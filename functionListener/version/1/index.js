@@ -615,24 +615,31 @@ const getValues = {
                     // Is Array
                     if (Array.isArray(where)) {
 
-                        // Look for
-                        const result = interaction.data.options.find(option => option.name === where && (typeof option.type !== "number" || option.type === 1));
+                        // Search
+                        for (const itemOption in where) {
+                            if (typeof where[itemOption] === "string") {
 
-                        // Found
-                        if (result) {
+                                // Look for
+                                const result = interaction.data.options.find(option => option.name === where[itemOption] && (typeof option.type !== "number" || option.type === 1));
 
-                            // Prepare New Item List
-                            const newGetValues = {};
-                            for (const item in getValues.items) {
-                                newGetValues[item] = getValues.items[item]({ data: result }, bot);
+                                // Found
+                                if (result) {
+
+                                    // Prepare New Item List
+                                    const newGetValues = {};
+                                    for (const item in getValues.items) {
+                                        newGetValues[item] = getValues.items[item]({ data: result }, bot);
+                                    }
+
+                                    return newGetValues;
+
+                                }
+
                             }
-
-                            return newGetValues;
-
                         }
 
-                        // Nope
-                        else { return false; }
+                        // Fail
+                        return false;
 
                     }
 
