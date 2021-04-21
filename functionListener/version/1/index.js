@@ -626,9 +626,9 @@ const getValues = {
                                 if (result) {
 
                                     // Prepare New Item List
-                                    const newGetValues = {};
+                                    const newGetValues = { get: {}, value: result.value };
                                     for (const item in getValues.items) {
-                                        newGetValues[item] = getValues.items[item]({ data: result }, bot);
+                                        newGetValues.get[item] = getValues.items[item]({ data: result }, bot);
                                     }
 
                                     return newGetValues;
