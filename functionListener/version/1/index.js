@@ -60,6 +60,9 @@ const getValues = {
                         result.name = interaction.member.user.username;
                     }
 
+                    // Avatar
+                    result.avatar = interaction.member.user.avatar;
+
                     // Complete
                     return result;
 
@@ -79,6 +82,9 @@ const getValues = {
                     result.discriminator = interaction.user.discriminator;
                     result.name = interaction.user.username;
                     result.tag = result.username + '#' + result.discriminator;
+
+                    // Avatar
+                    result.avatar = interaction.user.avatar;
 
                     // Complete
                     return result;
