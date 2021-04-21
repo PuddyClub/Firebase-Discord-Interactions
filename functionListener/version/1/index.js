@@ -69,6 +69,8 @@ const getValues = {
                     result.mute = interaction.member.mute;
                     result.permissions = interaction.member.permissions;
                     result.roles = interaction.member.roles;
+                    result.premium_since = interaction.member.premium_since;
+                    result.permissions = interaction.member.permissions;
 
                     // Public Flags
                     result.public_flags = interaction.member.user.public_flags;
@@ -153,6 +155,8 @@ const getValues = {
                                     result.mute = interaction.data.resolved.members[result.id].mute;
                                     result.permissions = interaction.data.resolved.members[result.id].permissions;
                                     result.roles = interaction.data.resolved.members[result.id].roles;
+                                    result.premium_since = interaction.data.resolved.members[result.id].premium_since;
+                                    result.permissions = interaction.data.resolved.members[result.id].permissions;
 
                                 }
 
@@ -204,8 +208,14 @@ const getValues = {
                                         interaction.data.resolved.users[result.id].bot = user.bot;
                                         interaction.data.resolved.users[result.id].discriminator = user.discriminator;
                                         interaction.data.resolved.users[result.id].id = result.id;
-                                        interaction.data.resolved.users[result.id].public_flags = user.flags;
                                         interaction.data.resolved.users[result.id].username = user.username;
+
+                                        // Flags
+                                        if (user.flags && user.flags.bitfield) {
+                                            interaction.data.resolved.users[result.id].public_flags = user.flags.bitfield;
+                                        } else {
+                                            interaction.data.resolved.users[result.id].public_flags = user.flags;
+                                        }
 
                                         // Complete
                                         finalResultData();
@@ -223,6 +233,13 @@ const getValues = {
                                         interaction.data.resolved.members[result.id].pending = false;
                                         interaction.data.resolved.members[result.id].premium_since = member.premiumSince;
                                         interaction.data.resolved.members[result.id].roles = member._roles;
+
+                                        // Flags
+                                        if (member.permissions && member.permissions.bitfield) {
+                                            interaction.data.resolved.members[result.id].permissions = member.permissions.bitfield;
+                                        } else {
+                                            interaction.data.resolved.members[result.id].permissions = member.permissions;
+                                        }
 
                                         // Create User Base
                                         createUserBase();
