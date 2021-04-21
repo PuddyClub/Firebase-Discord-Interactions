@@ -323,7 +323,7 @@ const getValues = {
                         }
 
                         // Nope
-                        else { resolve(null); }
+                        else { resolve(false); }
 
                     }
 
@@ -481,7 +481,7 @@ const getValues = {
                         }
 
                         // Nope
-                        else { resolve(null); }
+                        else { resolve(false); }
 
                     }
 
@@ -602,7 +602,7 @@ const getValues = {
                         }
 
                         // Nope
-                        else { resolve(null); }
+                        else { resolve(false); }
 
                     }
 
