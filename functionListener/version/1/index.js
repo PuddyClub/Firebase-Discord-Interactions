@@ -115,7 +115,7 @@ const getValues = {
         // User
         user: function (interaction, bot) {
             return function (where, forceBot = false) {
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve) => {
 
                     // Result
                     const result = {};
@@ -236,23 +236,23 @@ const getValues = {
 
                                         // Mute and Deaf
                                         if (member.voice) {
-                                            
+
                                             // Mute
-                                            if(member.voice.mute) { 
-                                                interaction.data.resolved.members[result.id].mute = member.voice.mute; 
+                                            if (member.voice.mute) {
+                                                interaction.data.resolved.members[result.id].mute = member.voice.mute;
                                             } else {
                                                 interaction.data.resolved.members[result.id].mute = false;
                                             }
 
                                             // Deaf
-                                            if(member.voice.deaf) { 
-                                                interaction.data.resolved.members[result.id].deaf = member.voice.deaf; 
+                                            if (member.voice.deaf) {
+                                                interaction.data.resolved.members[result.id].deaf = member.voice.deaf;
                                             } else {
                                                 interaction.data.resolved.members[result.id].deaf = false;
                                             }
-                                            
-                                        } 
-                                        
+
+                                        }
+
                                         // Disable All
                                         else {
                                             interaction.data.resolved.members[result.id].mute = false;
@@ -315,7 +315,7 @@ const getValues = {
 
                                 // Nope
                                 else {
-                                    reject(new Error('User Data not found!'));
+                                    resolve(null);
                                 }
 
                             }
@@ -323,12 +323,12 @@ const getValues = {
                         }
 
                         // Nope
-                        else { reject(new Error('User ID not found!')); }
+                        else { resolve(null); }
 
                     }
 
                     // Nope
-                    else { reject(new Error('Data Options not found!')); }
+                    else { resolve(null); }
 
                     // Complete
                     return;
@@ -340,7 +340,7 @@ const getValues = {
         // Channel
         channel: function (interaction, bot) {
             return function (where, forceBot = false) {
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve) => {
 
                     // Result
                     const result = {};
@@ -469,26 +469,24 @@ const getValues = {
                                     }
 
                                     // Normal User
-                                    else { reject(new Error('Guild not found!')) }
+                                    else { resolve(null); }
 
                                 }
 
                                 // Nope
-                                else {
-                                    reject(new Error('Channel Data not found!'));
-                                }
+                                else { resolve(null); }
 
                             }
 
                         }
 
                         // Nope
-                        else { reject(new Error('User ID not found!')); }
+                        else { resolve(null); }
 
                     }
 
                     // Nope
-                    else { reject(new Error('Data Options not found!')); }
+                    else { resolve(null); }
 
                     // Complete
                     return;
@@ -500,7 +498,7 @@ const getValues = {
         // Role
         role: function (interaction, bot) {
             return function (where, forceBot = false) {
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve) => {
 
                     // Result
                     const result = {};
@@ -592,26 +590,24 @@ const getValues = {
                                     }
 
                                     // Normal User
-                                    else { reject(new Error('Guild not found!')) }
+                                    else { resolve(null); }
 
                                 }
 
                                 // Nope
-                                else {
-                                    reject(new Error('Role Data not found!'));
-                                }
+                                else { resolve(null); }
 
                             }
 
                         }
 
                         // Nope
-                        else { reject(new Error('User ID not found!')); }
+                        else { resolve(null); }
 
                     }
 
                     // Nope
-                    else { reject(new Error('Data Options not found!')); }
+                    else { resolve(null); }
 
                     // Complete
                     return;
