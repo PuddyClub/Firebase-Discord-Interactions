@@ -186,6 +186,9 @@ const commands = {
 ## Command Callback
 Both valid commands and invalid commands, you will receive the same values and methods to use when sending a response to the Discord Command Slash Endpoint.
 
+### result.bot
+If your interaction application has a valid Bot Token, this value will be converted to a Discord.JS Client. (The gateway values will only work if you are using Discord.JS Gateway Mode)
+
 ### result.cfg
 All the configurations that are being used in the module will appear here.
 

@@ -888,6 +888,9 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                 // Final Result
                 const final_result = {
 
+                    // Bot
+                    bot: tinyCfg.bot,
+
                     // Interaction
                     interaction: req.body,
 
