@@ -139,7 +139,7 @@ const commands = {
             .setFooter('Some footer text here', 'https://i.imgur.com/wSTFkRM.png')
             .toJSON();
 
-        // Reply (All JSON options explained in the official Discord Documentation can be placed here.)
+        // Reply (https://discord.com/developers/docs/interactions/slash-commands#responding-to-an-interaction)
         return result.reply({
             tts: false,
             content: 'Pong!',
@@ -203,12 +203,22 @@ The vanilla Express Response.
 It is recommended that you use only the methods: res.status | res.json
 
 ### result.reply(msg, msgType) [msgType = 'default' or 'temp']
-Place a string or an object with the JSON values in the "msg" that will be returned to the Discord Interaction Endpoint API. The "msgType" is your Reply Type to be sent to the Discord Interaction Endpoint.
-(All JSON options explained in the official Discord Documentation can be placed here.)
+Place a string or an object with the JSON values.
 
+msg - String or Object of the messaage that will be returned to the Discord Interaction Endpoint API. Your values will be sent to json.data
+
+https://discord.com/developers/docs/interactions/slash-commands#responding-to-an-interaction
+
+Special Values
+```js
+result.reply({ content: 'Test!', visible: false }); // The message will be visible only to the command sender.
+```
+
+msgType - Your Reply Type to be sent to the Discord Interaction Endpoint.
+```
 Default: A normal message reply 
-
 Temp: Reply the message using a DeferredChannelMessageWithSource response. You will need to use the result.msg.edit to send your final reply and the result.pong to finish the request response.
+```
 
 ### result.get
 Quick systems to obtain values that are within your slash command.<br/>
