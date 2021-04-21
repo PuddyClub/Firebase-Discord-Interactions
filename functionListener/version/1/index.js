@@ -603,7 +603,7 @@ const getValues = {
             };
         },
 
-        subCommand: function (interaction) {
+        subCommand: function (interaction, bot) {
             return function (where) {
 
                 // Prepare Options
@@ -613,7 +613,19 @@ const getValues = {
                     const result = interaction.data.options.find(option => option.name === where && (typeof option.type !== "number" || option.type === 1));
 
                     // Found
-                    if (result) { return true; }
+                    if (result) {
+
+                        // Prepare New Item List
+                        const newGetValues = {};
+                        for (const item in getValues.items) {
+                            newGetValues[item] = getValues.items[item]({
+                                data: result
+                            }, bot);
+                        }
+
+                        return newGetValues;
+
+                    }
 
                     // Nope
                     else { return false; }
