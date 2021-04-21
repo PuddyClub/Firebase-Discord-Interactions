@@ -36,6 +36,9 @@ module.exports = function (cfg, botToken) {
         bot = botToken;
     }
 
+    // Add Bot
+    if (bot) { tinyCfg.bot = bot; }
+
     // Get Interaction Creation
     bot.ws.on("INTERACTION_CREATE", async interaction => {
 
