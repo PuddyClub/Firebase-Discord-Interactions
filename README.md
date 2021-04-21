@@ -302,3 +302,112 @@ interactionsGateway(tinyCfg, bot);
 bot.login('BOT_TOKEN');
 
 ```
+
+<hr/>
+
+## Hosting a server to reply commands from external client servers
+You can easily create a server to respond to the commands sent by the user. 
+This server does not use the traditional HTTP firebase system. Here you will use the HTTP Callback system from Firebase.
+
+You can create a client server manually or you can use the fully developed module to receive the server module requests.
+
+https://www.npmjs.com/package/@tinypudding/discord-firebase-async-server
+
+### Example
+```js
+
+// Error Page
+const json_error_page = function (res, code, message) {
+    res.status(code);
+    return res.json({error: true, code: code, message: message});
+};
+
+// The Callback Firebase
+exports.apiCallbackExample = functions.https.onCall(async (data) => { 
+    
+    // "data" is a value that will simulate a Request of the Express module when you call the "apiCallbackExample" with the data value. 
+
+    // Prepare a Config File
+    const tinyCfg = require('./configGenerator')(data, json_error_page);
+
+    // Call the Server
+    const discordInteractionServer = require('@tinypudding/firebase-discord-interactions/functionListener/firebaseCallback/server');
+    const result = await discordInteractionServer(functions, tinyCfg, data); 
+    
+    // Send a response back to your node server.
+    return result;
+
+});
+```
+
+### configGenerator.js
+```js
+module.exports = function (req, error_page) {
+
+        // Var Names
+        const varNames = {
+
+            // Type
+            type: 'type',
+
+            // Bot
+            bot: 'bot'
+
+        };
+
+        // Modules
+        const objType = require('@tinypudding/puddy-lib/get/objType');
+        const appConfig = require('./apps.json');
+
+        // Prepare Command List
+        let commands = {};
+        try {
+            commands = require('../commands/' + req.query[varNames.bot].replace(/\//g, '').replace(/\\/g, ''));
+            if (!objType(commands, 'object')) { commands = {}; }
+        } catch (err) {
+            commands = {};
+        }
+
+        // DiscordJS
+        let bot = null;
+        if(Object.keys(commands).length > 0) {
+            const Discord = require('discord.js');
+            bot = new Discord.Client();
+        }
+
+        // Result
+        return {
+
+            // Error Callback
+            errorCallback: async function (req, res, code, message) {
+                const logger = require('@tinypudding/firebase-lib/logger');
+                await logger.log({ errorCode: code, message: message });
+                return error_page(res, code, message)
+            },
+
+            // Invalid Command
+            invalidCommandCallback: function (result) {
+                return result.reply('This command has no functionality!');
+            },
+
+            // Path
+            commands: commands,
+            varNames: varNames, 
+            app: appConfig,
+            bot: bot
+
+        };
+
+};
+```
+
+### apps.json
+```json
+{
+    "test": {
+        "client_id": "",
+        "public_key": "",
+        "bot_token": ""
+    }
+}
+```
