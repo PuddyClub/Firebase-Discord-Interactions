@@ -225,10 +225,11 @@ Quick systems to obtain values that are within your slash command.<br/>
 ```js
 result.get.author() // return the message author.
 
-result.get.user(optionName, forceBot); // return a promise with the mentioned user. If the command value fails, it will return null. If the command value does not find the value, it will return false.
-result.get.channel(optionName, forceBot); // return a promise with the mentioned channel. If the command value fails, it will return null. If the command value does not find the value, it will return false.
-result.get.role(optionName, forceBot); // return a promise with the mentioned role. If the command value fails, it will return null. If the command value does not find the value, it will return false.
+result.get.user(optionName, value, forceBot); // return a promise with the mentioned user. If the command value fails, it will return null. If the command value does not find the value, it will return false.
+result.get.channel(optionName, value, forceBot); // return a promise with the mentioned channel. If the command value fails, it will return null. If the command value does not find the value, it will return false.
+result.get.role(optionName, value, forceBot); // return a promise with the mentioned role. If the command value fails, it will return null. If the command value does not find the value, it will return false.
 // forceBot will force the Discord.JS values from the mentioned value if you are using the Discord.JS with the module. The all data will be stored in the value "result.interaction.data.discordjs"
+// If the value of "value" is string, it will return the value just exactly the value of the string.
 
 result.get.boolean(optionName); // return a boolean value.
 result.get.integer(optionName); // return a integer value.
