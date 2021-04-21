@@ -626,6 +626,7 @@ const getValues = {
                                 if (result) {
 
                                     // Prepare New Item List
+                                    if (interaction.data.resolved) { result.resolved = interaction.data.resolved; }
                                     const newGetValues = { get: {}, value: where[itemOption] };
                                     for (const item in getValues.items) {
                                         newGetValues.get[item] = getValues.items[item]({ data: result }, bot);
