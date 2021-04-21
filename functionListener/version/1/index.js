@@ -63,6 +63,16 @@ const getValues = {
                     // Avatar
                     result.avatar = interaction.member.user.avatar;
 
+                    // More Info
+                    result.deaf = interaction.member.deaf;
+                    result.joined_at = interaction.member.joined_at;
+                    result.mute = interaction.member.mute;
+                    result.permissions = interaction.member.permissions;
+                    result.roles = interaction.member.roles;
+
+                    // Public Flags
+                    result.public_flags = interaction.member.user.public_flags;
+
                     // Complete
                     return result;
 
@@ -85,6 +95,9 @@ const getValues = {
 
                     // Avatar
                     result.avatar = interaction.user.avatar;
+
+                    // Public Flags
+                    result.public_flags = interaction.user.public_flags;
 
                     // Complete
                     return result;
@@ -122,13 +135,35 @@ const getValues = {
                                 result.discriminator = interaction.data.resolved.users[result.id].discriminator;
                                 result.tag = result.username + '#' + result.discriminator;
 
-                                // Name
-                                if (interaction.data.resolved.members && interaction.data.resolved.members[result.id] && typeof interaction.data.resolved.members[result.id].nick === "string") {
-                                    result.nick = interaction.data.resolved.members[result.id].nick;
-                                    result.name = interaction.data.resolved.members[result.id].nick;
-                                } else {
-                                    result.name = interaction.data.resolved.users[result.id].username;
+                                // Exist Member
+                                if (interaction.data.resolved.members && interaction.data.resolved.members[result.id]) {
+
+                                    // Nickname
+                                    if (typeof interaction.data.resolved.members[result.id].nick === "string") {
+                                        result.nick = interaction.data.resolved.members[result.id].nick;
+                                        result.name = interaction.data.resolved.members[result.id].nick;
+                                    }
+
+                                    // Nope
+                                    else { result.name = interaction.data.resolved.users[result.id].username; }
+
+                                    // More Info
+                                    result.deaf = interaction.data.resolved.members[result.id].deaf;
+                                    result.joined_at = interaction.data.resolved.members[result.id].joined_at;
+                                    result.mute = interaction.data.resolved.members[result.id].mute;
+                                    result.permissions = interaction.data.resolved.members[result.id].permissions;
+                                    result.roles = interaction.data.resolved.members[result.id].roles;
+
                                 }
+
+                                // Nope
+                                else { result.name = interaction.data.resolved.users[result.id].username; }
+
+                                // Avatar
+                                result.avatar = interaction.data.resolved.users[result.id].avatar;
+
+                                // Public Flags
+                                result.public_flags = interaction.data.resolved.users[result.id].public_flags;
 
                                 // Complete
                                 resolve(result);
