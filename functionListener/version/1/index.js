@@ -114,7 +114,7 @@ const getValues = {
 
         // User
         user: function (interaction, bot) {
-            return function (where, forceBot = false) {
+            return function (where, value, forceBot = false) {
                 return new Promise((resolve) => {
 
                     // Result
@@ -123,7 +123,7 @@ const getValues = {
                     // Prepare ID
                     const objType = require('@tinypudding/puddy-lib/get/objType');
                     if (Array.isArray(interaction.data.options)) {
-                        result.id = interaction.data.options.find(option => option.name === where && (typeof option.type !== "number" || option.type === 6));
+                        result.id = interaction.data.options.find(option => option.name === where && (typeof option.type !== "number" || option.type === 6) && (typeof value !== "string" || value === option.value));
                         if (result.id) {
 
                             // Get ID
@@ -339,7 +339,7 @@ const getValues = {
 
         // Channel
         channel: function (interaction, bot) {
-            return function (where, forceBot = false) {
+            return function (where, value, forceBot = false) {
                 return new Promise((resolve) => {
 
                     // Result
@@ -348,7 +348,7 @@ const getValues = {
                     // Prepare ID
                     const objType = require('@tinypudding/puddy-lib/get/objType');
                     if (Array.isArray(interaction.data.options)) {
-                        result.id = interaction.data.options.find(option => option.name === where && (typeof option.type !== "number" || option.type === 7));
+                        result.id = interaction.data.options.find(option => option.name === where && (typeof option.type !== "number" || option.type === 7) && (typeof value !== "string" || value === option.value));
                         if (result.id) {
 
                             // Get ID
@@ -497,7 +497,7 @@ const getValues = {
 
         // Role
         role: function (interaction, bot) {
-            return function (where, forceBot = false) {
+            return function (where, value, forceBot = false) {
                 return new Promise((resolve) => {
 
                     // Result
@@ -506,7 +506,7 @@ const getValues = {
                     // Prepare ID
                     const objType = require('@tinypudding/puddy-lib/get/objType');
                     if (Array.isArray(interaction.data.options)) {
-                        result.id = interaction.data.options.find(option => option.name === where && (typeof option.type !== "number" || option.type === 8));
+                        result.id = interaction.data.options.find(option => option.name === where && (typeof option.type !== "number" || option.type === 8) && (typeof value !== "string" || value === option.value));
                         if (result.id) {
 
                             // Get ID
