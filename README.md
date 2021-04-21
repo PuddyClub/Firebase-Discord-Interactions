@@ -205,11 +205,11 @@ It is recommended that you use only the methods: res.status | res.json
 ### result.reply(msg, msgType) [msgType = 'default' or 'temp']
 Place a string or an object with the JSON values.
 
-msg - String or Object of the messaage that will be returned to the Discord Interaction Endpoint API. Your values will be sent to json.data
+msg - String or Object of the messaage that will be returned to the Discord Interaction Endpoint API. Your values will be sent to "json.data".
 
 https://discord.com/developers/docs/interactions/slash-commands#responding-to-an-interaction
 
-Special Values
+Special Values:
 ```js
 result.reply({ content: 'Test!', visible: false }); // The message will be visible only to the command sender.
 ```
