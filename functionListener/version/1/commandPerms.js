@@ -2,18 +2,19 @@ module.exports = (appID, guildID, botToken) => {
     return (commandID, modID) => {
         return new Promise((resolve, reject) => {
 
-            // Config
-            const tinyCfg = {
-                method: 'POST',
-                body: { permissions: [] },
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bot ${botToken}`,
-                }
-            };
-
             // Prepare Values
-            if (typeof modID !== "undefined") {
+            if ((typeof commandID === "string" || typeof commandID === "number") && typeof modID !== "undefined") {
+
+                // Config
+                const tinyCfg = {
+                    method: 'POST',
+                    body: { permissions: [] },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bot ${botToken}`,
+                    }
+                };
+
                 const _ = require('lodash');
                 if (!Array.isArray(modID)) { modID = [modID]; }
                 for (const item in modID) {
@@ -29,15 +30,19 @@ module.exports = (appID, guildID, botToken) => {
                     tinyCfg.body.permissions.push(permCfg);
 
                 }
+
+                // Body
+                tinyCfg.body = JSON.stringify(tinyCfg.body);
+
+                // JSON Fetch
+                const JSONfetch = require('@tinypudding/puddy-lib/http/fetch/json');
+                JSONfetch(`https://discord.com/api/v8/applications/${appID}/guilds/${guildID}/commands/${commandID}/permissions`, tinyCfg)
+                    .then(resolve).catch(reject);
+
             }
 
-            // Body
-            tinyCfg.body = JSON.stringify(tinyCfg.body);
-
-            // JSON Fetch
-            const JSONfetch = require('@tinypudding/puddy-lib/http/fetch/json');
-            JSONfetch(`https://discord.com/api/v8/applications/${appID}/guilds/${guildID}/commands/${commandID}/permissions`, tinyCfg)
-                .then(resolve).catch(reject);
+            // Nope
+            else { reject(new Error('Invalid Values!')); }
 
             // Complete
             return;
