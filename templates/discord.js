@@ -15,29 +15,21 @@ module.exports = function (bot, callback) {
     tinyCfg.invalidCommandCallback = async function (result) {
 
         // Version 1
-        if (result.data.version === 1) {
+        if (result.interaction.version === 1) {
 
             // Channel
-            result.data.channel = await bot.channels.fetch(result.data.channel_id);
-            delete result.data.channel_id;
+            result.interaction.channel = await bot.channels.fetch(result.interaction.channel_id);
+            delete result.interaction.channel_id;
 
             // Guild
-            result.data.guild = await bot.guilds.fetch(result.data.guild_id);
-            delete result.data.guild_id;
+            result.interaction.guild = await bot.guilds.fetch(result.interaction.guild_id);
+            delete result.interaction.guild_id;
 
             // User
-            result.data.member = await result.data.guild.members.fetch(result.data.member.user.id);
-
-            // Reply Callback
-            result.data.reply = function (content, options) {
-                return result.data.channel.send(`<@${result.data.member.id}>, ${content}`, options);
-            };
-
-            // Remove Type
-            delete result.data.type;
+            result.interaction.member = await result.interaction.guild.members.fetch(result.interaction.member.user.id);
 
             // Callback
-            callback(result.data);
+            callback(result.interaction);
 
         }
 
