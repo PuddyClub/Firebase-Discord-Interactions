@@ -33,7 +33,7 @@ const getValues = {
 
         // Avatar URL
         avatarURL: (userID, hash) => {
-            return (imgData) => {
+            return (imgData = {}) => {
 
                 // Format
                 const imageformats = { webp: 'webp', png: 'png', jpg: 'jpg', 'jpeg': 'jpeg', gif: 'gif' };
