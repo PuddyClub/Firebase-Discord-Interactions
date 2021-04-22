@@ -15,6 +15,7 @@ module.exports = (appID, guildID, botToken) => {
                     }
                 };
 
+                // Prepare Perms
                 const _ = require('lodash');
                 if (!Array.isArray(modID)) { modID = [modID]; }
                 for (const item in modID) {
