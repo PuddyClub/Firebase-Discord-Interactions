@@ -111,6 +111,9 @@ const getValues = {
                     // Public Flags
                     result.public_flags = interaction.member.user.public_flags;
 
+                    // Get Avatar
+                    result.avatarURL = getValues.generators.avatarURL(result.id, result.avatar);
+
                     // Complete
                     return result;
 
@@ -136,6 +139,9 @@ const getValues = {
 
                     // Public Flags
                     result.public_flags = interaction.user.public_flags;
+
+                    // Get Avatar
+                    result.avatarURL = getValues.generators.avatarURL(result.id, result.avatar);
 
                     // Complete
                     return result;
@@ -204,6 +210,9 @@ const getValues = {
 
                                 // Public Flags
                                 result.public_flags = interaction.data.resolved.users[result.id].public_flags;
+
+                                // Get Avatar
+                                result.avatarURL = getValues.generators.avatarURL(result.id, result.avatar);
 
                                 // Complete
                                 resolve(result);
