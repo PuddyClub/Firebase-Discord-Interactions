@@ -1009,6 +1009,16 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                     tinyCfg.bot.token = tinyCfg.app[req.query[tinyCfg.varNames.bot]].bot_token;
                 }
 
+                // Prepare Command Editor
+                let setCommandPerm = null;
+                if (
+                    tinyCfg.bot &&
+                    (typeof req.body.client_id === "string" || typeof req.body.client_id === "number") &&
+                    (typeof req.body.guild_id === "string" || typeof req.body.guild_id === "number")
+                ) {
+                    setCommandPerm = require('./commandPerms')(req.body.client_id, req.body.guild_id, tinyCfg.bot.token);
+                }
+
                 // Final Result
                 const final_result = {
 
@@ -1032,6 +1042,9 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
 
                     // Message Editor
                     msg: messageEditorGenerator(logger, req, res, tinyCfg, req.body),
+
+                    // Set Command Permission
+                    setCommandPerm: setCommandPerm,
 
                     // New Message
                     newMsg: createMessageEditor(logger, req, res, tinyCfg, req.body),
