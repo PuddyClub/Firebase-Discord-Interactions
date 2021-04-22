@@ -12,6 +12,25 @@ module.exports = (appID, guildID, botToken) => {
                 }
             };
 
+            // Prepare Values
+            if (typeof modID !== "undefined") {
+                const _ = require('lodash');
+                if (!Array.isArray(modID)) { modID = [modID]; }
+                for (const item in modID) {
+
+                    // Prepare Config
+                    const permCfg = _.defaultsDeep({}, modID[item], {
+                        id: '',
+                        type: 1,
+                        permission: true
+                    });
+
+                    // Insert Config
+                    tinyCfg.body.permissions.push(permCfg);
+
+                }
+            }
+
             // Body
             tinyCfg.body = JSON.stringify(tinyCfg.body);
 
