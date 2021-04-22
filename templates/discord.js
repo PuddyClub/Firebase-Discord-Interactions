@@ -29,7 +29,7 @@ module.exports = function (bot, callback) {
             result.interaction.member = await result.interaction.guild.members.fetch(result.interaction.member.user.id);
 
             // Callback
-            callback(result.interaction);
+            callback(result);
 
         }
 
