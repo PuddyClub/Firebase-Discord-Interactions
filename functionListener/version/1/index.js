@@ -28,6 +28,42 @@ const getValues = {
 
     },
 
+    // Generators
+    generators: {
+
+        // Avatar URL
+        avatarURL: (userID, hash) => {
+            return (imgData) => {
+
+                // Format
+                const imageformats = { webp: 'webp', png: 'png', jpg: 'jpg', 'jpeg': 'jpeg', gif: 'gif' };
+                if (typeof imgData.format === "string" && typeof imageformats[imgData.format] === "string") {
+                    imgData.format = '.' + imgData.format;
+                } else {
+                    imgData.format = '.webp';
+                }
+
+                // Dynamic
+                if (typeof imgData.dynamic !== "boolean" || !imgData.dynamic) { imgData.dynamic = false; }
+                if (imgData.dynamic) format = imgData.format.startsWith('a_') ? '.gif' : imgData.format;
+
+                // Size
+                const sizes = { 16: 16, 32: 32, 64: 64, 128: 128, 256: 256, 512: 512, 1024: 1024, 2048: 2048, 4096: 4096 };
+
+                if (typeof imgData.size === "number" && typeof sizes[imgData.size] === "number") {
+                    imgData.size = '?size=' + imgData.size;
+                } else {
+                    imgData.size = '';
+                }
+
+                // Return Data
+                return `https://cdn.discordapp.com/avatars/${userID}/${hash}${imgData.format}${imgData.size}`;
+
+            };
+        }
+
+    },
+
     // Functions List
     items: {
 
