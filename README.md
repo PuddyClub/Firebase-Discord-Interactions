@@ -186,6 +186,13 @@ const commands = {
 ## Command Callback
 Both valid commands and invalid commands, you will receive the same values and methods to use when sending a response to the Discord Command Slash Endpoint.
 
+### result.setCommandPerm(commandID, data)
+
+commandID - The Command ID
+
+data - Insert an array with the permissions. You can see an example of the array on this page: https://discord.com/developers/docs/interactions/slash-commands#permissions
+
+
 ### result.bot
 If your interaction application has a valid Bot Token, this value will be converted to a Discord.JS Client. (The gateway values will only work if you are using Discord.JS Gateway Mode)
 
