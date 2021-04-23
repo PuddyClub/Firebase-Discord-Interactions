@@ -74,12 +74,6 @@ module.exports = async function (req, res, logger, di, tinyCfg, followMode = fal
                     setCommandPerm = require('./commandPerms')(req.body.client_id, req.body.guild_id, tinyCfg.bot.token);
                 }
 
-                // Await
-                if(followMode) {
-                    const prepareAwait = replyMessage({ temp: require('../../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`) }, tinyCfg, logger, req, res);
-                    await prepareAwait(awaitMessage, 'temp');
-                }
-
                 // Final Result
                 const final_result = {
 
@@ -123,6 +117,12 @@ module.exports = async function (req, res, logger, di, tinyCfg, followMode = fal
                     types: getValues.types
 
                 };
+
+                // Await
+                if (followMode) {
+                    const prepareAwait = replyMessage({ temp: require('../../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`) }, tinyCfg, logger, req, res);
+                    await prepareAwait(require('./isHidden')(awaitMessage, req.body, final_result.get), 'temp');
+                }
 
                 // Debug
                 if (tinyCfg.debug) { await logger.log('The methods of the command script was read...'); }
