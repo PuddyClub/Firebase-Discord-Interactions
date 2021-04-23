@@ -955,7 +955,7 @@ const createMessageEditor = function (logger, req, res, tinyCfg, interaction, ve
 // Reply Message
 const replyMessage = require('./reply');
 
-module.exports = async function (req, res, logger, di, tinyCfg, followMode, awaitMessage) {
+module.exports = async function (req, res, logger, di, tinyCfg, followMode = false, awaitMessage = '') {
 
     // Command Result
     let commandResult;
