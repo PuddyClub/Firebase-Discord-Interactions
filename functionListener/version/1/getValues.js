@@ -1,4 +1,4 @@
-module.exports = {
+const getValues = {
 
     types: {
         'sub_command': 1,
@@ -893,3 +893,5 @@ module.exports = {
     }
 
 };
+
+module.exports = getValues;
