@@ -186,30 +186,30 @@ const commands = {
 ## Command Callback
 Both valid commands and invalid commands, you will receive the same values and methods to use when sending a response to the Discord Command Slash Endpoint.
 
-### result.setCommandPerm(commandID, data)
+### result.setCommandPerm(commandID, data) (Promise)
 
 commandID - The Command ID (String)
 
 data - Insert an array with the permissions. You can see an example of the array on this page: https://discord.com/developers/docs/interactions/slash-commands#permissions
 
 
-### result.bot
+### result.bot (Object)
 If your interaction application has a valid Bot Token, this value will be converted to a Discord.JS Client. (The gateway values will only work if you are using Discord.JS Gateway Mode)
 
-### result.cfg
+### result.cfg (Object)
 All the configurations that are being used in the module will appear here.
 
-### result.interaction
+### result.interaction (Object)
 All your interaction data is here.
 
-### result.di
+### result.di (Module)
 The module "discord-interactions" data.
 
-### result.res
+### result.res (Promise)
 The vanilla Express Response.
 It is recommended that you use only the methods: res.status | res.json
 
-### result.reply(msg, msgType) [msgType = 'default' or 'temp']
+### result.reply(msg, msgType) [msgType = 'default' or 'temp'] (Promise)
 Place a string or an object with the JSON values.
 
 msg - String or Object of the messaage that will be returned to the Discord Interaction Endpoint API. Your values will be sent to "json.data".
