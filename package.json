@@ -1,6 +1,6 @@
 {
   "name": "@tinypudding/firebase-discord-interactions",
-  "version": "1.6.14",
+  "version": "1.6.15",
   "description": "Use Firebase Database Realtime or static data to receivve your Discord Bot's commands from the command slash.",
   "main": "index.js",
   "scripts": {

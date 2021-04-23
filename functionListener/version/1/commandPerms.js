@@ -33,7 +33,7 @@ module.exports = (appID, guildID, botToken) => {
                 }
 
                 // Body
-                tinyCfg.body = new JSON.stringify(tinyCfg.body);
+                tinyCfg.body = JSON.stringify(tinyCfg.body);
 
                 // JSON Fetch
                 const JSONfetch = require('@tinypudding/puddy-lib/http/fetch/json');
