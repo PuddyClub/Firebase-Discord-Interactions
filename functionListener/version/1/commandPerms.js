@@ -7,10 +7,10 @@ module.exports = (appID, guildID, botToken) => {
 
                 // Config
                 const tinyCfg = {
-                    method: 'POST',
+                    method: 'PUT',
                     body: { permissions: [] },
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Content-Type': 'application/json',
                         'Authorization': `Bot ${botToken}`,
                     }
                 };
