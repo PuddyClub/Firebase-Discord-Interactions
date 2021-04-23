@@ -279,11 +279,15 @@ Send a json in the first argument to create a message.
 ## Gateway
 You can use your bot through a Gateway of Discord Interactions with the Discord.JS module and the results will be the same as in the examples mentioned above. The only thing that will be changed is how to build the initial code.
 
+If you enable the value "followMode", when a message is sent by the Gateway, it first responds to the message using a DeferredChannelMessageWithSource. When you use the "result.reply()", the final result of your message will be sent.
+
 ```js
 // Tiny Config
 const tinyCfg = require('../../config.json');
 const Discord = require('discord.js');
 const bot = new Discord.Client({ autoReconnect: true });
+const followMode = true;
+const ACKMessage = 'Loading...';
 
 // The Ready Message
 bot.on('ready', () => { logger.log(`Bot Ready! ${bot.user.tag} (${bot.user.id})`); return; });
@@ -317,7 +321,7 @@ tinyCfg.commands = commands;
 const interactionsGateway = require('@tinypudding/firebase-discord-interactions/functionListener/gateway');
 
 // Start Interaction Gateway
-interactionsGateway(tinyCfg, bot);
+interactionsGateway(tinyCfg, bot, followMode, ACKMessage);
 
 // Start the Discord.JS Gateway
 bot.login('BOT_TOKEN');
