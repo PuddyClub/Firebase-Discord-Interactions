@@ -59,7 +59,7 @@ module.exports = function (cfg, botToken, followMode = false, awaitMessage = 'Lo
 
         // Normal
         if(!followMode) {
-            res.json = require('./interactionResponse')(`https://discord.com/api/v8/interactions/${interaction.id}/${interaction.token}/callback`);
+            res.json = require('./interactionResponse')(`https://discord.com/api/v${apiVersion}/interactions/${interaction.id}/${interaction.token}/callback`);
         }
 
         // Follow Mode
