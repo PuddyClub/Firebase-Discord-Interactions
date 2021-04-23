@@ -1,4 +1,4 @@
-module.exports = function (cfg, botToken) {
+module.exports = function (cfg, botToken, followMode = false, awaitMessage = 'Loading...', apiVersion = 8) {
 
     // Config Template
     const tinyCfg = require('./cfgTemplate')(cfg);
@@ -50,6 +50,25 @@ module.exports = function (cfg, botToken) {
         // Get Client ID
         interaction.client_id = bot.user.id;
 
+        // Response
+        const res = {
+            status: function () { return; },
+            send: function () { return; },
+            render: function () { return; }
+        };
+
+        // Normal
+        if(!followMode) {
+            res.json = require('./interactionResponse')(`https://discord.com/api/v8/interactions/${interaction.id}/${interaction.token}/callback`);
+        }
+
+        // Follow Mode
+        else {
+            res.json = require('./interactionResponse')(`https://discord.com/api/v${apiVersion}/webhooks/${interaction.client_id}/${interaction.token}/messages/@original`, {
+                method: 'PATCH'
+            }, { fixData: true });
+        }
+
         // Return
         try {
             const versionItem = require('./version/' + interaction.version);
@@ -59,12 +78,7 @@ module.exports = function (cfg, botToken) {
                 { body: interaction, isGateway: true },
 
                 // Res
-                {
-                    status: function () { return; },
-                    send: function () { return; },
-                    render: function () { return; },
-                    json: require('./interactionResponse')(`https://discord.com/api/v8/interactions/${interaction.id}/${interaction.token}/callback`)
-                },
+                res,
 
                 // Logger
                 logger,
@@ -73,7 +87,11 @@ module.exports = function (cfg, botToken) {
                 di,
 
                 // Tiny Config
-                tinyCfg
+                tinyCfg,
+
+                // Follow Mode
+                followMode, 
+                awaitMessage
 
             );
             return;

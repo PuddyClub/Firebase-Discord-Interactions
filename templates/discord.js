@@ -39,7 +39,7 @@ module.exports = function (bot, callback) {
     };
 
     // Start Module
-    require('../functionListener/gateway')(tinyCfg, bot);
+    require('../functionListener/gateway')(tinyCfg, bot, true);
 
     // Complete
     return;

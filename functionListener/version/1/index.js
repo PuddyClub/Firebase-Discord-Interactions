@@ -955,7 +955,7 @@ const createMessageEditor = function (logger, req, res, tinyCfg, interaction, ve
 // Reply Message
 const replyMessage = require('./reply');
 
-module.exports = async function (req, res, logger, di, tinyCfg) {
+module.exports = async function (req, res, logger, di, tinyCfg, followMode, awaitMessage) {
 
     // Command Result
     let commandResult;
@@ -1019,6 +1019,12 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
                     setCommandPerm = require('./commandPerms')(req.body.client_id, req.body.guild_id, tinyCfg.bot.token);
                 }
 
+                // Await
+                if(followMode) {
+                    const prepareAwait = replyMessage({ temp: require('../../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`) }, tinyCfg, logger, req, res);
+                    await prepareAwait(awaitMessage, 'temp');
+                }
+
                 // Final Result
                 const final_result = {
 
@@ -1048,9 +1054,6 @@ module.exports = async function (req, res, logger, di, tinyCfg) {
 
                     // New Message
                     newMsg: createMessageEditor(logger, req, res, tinyCfg, req.body),
-
-                    // Reply Message
-                    //replyCallback: replyMessage({ temp: require('../../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`) }, tinyCfg, logger, req, res),
 
                     // Reply Message
                     reply: replyMessage({}, tinyCfg, logger, req, res),
