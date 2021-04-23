@@ -10,7 +10,7 @@ module.exports = (appID, guildID, botToken) => {
                     method: 'PUT',
                     body: { permissions: [] },
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded',
                         'Authorization': `Bot ${botToken}`,
                     }
                 };
