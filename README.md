@@ -193,7 +193,7 @@ commandID - The Command ID (String)
 data - Insert an array with the permissions. You can see an example of the array on this page: https://discord.com/developers/docs/interactions/slash-commands#permissions
 
 
-### result.bot (Object)
+### result.bot (Discord.JS Client)
 If your interaction application has a valid Bot Token, this value will be converted to a Discord.JS Client. (The gateway values will only work if you are using Discord.JS Gateway Mode)
 
 ### result.cfg (Object)
