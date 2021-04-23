@@ -121,7 +121,7 @@ module.exports = async function (req, res, logger, di, tinyCfg, followMode = fal
                 // Await
                 if (followMode) {
                     const prepareAwait = replyMessage({ temp: require('../../interactionResponse')(`https://discord.com/api/v8/interactions/${req.body.id}/${req.body.token}/callback`) }, tinyCfg, logger, req, res);
-                    await prepareAwait(require('./isHidden')(awaitMessage, req.body, final_result.get), 'temp');
+                    await prepareAwait(require('./isHidden')(awaitMessage, req.body, final_result.get, tinyCfg), 'temp');
                 }
 
                 // Debug

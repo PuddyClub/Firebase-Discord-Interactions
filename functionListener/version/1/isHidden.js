@@ -1,4 +1,6 @@
-module.exports = (data, result, getItem) => {
+module.exports = (data, result, getItem, tinyCfg) => {
+  
+
     
     return data;
     
