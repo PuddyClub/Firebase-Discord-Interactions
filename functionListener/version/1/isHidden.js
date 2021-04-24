@@ -21,6 +21,11 @@ module.exports = (data, interaction, getItem, tinyCfg) => {
             else if (Array.isArray(tinyCfg.hiddenDetector.icon) && tinyCfg.hiddenDetector.icon.length > 0) {
                 for (const hvalue in tinyCfg.hiddenDetector.icon) {
 
+                    // Check
+                    if (item.description.indexOf(tinyCfg.hiddenDetector.icon[hvalue]) > -1) {
+                        isDescription = true;
+                    }
+
                 }
             }
 
@@ -40,6 +45,11 @@ module.exports = (data, interaction, getItem, tinyCfg) => {
         // Array
         else if (Array.isArray(tinyCfg.hiddenDetector.value) && tinyCfg.hiddenDetector.value.length > 0) {
             for (const hvalue in tinyCfg.hiddenDetector.value) {
+
+                // Check
+                if (getItem.boolean(tinyCfg.hiddenDetector.value[hvalue])) {
+                    isBoolean = true;
+                }
 
             }
         }
