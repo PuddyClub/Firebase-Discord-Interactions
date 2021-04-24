@@ -1,4 +1,4 @@
-module.exports = (data, result, getItem, tinyCfg) => {
+module.exports = (data, interaction, getItem, tinyCfg) => {
 
     // Hidden Checker
     const hiddenChecker = (item, getItem) => {
@@ -19,9 +19,9 @@ module.exports = (data, result, getItem, tinyCfg) => {
     let isHidden = false;
 
     // Base
-    isHidden = hiddenChecker(result.interaction.data, getItem);
-    if (!isHidden && result.interaction.data.options) {
-        isHidden = tryMoreHidden(result.interaction.data.options);
+    isHidden = hiddenChecker(interaction.data, getItem);
+    if (!isHidden && interaction.data.options) {
+        isHidden = tryMoreHidden(interaction.data.options);
     }
 
     // Is Hidden
