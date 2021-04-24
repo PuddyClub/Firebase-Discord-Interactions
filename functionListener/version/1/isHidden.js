@@ -31,7 +31,7 @@ module.exports = (data, interaction, getItem, tinyCfg) => {
         if (typeof tinyCfg.hiddenDetector.value === "stirng") {
 
             // Check
-            if (getItem.boolean()) {
+            if (getItem.boolean(tinyCfg.hiddenDetector.value)) {
                 isBoolean = true;
             }
 
