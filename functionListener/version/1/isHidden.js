@@ -39,10 +39,10 @@ module.exports = (data, interaction, getItem, tinyCfg) => {
         let isBoolean = false;
 
         // Continue
-        if (!isHidden) {
+        if (!isDescription) {
 
             // String
-            if (typeof tinyCfg.hiddenDetector.value === "stirng") {
+            if (typeof tinyCfg.hiddenDetector.value === "string") {
 
                 // Check
                 if (getItem.boolean(tinyCfg.hiddenDetector.value)) {
@@ -67,26 +67,27 @@ module.exports = (data, interaction, getItem, tinyCfg) => {
         }
 
         // Complete
-        if (isDescription || isBoolean) { return true; } else { return false; }
+        if (isDescription || isBoolean) { isHidden = true; }
+        return;
 
     };
 
     const tryMoreHidden = (options) => {
         for (const item in options) {
             if (!isHidden) {
-                if (options[item].options) { isHidden = hiddenChecker(options[item], getValues.createFunctions({ data: options[item] }, tinyCfg.bot)); }
-            } else { return true; }
+                if (options[item].options) { hiddenChecker(options[item], getValues.createFunctions({ data: options[item] }, tinyCfg.bot)); }
+            } else { break; }
         }
-        return false;
+        return;
     };
 
     // The Value
     let isHidden = false;
 
     // Base
-    isHidden = hiddenChecker(interaction.data, getItem);
+    hiddenChecker(interaction.data, getItem);
     if (!isHidden && interaction.data.options) {
-        isHidden = tryMoreHidden(interaction.data.options);
+        tryMoreHidden(interaction.data.options);
     }
 
     // Is Hidden
