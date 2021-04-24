@@ -51,6 +51,21 @@ module.exports = function (tinyCfg) {
                                 // Normal Request
                                 if (req.body.type !== di.InteractionType.PING) {
 
+                                    // Preparing Hidden Detector
+                                    tinyCfg.hiddenDetector = require('lodash').defaultsDeep({}, tinyCfg.hiddenDetector, {
+                                        icon: '🔒',
+                                        value: 'hide'
+                                    });
+
+                                    // Prepare is Hidden
+                                    let isHidden;
+                                    try { isHidden = require('../version/' + req.body.version + '/isHidden'); } catch (err) { isHidden = null; }
+
+                                    // Use the Hidden
+                                    if (isHidden) {
+                                        msg = isHidden(msg, req.body, final_result.get, tinyCfg);
+                                    }
+
                                     // Send Function
                                     const commandCallback = app.root.functions().httpsCallable(tinyCfg.callbackName);
                                     commandCallback({
