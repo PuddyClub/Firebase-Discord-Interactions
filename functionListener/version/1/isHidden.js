@@ -25,7 +25,7 @@ module.exports = (data, interaction, getItem, tinyCfg) => {
                 for (const hvalue in tinyCfg.hiddenDetector.icon) {
 
                     // Check
-                    if (item.description.indexOf(tinyCfg.hiddenDetector.icon[hvalue]) > -1) {
+                    if (typeof tinyCfg.hiddenDetector.icon[hvalue] === "string" && item.description.indexOf(tinyCfg.hiddenDetector.icon[hvalue]) > -1) {
                         isDescription = true;
                         break;
                     }
@@ -56,7 +56,7 @@ module.exports = (data, interaction, getItem, tinyCfg) => {
                 for (const hvalue in tinyCfg.hiddenDetector.value) {
 
                     // Check
-                    if (getItem.boolean(tinyCfg.hiddenDetector.value[hvalue])) {
+                    if (typeof tinyCfg.hiddenDetector.value[hvalue] === "string" && getItem.boolean(tinyCfg.hiddenDetector.value[hvalue])) {
                         isBoolean = true;
                         break;
                     }
