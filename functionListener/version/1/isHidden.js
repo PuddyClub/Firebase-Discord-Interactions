@@ -17,6 +17,13 @@ module.exports = (data, interaction, getItem, tinyCfg) => {
 
             }
 
+            // Array
+            else if (Array.isArray(tinyCfg.hiddenDetector.icon) && tinyCfg.hiddenDetector.icon.length > 0) {
+                for (const hvalue in tinyCfg.hiddenDetector.icon) {
+
+                }
+            }
+
         }
 
         // Boolean
@@ -29,6 +36,14 @@ module.exports = (data, interaction, getItem, tinyCfg) => {
             }
 
         }
+
+        // Array
+        else if (Array.isArray(tinyCfg.hiddenDetector.value) && tinyCfg.hiddenDetector.value.length > 0) {
+            for (const hvalue in tinyCfg.hiddenDetector.value) {
+
+            }
+        }
+
 
         // Complete
         if (isDescription || isBoolean) { return true; } else { return false; }
