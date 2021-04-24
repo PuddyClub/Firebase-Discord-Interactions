@@ -31,7 +31,7 @@ module.exports = (data, interaction, getItem, tinyCfg) => {
         }
 
         // Complete
-        if (isDescription ||isBoolean ) { return true; } else { return false; }
+        if (isDescription || isBoolean) { return true; } else { return false; }
 
     };
 
