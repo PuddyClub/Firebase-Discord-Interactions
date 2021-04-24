@@ -24,6 +24,7 @@ module.exports = (data, interaction, getItem, tinyCfg) => {
                     // Check
                     if (item.description.indexOf(tinyCfg.hiddenDetector.icon[hvalue]) > -1) {
                         isDescription = true;
+                        break;
                     }
 
                 }
@@ -33,27 +34,34 @@ module.exports = (data, interaction, getItem, tinyCfg) => {
 
         // Boolean
         let isBoolean = false;
-        if (typeof tinyCfg.hiddenDetector.value === "stirng") {
 
-            // Check
-            if (getItem.boolean(tinyCfg.hiddenDetector.value)) {
-                isBoolean = true;
-            }
+        // Continue
+        if (!isHidden) {
 
-        }
-
-        // Array
-        else if (Array.isArray(tinyCfg.hiddenDetector.value) && tinyCfg.hiddenDetector.value.length > 0) {
-            for (const hvalue in tinyCfg.hiddenDetector.value) {
+            // String
+            if (typeof tinyCfg.hiddenDetector.value === "stirng") {
 
                 // Check
-                if (getItem.boolean(tinyCfg.hiddenDetector.value[hvalue])) {
+                if (getItem.boolean(tinyCfg.hiddenDetector.value)) {
                     isBoolean = true;
                 }
 
             }
-        }
 
+            // Array
+            else if (Array.isArray(tinyCfg.hiddenDetector.value) && tinyCfg.hiddenDetector.value.length > 0) {
+                for (const hvalue in tinyCfg.hiddenDetector.value) {
+
+                    // Check
+                    if (getItem.boolean(tinyCfg.hiddenDetector.value[hvalue])) {
+                        isBoolean = true;
+                        break;
+                    }
+
+                }
+            }
+
+        }
 
         // Complete
         if (isDescription || isBoolean) { return true; } else { return false; }
