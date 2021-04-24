@@ -59,11 +59,20 @@ module.exports = function (tinyCfg) {
 
                                     // Prepare is Hidden
                                     let isHidden;
-                                    try { isHidden = require('../version/' + req.body.version + '/isHidden'); } catch (err) { isHidden = null; }
+                                    let getItem;
+                                    let getValues;
+                                    try {
+                                        isHidden = require('../version/' + req.body.version + '/isHidden');
+                                        getItem = require('../version/' + req.body.version + '/getValues');
+                                        getValues = getItem = getItem.createFunctions(req.body);
+                                    } catch (err) {
+                                        isHidden = null;
+                                        getItem = null;
+                                    }
 
                                     // Use the Hidden
-                                    if (isHidden) {
-                                        msg = isHidden(msg, req.body, final_result.get, tinyCfg);
+                                    if (isHidden && getItem) {
+                                        msg = isHidden(msg, req.body, getValues, tinyCfg);
                                     }
 
                                     // Send Function
