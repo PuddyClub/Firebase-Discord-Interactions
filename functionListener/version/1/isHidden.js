@@ -2,10 +2,37 @@ module.exports = (data, interaction, getItem, tinyCfg) => {
 
     // Hidden Checker
     const hiddenChecker = (item, getItem) => {
-        if (
-            (typeof item.description === "string" && item.description.indexOf(tinyCfg.hiddenDetector.icon) > -1) ||
-            getItem.boolean(tinyCfg.hiddenDetector.value)
-        ) { return true; } else { return false; }
+
+        // Description
+        let isDescription = false;
+        if (typeof item.description === "string") {
+
+            // String
+            if (typeof tinyCfg.hiddenDetector.icon === "string") {
+
+                // Check
+                if (item.description.indexOf(tinyCfg.hiddenDetector.icon) > -1) {
+                    isDescription = true;
+                }
+
+            }
+
+        }
+
+        // Boolean
+        let isBoolean = false;
+        if (typeof tinyCfg.hiddenDetector.value === "stirng") {
+
+            // Check
+            if (getItem.boolean()) {
+                isBoolean = true;
+            }
+
+        }
+
+        // Complete
+        if (isDescription ||isBoolean ) { return true; } else { return false; }
+
     };
 
     const tryMoreHidden = (options) => {
