@@ -70,7 +70,7 @@ module.exports = (data, interaction, getItem, tinyCfg) => {
 
     const tryMoreHidden = (options) => {
         for (const item in options) {
-            if (!isHidden) { isHidden = hiddenChecker(options[item].options, getValues.createFunctions({ data: options[item] }, tinyCfg.bot)); } else { return true; }
+            if (!isHidden) { isHidden = hiddenChecker(options[item].options, getItem.createFunctions({ data: options[item] }, tinyCfg.bot)); } else { return true; }
         }
         return false;
     };
