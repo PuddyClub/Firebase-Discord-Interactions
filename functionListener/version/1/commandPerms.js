@@ -7,33 +7,41 @@ module.exports = (appID, guildID, botToken) => {
 
                 // Config
                 const tinyCfg = {
-                    method: 'PUT',
-                    body: { permissions: [] },
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bot ${botToken}`,
                     }
                 };
 
-                // Prepare Perms
-                const _ = require('lodash');
-                if (!Array.isArray(modID)) { modID = [modID]; }
-                for (const item in modID) {
+                // Is Post
+                if (Array.isArray(modID) || typeof modID === "string") {
 
-                    // Prepare Config
-                    const permCfg = _.defaultsDeep({}, modID[item], {
-                        id: '',
-                        type: 1,
-                        permission: true
-                    });
+                    // Prepare Perms
+                    tinyCfg.method = 'PUT';
+                    tinyCfg.body = { permissions: [] };
+                    const _ = require('lodash');
+                    if (!Array.isArray(modID)) { modID = [modID]; }
+                    for (const item in modID) {
 
-                    // Insert Config
-                    tinyCfg.body.permissions.push(permCfg);
+                        // Prepare Config
+                        const permCfg = _.defaultsDeep({}, modID[item], {
+                            id: '',
+                            type: 1,
+                            permission: true
+                        });
+
+                        // Insert Config
+                        tinyCfg.body.permissions.push(permCfg);
+
+                    }
+
+                    // Body
+                    tinyCfg.body = JSON.stringify(tinyCfg.body);
 
                 }
 
-                // Body
-                tinyCfg.body = JSON.stringify(tinyCfg.body);
+                // Nope
+                else { tinyCfg.method = 'GET'; }
 
                 // JSON Fetch
                 const JSONfetch = require('@tinypudding/puddy-lib/http/fetch/json');
