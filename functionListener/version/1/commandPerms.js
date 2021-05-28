@@ -40,8 +40,14 @@ module.exports = (appID, guildID, botToken) => {
 
                 }
 
+                // Get
+                else if (typeof modID === "undefined") { tinyCfg.method = 'GET'; }
+
                 // Nope
-                else { tinyCfg.method = 'GET'; }
+                else {
+                    reject(new Error('Invalid Mod Data!'));
+                    return;
+                }
 
                 // JSON Fetch
                 const JSONfetch = require('@tinypudding/puddy-lib/http/fetch/json');
