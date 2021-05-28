@@ -3,7 +3,7 @@ module.exports = (appID, guildID, botToken) => {
         return new Promise((resolve, reject) => {
 
             // Prepare Values
-            if ((typeof commandID === "string" || typeof commandID === "number") && typeof modID !== "undefined") {
+            if (typeof commandID === "string" || typeof commandID === "number") {
 
                 // Config
                 const tinyCfg = {
