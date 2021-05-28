@@ -201,7 +201,7 @@ Both valid commands and invalid commands, you will receive the same values and m
 
 commandID - The Command ID (String)
 
-data - Insert an array with the permissions. You can see an example of the array on this page: https://discord.com/developers/docs/interactions/slash-commands#permissions
+data - Insert an array with the permissions. If you enter only the Command ID, the command's list will be returned. You can see an example of the array on this page: https://discord.com/developers/docs/interactions/slash-commands#permissions
 
 
 ### result.bot (Discord.JS Client)
