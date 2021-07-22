@@ -67,11 +67,6 @@ Disable Action Notifications in the Log.
 ### options.forceInvalidCommandCallback (Boolean / Optional)
 All commands will always return to the Invalid Command method.
 
-### options.hiddenDetector.icon (String or Array with Strings)
-Place the value to be searched inside the description of the commands to automatically define that it should be visible only to the user.
-
-"null" will disable this feature.
-
 ### options.hiddenDetector.value (String or Array with Strings)
 Place a boolean value name that will be searched inside the booleans of the command. If the name of the value is found and the value is true, the message will only be visible to the user.
 

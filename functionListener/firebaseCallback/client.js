@@ -53,7 +53,6 @@ module.exports = function (tinyCfg) {
 
                                     // Preparing Hidden Detector
                                     tinyCfg.hiddenDetector = require('lodash').defaultsDeep({}, tinyCfg.hiddenDetector, {
-                                        icon: '🔒',
                                         value: 'hide'
                                     });
 

@@ -2,7 +2,6 @@ module.exports = function (cfg) {
     return require('lodash').defaultsDeep({}, cfg, {
 
         hiddenDetector: {
-            icon: '🔒',
             value: 'hide'
         },
 
