@@ -1,4 +1,4 @@
-module.exports = function (cfg, botToken, followMode = false, awaitMessage = 'Loading...', apiVersion = 8) {
+module.exports = function(cfg, botToken, followMode = false, awaitMessage = 'Loading...', apiVersion = 8) {
 
     // Config Template
     const tinyCfg = require('./cfgTemplate')(cfg);
@@ -23,7 +23,7 @@ module.exports = function (cfg, botToken, followMode = false, awaitMessage = 'Lo
 
         // Create Bot
         const Discord = require('discord.js');
-        bot = new Discord.Client({ autoReconnect: true });
+        bot = new Discord.Client(tinyCfg.clientCfg);
 
         // Logs
         bot.on('rateLimit', (data) => { logger.warn(data); return; });
@@ -52,13 +52,13 @@ module.exports = function (cfg, botToken, followMode = false, awaitMessage = 'Lo
 
         // Response
         const res = {
-            status: function () { return; },
-            send: function () { return; },
-            render: function () { return; }
+            status: function() { return; },
+            send: function() { return; },
+            render: function() { return; }
         };
 
         // Normal
-        if(!followMode) {
+        if (!followMode) {
             res.json = require('./interactionResponse')(`https://discord.com/api/v${apiVersion}/interactions/${interaction.id}/${interaction.token}/callback`);
         }
 
@@ -90,7 +90,7 @@ module.exports = function (cfg, botToken, followMode = false, awaitMessage = 'Lo
                 tinyCfg,
 
                 // Follow Mode
-                followMode, 
+                followMode,
                 awaitMessage
 
             );
