@@ -22,7 +22,7 @@ module.exports = async function(req, res, logger, di, tinyCfg, followMode = fals
         if (tinyCfg.debug) { await logger.log('The script V1 is being read...'); }
 
         // Is Command
-        if (req.body.type === di.InteractionType.COMMAND) {
+        if (req.body.type === di.InteractionType.APPLICATION_COMMAND) {
 
             // Debug
             if (tinyCfg.debug) { await logger.log('The request is a command...'); }
