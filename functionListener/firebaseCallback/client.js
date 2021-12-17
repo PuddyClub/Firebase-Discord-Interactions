@@ -1,6 +1,6 @@
-module.exports = function (tinyCfg) {
+module.exports = function(tinyCfg) {
     return (req, res, msg) => {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async(resolve, reject) => {
 
             // Modules
             const objType = require('@tinypudding/puddy-lib/get/objType');
@@ -49,7 +49,7 @@ module.exports = function (tinyCfg) {
                                 req.body.client_id = botApp.client_id;
 
                                 // Normal Request
-                                if (req.body.type !== di.InteractionType.PING) {
+                                if (req.body.type === di.InteractionType.APPLICATION_COMMAND) {
 
                                     // Preparing Hidden Detector
                                     tinyCfg.hiddenDetector = require('lodash').defaultsDeep({}, tinyCfg.hiddenDetector, {
@@ -102,7 +102,8 @@ module.exports = function (tinyCfg) {
                                     }).then(resolve).catch(reject);
 
                                     // Prepare Reply
-                                    let reply; try { reply = require('../version/' + req.body.version + '/reply'); } catch (err) { reply = null; }
+                                    let reply;
+                                    try { reply = require('../version/' + req.body.version + '/reply'); } catch (err) { reply = null; }
                                     if (reply) { return reply({}, tinyCfg, console, req, res)(msg, 'temp'); }
 
                                     // Nope
@@ -111,7 +112,10 @@ module.exports = function (tinyCfg) {
                                 }
 
                                 // Pong Request
-                                else { res.json({ type: di.InteractionResponseType.PONG }); }
+                                else if (req.body.type === di.InteractionType.PING) {
+                                    console.log(`The Bot ID ${req.body.client_id} received a pong.`);
+                                    res.json({ type: di.InteractionResponseType.PONG });
+                                }
 
                             }
 

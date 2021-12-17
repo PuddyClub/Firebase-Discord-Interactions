@@ -10,7 +10,7 @@ const createMessageEditor = require('./createMessageEditor');
 // Reply Message
 const replyMessage = require('./reply');
 
-module.exports = async function (req, res, logger, di, tinyCfg, followMode = false, awaitMessage = '') {
+module.exports = async function(req, res, logger, di, tinyCfg, followMode = false, awaitMessage = '') {
 
     // Command Result
     let commandResult;
@@ -108,7 +108,7 @@ module.exports = async function (req, res, logger, di, tinyCfg, followMode = fal
                     reply: replyMessage({}, tinyCfg, logger, req, res),
 
                     // Pong
-                    pong: async () => {
+                    pong: async() => {
                         if (tinyCfg.debug) { await logger.log(`The message ID ${req.body.id} received a pong.`); }
                         return res.json({ type: di.InteractionResponseType.PONG });
                     },
