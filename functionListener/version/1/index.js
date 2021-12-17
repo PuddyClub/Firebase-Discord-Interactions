@@ -198,7 +198,7 @@ module.exports = async function(req, res, logger, di, tinyCfg, followMode = fals
         // Nope
         else {
             await logger.warn(`The Bot ID ${req.body.client_id} made a unknown action.`);
-            commandResult = await tinyCfg.errorCallback(req, res, 404, 'Type not found!');
+            commandResult = await tinyCfg.errorCallback(req, res, 404, 'INVALID INTERACTION TYPE!');
         }
 
         // Complete

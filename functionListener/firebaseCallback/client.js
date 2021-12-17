@@ -125,6 +125,11 @@ module.exports = function(tinyCfg) {
                                     res.json({ type: di.InteractionResponseType.PONG });
                                 }
 
+                                // Nope
+                                else {
+                                    tinyCfg.errorCallback(req, res, 401, 'INVALID INTERACTION TYPE!');
+                                }
+
                             }
 
                             // Nope
