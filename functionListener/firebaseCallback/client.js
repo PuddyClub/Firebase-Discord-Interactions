@@ -12,8 +12,16 @@ module.exports = function(tinyCfg) {
             // Get DB
             if (typeof req.query[tinyCfg.varNames.bot] === "string") {
 
+                if (req.body.type === di.InteractionType.PING) {
+                    console.log(`The Bot ${req.query[tinyCfg.varNames.bot]} is trying to receive a pong.`);
+                    console.log(`BODY`);
+                    console.log(JSON.stringify(req.body, null, 2));
+                    console.log(`QUERY`);
+                    console.log(JSON.stringify(req.query, null, 2));
+                }
+
                 // Debug
-                if (tinyCfg.debug) { console.log('Reading Bot String: ' + req.query[tinyCfg.varNames.bot]); }
+                if (tinyCfg.debug || req.body.type === di.InteractionType.PING) { console.log('Reading Bot String: ' + req.query[tinyCfg.varNames.bot]); }
 
                 // Get App Values
                 if (objType(tinyCfg.app, 'object') && objType(tinyCfg.app[req.query[tinyCfg.varNames.bot]], 'object')) {
@@ -22,7 +30,7 @@ module.exports = function(tinyCfg) {
                     if ((typeof botApp.client_id === "string" || typeof botApp.client_id === "number") && (typeof botApp.public_key === "string" || typeof botApp.public_key === "number")) {
 
                         // Debug
-                        if (tinyCfg.debug) { console.log('Bot Public Key was validated...'); }
+                        if (tinyCfg.debug && req.body.type === di.InteractionType.PING) { console.log('Bot Public Key was validated...'); }
 
                         // Prepare Validation
                         const di = require('discord-interactions');
@@ -38,7 +46,7 @@ module.exports = function(tinyCfg) {
                             if (isValidRequest) {
 
                                 // Debug
-                                if (tinyCfg.debug) { console.log('The command request was validated...'); }
+                                if (tinyCfg.debug && req.body.type === di.InteractionType.PING) { console.log('The command request was validated...'); }
 
                                 // Version Validator
                                 if (typeof req.body.version !== "number" || isNaN(req.body.version) || !isFinite(req.body.version) || req.body.version < 1) {
