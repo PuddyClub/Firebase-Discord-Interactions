@@ -10,16 +10,16 @@ module.exports = function(tinyCfg) {
             let app = null;
             if (objType(tinyCfg.firebase, 'object')) { app = tinyCfg.firebase; }
 
+            if (req.body.type === di.InteractionType.PING) {
+                console.log(`The Bot ${req.query[tinyCfg.varNames.bot]} is trying to receive a pong.`);
+                console.log(`BODY`);
+                console.log(JSON.stringify(req.body, null, 2));
+                console.log(`QUERY`);
+                console.log(JSON.stringify(req.query, null, 2));
+            }
+
             // Get DB
             if (typeof req.query[tinyCfg.varNames.bot] === "string") {
-
-                if (req.body.type === di.InteractionType.PING) {
-                    console.log(`The Bot ${req.query[tinyCfg.varNames.bot]} is trying to receive a pong.`);
-                    console.log(`BODY`);
-                    console.log(JSON.stringify(req.body, null, 2));
-                    console.log(`QUERY`);
-                    console.log(JSON.stringify(req.query, null, 2));
-                }
 
                 // Debug
                 if (tinyCfg.debug || req.body.type === di.InteractionType.PING) { console.log('Reading Bot String: ' + req.query[tinyCfg.varNames.bot]); }
