@@ -3,6 +3,7 @@ module.exports = function(tinyCfg) {
         return new Promise(async(resolve, reject) => {
 
             // Modules
+            const di = require('discord-interactions');
             const objType = require('@tinypudding/puddy-lib/get/objType');
 
             // Firebase
@@ -33,7 +34,6 @@ module.exports = function(tinyCfg) {
                         if (tinyCfg.debug && req.body.type === di.InteractionType.PING) { console.log('Bot Public Key was validated...'); }
 
                         // Prepare Validation
-                        const di = require('discord-interactions');
                         const signature = req.get('X-Signature-Ed25519');
                         const timestamp = req.get('X-Signature-Timestamp');
 
