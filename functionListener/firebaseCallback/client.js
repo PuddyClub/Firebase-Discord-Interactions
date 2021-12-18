@@ -115,7 +115,10 @@ module.exports = function(tinyCfg) {
                                     if (reply) { return reply({}, tinyCfg, console, req, res)(msg, 'temp'); }
 
                                     // Nope
-                                    else { return tinyCfg.errorCallback(req, res, 404, 'Version not found!'); }
+                                    else {
+                                        console.error('Version not found!');
+                                        return tinyCfg.errorCallback(req, res, 404, 'Version not found!');
+                                    }
 
                                 }
 
@@ -127,6 +130,7 @@ module.exports = function(tinyCfg) {
 
                                 // Nope
                                 else {
+                                    console.error('INVALID INTERACTION TYPE!');
                                     tinyCfg.errorCallback(req, res, 401, 'INVALID INTERACTION TYPE!');
                                 }
 
@@ -134,6 +138,7 @@ module.exports = function(tinyCfg) {
 
                             // Nope
                             else {
+                                console.error('Bad request signature!');
                                 return tinyCfg.errorCallback(req, res, 401, 'Bad request signature!');
                             }
 
@@ -152,6 +157,7 @@ module.exports = function(tinyCfg) {
 
                     // Nope
                     else {
+                        console.error('Invalid Public Key or Client ID!');
                         tinyCfg.errorCallback(req, res, 401, 'Invalid Public Key or Client ID!');
                     }
 
@@ -159,6 +165,7 @@ module.exports = function(tinyCfg) {
 
                 // Nope
                 else {
+                    console.error('App Data not found!');
                     tinyCfg.errorCallback(req, res, 404, 'App Data not found!');
                 }
 
@@ -166,6 +173,7 @@ module.exports = function(tinyCfg) {
 
             // Nope
             else {
+                console.error('Invalid Bot Data!');
                 tinyCfg.errorCallback(req, res, 401, 'Invalid Bot Data!');
             }
 
