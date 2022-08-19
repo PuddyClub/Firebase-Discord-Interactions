@@ -1,40 +1,13 @@
 module.exports = (tinyCfg, logger, req, res) => {
-    return (msg, isNewMessage = false) => {
+    return (msg) => {
         return new Promise(async (resolve, reject) => {
 
-            // Preparing Module
-            const objType = require('@tinypudding/puddy-lib/get/objType');
-
             // Prepare Result
-            const result = {};
-
-            // String Message
-            if (typeof msg === "string") {
-                result.data = { tts: false, content: msg };
-            } else if (objType(msg, 'object')) {
-
-                // Insert Data
-                result.data = msg;
-
-                // Embed
-                if (objType(result.data.embed, 'object')) {
-                    result.data.embeds = [result.data.embed];
-                    delete result.data.embed;
-                }
-
-            }
-
-            // Visible for you only
-            if (typeof result.data.visible === "boolean" && result.data.visible === false) {
-                result.data.flags = 64;
-                delete result.data.visible;
-            }
+            const result = { type: 9, data: msg };
 
             // Debug
             if (tinyCfg.debug) { await logger.log('Sending modal...'); }
             if (tinyCfg.debug) { await logger.log(result); }
-
-            result.type = 9;
 
             // Custom Result
             if (urlResult.custom_result) {
