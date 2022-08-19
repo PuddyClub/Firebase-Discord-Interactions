@@ -1,4 +1,4 @@
-module.exports = (urlResult = {}, tinyCfg, logger, req, res) => {
+module.exports = (tinyCfg, logger, req, res) => {
     return (msg, isNewMessage = false) => {
         return new Promise(async (resolve, reject) => {
 
