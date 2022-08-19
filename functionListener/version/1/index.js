@@ -112,7 +112,7 @@ module.exports = async function(req, res, logger, di, tinyCfg, followMode = fals
                     reply: replyMessage({}, tinyCfg, logger, req, res),
 
                     // Reply Message
-                    modal: replyMessage({}, tinyCfg, logger, req, res),
+                    modal: modalMessage(tinyCfg, logger, req, res),
 
                     // Pong
                     pong: async() => {
