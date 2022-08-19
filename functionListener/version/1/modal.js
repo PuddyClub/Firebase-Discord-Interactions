@@ -31,52 +31,24 @@ module.exports = (tinyCfg, logger, req, res) => {
             }
 
             // Debug
-            if (tinyCfg.debug) { await logger.log('Sending message...'); }
+            if (tinyCfg.debug) { await logger.log('Sending modal...'); }
             if (tinyCfg.debug) { await logger.log(result); }
 
-            // Await Response
-            if (urlResult.temp && isNewMessage === 'temp') {
+            result.type = 9;
 
-                // Prepare Temp Reply
-                result.type = 5;
-
-                // Send Message
-                urlResult.temp(result).then(data => { resolve(data); }).catch(err => { reject(err); });
-
+            // Custom Result
+            if (urlResult.custom_result) {
+                urlResult.custom_result(result).then(data => { resolve(data); }).catch(err => { reject(err); });
             }
 
-            // Is New Message
-            /* else if (isNewMessage === "new") {
-                result.type = 4;
-                final_result.newMsg(result).then(data => { resolve(data); }).catch(err => { reject(err); });
-            } */
+            // Normal JSON
+            else if (!req.isGateway) {
+                resolve(); res.json(result);
+            }
 
-            // Send Result
+            // Nope
             else {
-
-                // Type
-
-                // Is Temp
-                if (isNewMessage === 'temp') { result.type = 5; }
-
-                // Nope
-                else { result.type = 4; }
-
-                // Custom Result
-                if (urlResult.custom_result) {
-                    urlResult.custom_result(result).then(data => { resolve(data); }).catch(err => { reject(err); });
-                }
-
-                // Normal JSON
-                else if (!req.isGateway) {
-                    resolve(); res.json(result);
-                }
-
-                // Nope
-                else {
-                    res.json(result).then(async (data) => { resolve(data); return; }).catch(async (err) => { reject(err); return; });
-                }
-
+                res.json(result).then(async (data) => { resolve(data); return; }).catch(async (err) => { reject(err); return; });
             }
 
             // Complete
