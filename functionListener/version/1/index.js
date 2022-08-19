@@ -9,6 +9,7 @@ const createMessageEditor = require('./createMessageEditor');
 
 // Reply Message
 const replyMessage = require('./reply');
+const modalMessage = require('./modal');
 
 module.exports = async function(req, res, logger, di, tinyCfg, followMode = false, awaitMessage = '') {
 
@@ -109,6 +110,9 @@ module.exports = async function(req, res, logger, di, tinyCfg, followMode = fals
 
                     // Reply Message
                     reply: replyMessage({}, tinyCfg, logger, req, res),
+
+                    // Reply Message
+                    modal: replyMessage({}, tinyCfg, logger, req, res),
 
                     // Pong
                     pong: async() => {
