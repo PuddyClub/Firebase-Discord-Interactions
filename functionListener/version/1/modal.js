@@ -1,9 +1,30 @@
+const _ = require('lodash');
 module.exports = (tinyCfg, logger, req, res) => {
     return (msg) => {
         return new Promise(async (resolve, reject) => {
 
             // Prepare Result
-            const result = { type: 9, data: msg };
+            const result = {
+                type: 9, data: _.defaultsDeep({}, msg, {
+                    title: 'Test',
+                    custom_id: 'test-modal',
+                    components: [
+                        {
+                            type: 1,
+                            components: [
+                                {
+                                    type: 4,
+                                    style: 1,
+                                    label: 'Short Input',
+                                    custom_id: 'short-input',
+                                    placeholder: 'Short Input',
+                                    required: false,
+                                },
+                            ],
+                        },
+                    ],
+                })
+            };
 
             // Debug
             if (tinyCfg.debug) { await logger.log('Sending modal...'); }
