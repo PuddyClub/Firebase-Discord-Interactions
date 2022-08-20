@@ -25,6 +25,8 @@ module.exports = async function(req, res, logger, di, tinyCfg, followMode = fals
         // Is Command
         if (
             req.body.type === di.InteractionType.APPLICATION_COMMAND ||
+            req.body.type === di.InteractionType.MESSAGE_COMPONENT ||
+            req.body.type === di.InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE ||
             req.body.type === di.InteractionType.MODAL_SUBMIT
         ) {
 
