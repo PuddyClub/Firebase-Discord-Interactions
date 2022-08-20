@@ -8,6 +8,7 @@ module.exports = function(cfg) {
         },
 
         // Commands
+        commandsMenu: null,
         commands: {},
 
         // Debug
