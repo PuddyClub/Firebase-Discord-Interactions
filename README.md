@@ -315,6 +315,9 @@ tinyCfg.invalidCommandCallback = function (result) {
 
 // Command List
 tinyCfg.commands = commands;
+tinyCfg.commandsMenu = function (result) {
+    return result.reply({ tts: false, content: 'Pong!'});
+};
 
 // Prepare Gateway
 const interactionsGateway = require('@tinypudding/firebase-discord-interactions/functionListener/gateway');
