@@ -50,7 +50,6 @@ module.exports = async function(req, res, logger, di, tinyCfg, followMode = fals
             // Exist Commands
             if (
                 objType(tinyCfg.commands, 'object') && objType(req.body.data, 'object') &&
-                (typeof req.body.data.name === "string" || typeof req.body.data.name === "number") &&
                 (typeof req.body.id === "string" || typeof req.body.id === "number") &&
                 (typeof req.body.token === "string" || typeof req.body.token === "number")
             ) {
