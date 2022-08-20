@@ -129,7 +129,10 @@ module.exports = async function(req, res, logger, di, tinyCfg, followMode = fals
                     if (tinyCfg.debug) { await logger.log('Reading a command...'); }
 
                     // Get by name
-                    if (typeof tinyCfg.commands[req.body.data.name] === "function") {
+                    if (
+                        typeof tinyCfg.commands[req.body.data.name] === "function" && 
+                        (typeof req.body.data.name === "string" || typeof req.body.data.name === "number")
+                    ) {
 
                         // Debug
                         if (tinyCfg.debug) { await logger.log('Starting the command "' + req.body.data.name + '"...'); }
@@ -147,6 +150,17 @@ module.exports = async function(req, res, logger, di, tinyCfg, followMode = fals
 
                         // Result
                         commandResult = await tinyCfg.commands[req.body.id](final_result);
+
+                    }
+
+                    // Get by Menu
+                    else if (typeof tinyCfg.commandsMenu === "function") {
+
+                        // Debug
+                        if (tinyCfg.debug) { await logger.log('Starting the command menu "' + req.body.data.name + '"...'); }
+
+                        // Result
+                        commandResult = await tinyCfg.commandsMenu(final_result);
 
                     }
 
