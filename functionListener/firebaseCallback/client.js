@@ -57,7 +57,12 @@ module.exports = function(tinyCfg) {
                                 req.body.client_id = botApp.client_id;
 
                                 // Normal Request
-                                if (req.body.type === di.InteractionType.APPLICATION_COMMAND) {
+                                if (
+                                    req.body.type === di.InteractionType.APPLICATION_COMMAND ||
+                                    req.body.type === di.InteractionType.MESSAGE_COMPONENT ||
+                                    req.body.type === di.InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE ||
+                                    req.body.type === di.InteractionType.MODAL_SUBMIT
+                                ) {
 
                                     // Preparing Hidden Detector
                                     tinyCfg.hiddenDetector = require('lodash').defaultsDeep({}, tinyCfg.hiddenDetector, {
