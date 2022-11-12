@@ -67,6 +67,7 @@ module.exports = async function(req, res, logger, di, tinyCfg, followMode = fals
                     (typeof tinyCfg.app[req.query[tinyCfg.varNames.bot]].bot_token === "string" || typeof tinyCfg.app[req.query[tinyCfg.varNames.bot]].bot_token == "number")
                 ) {
                     tinyCfg.bot.token = tinyCfg.app[req.query[tinyCfg.varNames.bot]].bot_token;
+                    tinyCfg.bot.rest.setToken(tinyCfg.app[req.query[tinyCfg.varNames.bot]].bot_token);
                 }
 
                 // Final Result
