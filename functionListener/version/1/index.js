@@ -11,7 +11,7 @@ const createMessageEditor = require('./createMessageEditor');
 const replyMessage = require('./reply');
 const modalMessage = require('./modal');
 
-module.exports = async function(req, res, logger, di, tinyCfg, followMode = false, awaitMessage = '') {
+module.exports = async function (req, res, logger, di, tinyCfg, followMode = false, awaitMessage = '') {
 
     // Command Result
     let commandResult;
@@ -49,7 +49,7 @@ module.exports = async function(req, res, logger, di, tinyCfg, followMode = fals
 
             // Exist Commands
             if (
-                objType(tinyCfg.commands, 'object') && objType(req.body.data, 'object') &&
+                objType(tinyCfg.commands, 'object') &&
                 (typeof req.body.id === "string" || typeof req.body.id === "number") &&
                 (typeof req.body.token === "string" || typeof req.body.token === "number")
             ) {
@@ -104,7 +104,7 @@ module.exports = async function(req, res, logger, di, tinyCfg, followMode = fals
                     modal: modalMessage(tinyCfg, logger, req, res),
 
                     // Pong
-                    pong: async() => {
+                    pong: async () => {
                         if (tinyCfg.debug) { await logger.log(`The message ID ${req.body.id} received a pong.`); }
                         return res.json({ type: di.InteractionResponseType.PONG });
                     },
@@ -131,7 +131,7 @@ module.exports = async function(req, res, logger, di, tinyCfg, followMode = fals
 
                     // Get by name
                     if (
-                        typeof tinyCfg.commands[req.body.data.name] === "function" && 
+                        typeof tinyCfg.commands[req.body.data.name] === "function" &&
                         (typeof req.body.data.name === "string" || typeof req.body.data.name === "number")
                     ) {
 
@@ -144,7 +144,10 @@ module.exports = async function(req, res, logger, di, tinyCfg, followMode = fals
                     }
 
                     // Get by ID
-                    else if (typeof tinyCfg.commands[req.body.id] === "function") {
+                    else if (
+                        objType(req.body.data, 'object') &&
+                        typeof tinyCfg.commands[req.body.id] === "function"
+                    ) {
 
                         // Debug
                         if (tinyCfg.debug) { await logger.log('Starting the command id "' + req.body.id + '"...'); }
@@ -155,7 +158,10 @@ module.exports = async function(req, res, logger, di, tinyCfg, followMode = fals
                     }
 
                     // Get by Menu
-                    else if (typeof tinyCfg.commandsMenu === "function") {
+                    else if (
+                        (typeof req.body.componentType === 'string' || typeof req.body.componentType === 'number') &&
+                        typeof tinyCfg.commandsMenu === "function"
+                    ) {
 
                         // Debug
                         if (tinyCfg.debug) { await logger.log('Starting the command menu "' + req.body.data.name + '"...'); }
