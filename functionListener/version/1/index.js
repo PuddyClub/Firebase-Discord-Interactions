@@ -175,10 +175,7 @@ module.exports = async function (req, res, logger, di, tinyCfg, followMode = fal
                     }
 
                     // Get by Menu
-                    else if (
-                        (typeof req.body.componentType === 'string' || typeof req.body.componentType === 'number') &&
-                        typeof tinyCfg.commandsMenu === "function"
-                    ) {
+                    else if (typeof tinyCfg.commandsMenu === "function") {
 
                         // Debug
                         if (tinyCfg.debug) { await logger.log('Starting the command menu "' + req.body.data.name + '"...'); }
