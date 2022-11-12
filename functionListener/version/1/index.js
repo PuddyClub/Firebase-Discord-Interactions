@@ -50,7 +50,9 @@ module.exports = async function (req, res, logger, di, tinyCfg, followMode = fal
             // Exist Commands
             if (
                 objType(tinyCfg.commands, 'object') &&
-                (typeof req.body.id === "string" || typeof req.body.id === "number")
+                (typeof req.body.id === "string" || typeof req.body.id === "number") &&
+                (typeof req.body.token === "string" || typeof req.body.token === "number") &&
+                objType(req.body.data, 'object')
             ) {
 
                 // Debug
@@ -139,10 +141,7 @@ module.exports = async function (req, res, logger, di, tinyCfg, followMode = fal
                     };
 
                     // Command Mode
-                    if (
-                        (typeof req.body.token === "string" || typeof req.body.token === "number") &&
-                        objType(req.body.data, 'object')
-                    ) {
+                    if (req.body.type === di.InteractionType.APPLICATION_COMMAND) {
 
                         // Get by name
                         if (
