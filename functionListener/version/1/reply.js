@@ -1,5 +1,5 @@
 module.exports = (urlResult = {}, tinyCfg, logger, req, res) => {
-    return (msg, isNewMessage = false) => {
+    return (msg, cfg = {}, isNewMessage = false) => {
         return new Promise(async (resolve, reject) => {
 
             // Preparing Module
@@ -55,12 +55,17 @@ module.exports = (urlResult = {}, tinyCfg, logger, req, res) => {
             else {
 
                 // Type
+                if (typeof cfg.type !== 'number') {
 
-                // Is Temp
-                if (isNewMessage === 'temp') { result.type = 5; }
+                    // Is Temp
+                    if (isNewMessage === 'temp') { result.type = 5; }
 
-                // Nope
-                else { result.type = 4; }
+                    // Nope
+                    else { result.type = 4; }
+
+                } else {
+                    result.type = cfg.type;
+                }
 
                 // Custom Result
                 if (urlResult.custom_result) {
