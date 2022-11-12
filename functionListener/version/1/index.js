@@ -50,8 +50,7 @@ module.exports = async function (req, res, logger, di, tinyCfg, followMode = fal
             // Exist Commands
             if (
                 objType(tinyCfg.commands, 'object') &&
-                (typeof req.body.id === "string" || typeof req.body.id === "number") &&
-                (typeof req.body.token === "string" || typeof req.body.token === "number")
+                (typeof req.body.id === "string" || typeof req.body.id === "number")
             ) {
 
                 // Debug
@@ -128,32 +127,50 @@ module.exports = async function (req, res, logger, di, tinyCfg, followMode = fal
 
                     // Debug
                     if (tinyCfg.debug) { await logger.log('Reading a command...'); }
+                    const nothingCommand = async function () {
 
-                    // Get by name
+                        // Debug
+                        if (tinyCfg.debug) { await logger.log('Invalid Command!'); }
+
+                        // Result
+                        commandResult = await tinyCfg.invalidCommandCallback(final_result);
+                        return;
+
+                    };
+
+                    // Command Mode
                     if (
-                        typeof tinyCfg.commands[req.body.data.name] === "function" &&
-                        (typeof req.body.data.name === "string" || typeof req.body.data.name === "number")
+                        (typeof req.body.token === "string" || typeof req.body.token === "number") &&
+                        objType(req.body.data, 'object')
                     ) {
 
-                        // Debug
-                        if (tinyCfg.debug) { await logger.log('Starting the command "' + req.body.data.name + '"...'); }
+                        // Get by name
+                        if (
+                            typeof tinyCfg.commands[req.body.data.name] === "function" &&
+                            (typeof req.body.data.name === "string" || typeof req.body.data.name === "number")
+                        ) {
 
-                        // Result
-                        commandResult = await tinyCfg.commands[req.body.data.name](final_result);
+                            // Debug
+                            if (tinyCfg.debug) { await logger.log('Starting the command "' + req.body.data.name + '"...'); }
 
-                    }
+                            // Result
+                            commandResult = await tinyCfg.commands[req.body.data.name](final_result);
 
-                    // Get by ID
-                    else if (
-                        objType(req.body.data, 'object') &&
-                        typeof tinyCfg.commands[req.body.id] === "function"
-                    ) {
+                        }
 
-                        // Debug
-                        if (tinyCfg.debug) { await logger.log('Starting the command id "' + req.body.id + '"...'); }
+                        // Get by ID
+                        else if (typeof tinyCfg.commands[req.body.id] === "function") {
 
-                        // Result
-                        commandResult = await tinyCfg.commands[req.body.id](final_result);
+                            // Debug
+                            if (tinyCfg.debug) { await logger.log('Starting the command id "' + req.body.id + '"...'); }
+
+                            // Result
+                            commandResult = await tinyCfg.commands[req.body.id](final_result);
+
+                        }
+
+                        // Nothing
+                        else { await nothingCommand(); }
 
                     }
 
@@ -172,15 +189,7 @@ module.exports = async function (req, res, logger, di, tinyCfg, followMode = fal
                     }
 
                     // Nothing
-                    else {
-
-                        // Debug
-                        if (tinyCfg.debug) { await logger.log('Invalid Command!'); }
-
-                        // Result
-                        commandResult = await tinyCfg.invalidCommandCallback(final_result);
-
-                    }
+                    else { await nothingCommand(); }
 
 
                 }
