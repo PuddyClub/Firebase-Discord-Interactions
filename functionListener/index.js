@@ -12,13 +12,6 @@ module.exports = function (req, res, cfg) {
     }
 
     // End Point
-    if (typeof req.query[tinyCfg.varNames.type] === "string" && req.query[tinyCfg.varNames.type] === "endpoint") {
-        return require('./endpoint')(req, res, logger, tinyCfg);
-    }
-
-    // Nope
-    else {
-        return tinyCfg.errorCallback(req, res, 404, 'Discord Interaction API not found!');
-    }
+    return require('./endpoint')(req, res, logger, tinyCfg);
 
 };
